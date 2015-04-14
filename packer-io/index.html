@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Packer.io &#8211; dodwell.us</title>
+<meta name="description" content="DevOPS: For fun and profit">
+<meta name="keywords" content="">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dodwell.us//images/devops_logo.gif">
+<meta name="twitter:title" content="Packer.io">
+<meta name="twitter:description" content="DevOPS: For fun and profit">
+<meta name="twitter:creator" content="@MichaelDodwell">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Packer.io">
+<meta property="og:description" content="DevOPS: For fun and profit">
+<meta property="og:url" content="https://dodwell.us//packer-io">
+<meta property="og:site_name" content="dodwell.us">
+<meta property="og:image" content="https://dodwell.us//images/default_bg1.jpg">
+
+
+
+
+
+<link rel="canonical" href="https://dodwell.us//packer-io">
+<link href="https://dodwell.us//feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us//assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us//assets/css/style.css" />
+
+
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="https://dodwell.us//favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="https://dodwell.us//favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="https://dodwell.us//images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://dodwell.us//images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://dodwell.us//images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us//images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
+<div id="fade"></div>
+<a id="slide" class="animated fade"></a>
+<aside id="sidebar">
+    <nav id="navigation">
+    <h2>MENU</h2>
+    <hr>
+
+            <li>
+                    <a href="https://dodwell.us//">Home</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//resume"><i class="icon-book"></i> Resume</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//categories">Categories</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//tags">Tags</a>
+                 </li>
+            
+           <li><a href="https://dodwell.us//feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+    </nav>
+    
+    
+</aside>
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom"  style="background-image: url(https://dodwell.us//images/default_bg1.jpg)" itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand" href="https://dodwell.us/" role="banner" itemprop="url">
+
+                <img itemprop="logo" src="https://dodwell.us//images/devops_logo.gif" alt="dodwell.us Logo" />
+
+            <h1 class="blog-title light" itemprop="name">
+                dodwell.us
+            </h1>
+                
+            </a>
+        </div>
+    </div>
+    
+    
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+
+        </svg>
+    </div>
+    
+</header>
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+    <div class="container">
+        <div class="row">
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Packer.io</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published updated"><time datetime="2014-05-08T16:11:26+10:00" class="post-time" itemprop="datePublished">08 May 2014</time><span>
+                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">3.72</span> minutes read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p>In a previous post I wrote about how we can use Auto-Scaling Groups (ASG’s) to <a href="http://dodwell.us/use-asg/" title="How to use ASG">quickly adapt to user load</a>. In this post I intend to explain a method to create custom Amazon Machine Image’s (AMI’s) using a project called <a href="http://www.packer.io/" title="packer.io" target="_blank">packer.io</a></p>
+
+<h3 id="what-is-packer">what is packer?</h3>
+
+<p>Packer is an open source tool for creating identical machine images for multiple platforms from a single source configuration. Packer is lightweight, runs on every major operating system and is able to create machine images for multiple platforms in parallel. Packer does not replace configuration management like Chef or Puppet. In fact, when building images, Packer is able to use tools like Chef or Puppet to install software.</p>
+
+<p>A machine image is a single static unit that contains a pre-configured operating system and installed software which is used to quickly create new running machines. Machine image formats change for each platform. Some examples include AMIs for EC2, VMDK/VMX files for VMware, OVF exports for VirtualBox, etc.</p>
+
+<h4 id="installation">installation</h4>
+
+<p>Packer is distributed as a binary package for different OS’s. Our OS is Linux based with a 64-bit CPU.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir ~/bin/packer
+wget https://dl.bintray.com/mitchellh/packer/0.6.0_linux_amd64.zip
+unzip -d ~/bin/packer 0.6.0_linux_amd64.zip
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:~/bin/packer</code></pre></div>
+
+<h4 id="using">using</h4>
+
+<p>Now that packer is installed lets create a json file to build an Amazon EC2 AMI.</p>
+
+<p>example.json:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="p-Indicator">{</span>
+  <span class="s">&quot;variables&quot;</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span>
+    <span class="s">&quot;aws_access_key&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;&quot;</span><span class="p-Indicator">,</span>
+    <span class="s">&quot;aws_secret_key&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;&quot;</span>
+  <span class="p-Indicator">},</span>
+  <span class="s">&quot;builders&quot;</span><span class="p-Indicator">:</span> <span class="p-Indicator">[{</span>
+    <span class="s">&quot;type&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;amazon-ebs&quot;</span><span class="p-Indicator">,</span>
+    <span class="s">&quot;access_key&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;&quot;</span><span class="p-Indicator">,</span>
+    <span class="s">&quot;secret_key&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;&quot;</span><span class="p-Indicator">,</span>
+    <span class="s">&quot;region&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;ap-southeast-2&quot;</span><span class="p-Indicator">,</span>
+    <span class="s">&quot;source_ami&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;ami-09f26b33&quot;</span><span class="p-Indicator">,</span>
+    <span class="s">&quot;instance_type&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;t1.micro&quot;</span><span class="p-Indicator">,</span>
+    <span class="s">&quot;ssh_username&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;ubuntu&quot;</span><span class="p-Indicator">,</span>
+    <span class="s">&quot;ami_name&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;example-ami</span><span class="nv"> </span><span class="s">&quot;</span>
+  <span class="p-Indicator">}],</span>
+  <span class="s">&quot;provisioners&quot;</span><span class="p-Indicator">:</span> <span class="p-Indicator">[{</span>
+    <span class="s">&quot;type&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;shell&quot;</span><span class="p-Indicator">,</span>
+    <span class="s">&quot;script&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;build_example.sh&quot;</span><span class="p-Indicator">,</span>
+    <span class="s">&quot;execute_command&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;chmod</span><span class="nv"> </span><span class="s">+x</span><span class="nv"> </span><span class="s">;</span><span class="nv">  </span><span class="s">sudo</span><span class="nv"> </span><span class="s">&quot;</span>
+  <span class="p-Indicator">}]</span>
+<span class="p-Indicator">}</span></code></pre></div>
+
+<p>And let’s make a shell script that will be executed to customize the AMI:</p>
+
+<p>build_example.sh:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
+<span class="nb">export </span><span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+<span class="nb">echo</span> <span class="s1">&#39;Package: *</span>
+<span class="s1">Pin: origin &quot;packages.dodwell.us&quot;</span>
+<span class="s1">Pin-Priority: 1001&#39;</span> &gt; /etc/apt/preferences.d/dodwell-precise-pin-1001
+<span class="nb">echo</span> <span class="s1">&#39;deb http://apt.puppetlabs.com precise main&#39;</span> &gt; /etc/apt/sources.list.d/puppetlabs.list
+<span class="nb">echo</span> <span class="s1">&#39;deb http://apt.puppetlabs.com precise dependencies&#39;</span> &gt; /etc/apt/sources.list.d/puppetlabs-dependencies.list
+<span class="nb">echo</span> <span class="s1">&#39;deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main&#39;</span> &gt; /etc/apt/sources.list.d/pgdg.list
+<span class="nb">echo</span> <span class="s1">&#39;deb http://apt.dodwell.us precise main&#39;</span> &gt; /etc/apt/sources.list.d/dodwell.list
+<span class="c"># puppetlabs</span>
+apt-key adv --keyserver keyserver.ubuntu.com --recv 4BD6EC30
+<span class="c"># pgdg</span>
+curl https://www.postgresql.org/media/keys/ACCC4CF8.asc <span class="p">|</span> apt-key add -
+<span class="c"># dodwell repo</span>
+curl https://packages.dodwell.us/keys/keyfile.asc <span class="p">|</span> apt-key add -
+<span class="c"># Lets not allow services to be started on install</span>
+mkdir /tmp/fake
+<span class="k">for</span> COMMANDS in initctl invoke-rc.d restart start stop start-stop-daemon service
+<span class="k">do</span>
+  ln -s /bin/true /tmp/fake/<span class="k">${</span><span class="nv">COMMANDS</span><span class="k">}</span>
+<span class="k">done</span>
+<span class="nv">PATH</span><span class="o">=</span>/tmp/fake:<span class="nv">$PATH</span> aptitude -y update
+<span class="nv">PATH</span><span class="o">=</span>/tmp/fake:<span class="nv">$PATH</span> aptitude -y upgrade
+<span class="nv">PATH</span><span class="o">=</span>/tmp/fake:<span class="nv">$PATH</span> aptitude -y install puppet lsb-release ruby ruby1.9.1 ruby1.9.1-dev ri1.9.1 build-essential libssl-dev zlib1g-dev rubygems fail2ban openjdk-7-jre-headless postgresql-client-9.3 proftpd-basic unzip nginx php5-fpm php5-suhosin
+<span class="nb">echo</span> <span class="s2">&quot;</span>
+<span class="s2">[agent]</span>
+<span class="s2">server=puppet.ec2-int.dodwell.us</span>
+<span class="s2">&quot;</span> &gt;&gt; /etc/puppet/puppet.conf
+<span class="nb">echo</span> <span class="s2">&quot;/usr/bin/puppet agent -o&quot;</span> &gt;&gt; /etc/rc.local
+/usr/sbin/update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby1.9.1 <span class="m">400</span> <span class="se">\</span>
+                              --slave /usr/share/man/man1/ruby.1.gz ruby.1.gz /usr/share/man/man1/ruby1.9.1.1.gz <span class="se">\</span>
+                              --slave /usr/bin/ri ri /usr/bin/ri1.9.1 <span class="se">\</span>
+                              --slave /usr/bin/irb irb /usr/bin/irb1.9.1 <span class="se">\</span>
+                              --slave /usr/bin/rdoc rdoc /usr/bin/rdoc1.9.1
+/usr/sbin/update-alternatives --set gem /usr/bin/gem1.9.1</code></pre></div>
+
+<p>Now that we have these 2 files in our current directory lets build the AMI:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# packer build <span class="se">\</span>
+                -var <span class="s1">&#39;aws_access_key=YOUR ACCESS KEY&#39;</span> <span class="se">\</span>
+                -var <span class="s1">&#39;aws_secret_key=YOUR SECRET KEY&#39;</span> <span class="se">\</span>
+                web.json
+amazon-ebs output will be in this color.
+<span class="o">==</span>&gt; amazon-ebs: Creating temporary keypair: packer 536acd17-6080-23b8-5a0e-884d4a05035d
+<span class="o">==</span>&gt; amazon-ebs: Creating temporary security group <span class="k">for</span> this instance...
+<span class="o">==</span>&gt; amazon-ebs: Authorizing SSH access on the temporary security group...
+<span class="o">==</span>&gt; amazon-ebs: Launching a <span class="nb">source </span>AWS instance...
+amazon-ebs: Instance ID: i-ffffffff
+<span class="o">==</span>&gt; amazon-ebs: Waiting <span class="k">for</span> instance <span class="o">(</span>i-ffffffff<span class="o">)</span> to become ready...
+<span class="o">==</span>&gt; amazon-ebs: Waiting <span class="k">for</span> SSH to become available...
+<span class="o">==</span>&gt; amazon-ebs: Connected to SSH!
+<span class="o">==</span>&gt; amazon-ebs: Provisioning with shell script: build_web.sh
+amazon-ebs: Executing: gpg --ignore-time-conflict --no-options --no-default-keyring --secret-keyring /tmp/tmp.4SGucrYWX8 --trustdb-name /etc/apt/trustdb.gpg --keyring /etc/apt/trusted.gpg --primary-keyring /etc/apt/trusted.gpg --keyserver keyserver.ubuntu.com --recv 4BD6EC30
+...
+...
+...
+amazon-ebs: update-alternatives: using /usr/bin/gem1.9.1 to provide /usr/bin/gem <span class="o">(</span>gem<span class="o">)</span> in manual mode.
+<span class="o">==</span>&gt; amazon-ebs: Stopping the <span class="nb">source </span>instance...
+<span class="o">==</span>&gt; amazon-ebs: Waiting <span class="k">for</span> the instance to stop...
+<span class="o">==</span>&gt; amazon-ebs: Creating the AMI: web-ami 1399508247
+amazon-ebs: AMI: ami-XXXXXXXX
+<span class="o">==</span>&gt; amazon-ebs: Waiting <span class="k">for</span> AMI to become ready...
+<span class="o">==</span>&gt; amazon-ebs: Terminating the <span class="nb">source </span>AWS instance...
+<span class="o">==</span>&gt; amazon-ebs: Deleting temporary security group...
+<span class="o">==</span>&gt; amazon-ebs: Deleting temporary keypair...
+Build <span class="s1">&#39;amazon-ebs&#39;</span> finished.
+<span class="o">==</span>&gt; Builds finished. The artifacts of successful builds are:
+--&gt; amazon-ebs: AMIs were created:
+ap-southeast-2: ami-XXXXXXXX
+root@earth:~#</code></pre></div>
+
+<h3 id="conclusion">conclusion</h3>
+
+<p>Packer gives us a method to consistently create base AMI’s that can be further configured with tools like Puppet. Packer ensures that these AMI’s are documented with code so that at later dates we can upgrade instances and know exactly how they were created. By using custom-built AMI’s your able to speed up the time it takes ASG to boot new instances.</p>
+
+<h2 id="further-reading">further reading</h2>
+<p><a href="http://www.packer.io/docs" title="packer.io docs" target="_blank">http://www.packer.io/docs</a></p>
+
+                        <br>
+                    
+                    
+                    </div>
+        </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;Packer.io&quot;%20https://dodwell.us//packer-io%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us//packer-io"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us//packer-io"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us//images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us//resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
+    </div>
+</div>
+
+<footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us//images/default_bg1.jpg)" >
+
+
+    <div class="inner">
+        <div class="container">
+
+            <ul class="social-icons">
+            <li>
+                <a href="http://twitter.com/MichaelDodwell" data-toggle="tooltip" title="Michael Dodwell on Twitter" target="_blank">
+                    <i class="icon-twitter"></i>
+                </a>
+            </li>
+            
+            
+            
+            <li>
+                <a href="https://au.linkedin.com/in/michaeldodwell" data-toggle="tooltip" title="Michael Dodwell on LinkedIn" target="_blank">
+                    <i class="icon-linkedin"></i>
+                </a>
+            </li>
+            
+            
+            <li>
+                <a href="http://github.com/dodwmd" data-toggle="tooltip" title="Michael Dodwell on Github" target="_blank">
+                    <i class="icon-github"></i>
+                </a>
+            </li>
+        </ul>
+            <div>
+                <a href="https://dodwell.us//resume/">Michael Dodwell</a> &copy; 2015 &bull; All rights reserved.
+            </div>
+            <ul class="menu-items">
+            
+            <li>
+                
+                    <a href="https://dodwell.us//"><i class="icon-home"></i></a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//resume"><i class="icon-book"></i> Resume</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//categories">Categories</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//tags">Tags</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li><a href="https://dodwell.us//feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+        </ul>
+        </div>
+    </div>
+    
+        <div class="decor-wrapper">
+            <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+                <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+                <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+
+                <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+
+                <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+
+                <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+
+            </svg>
+        </div>
+    
+</footer>
+
+
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://dodwell.us//assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="https://dodwell.us//assets/js/scripts.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us//assets/js/waypoints.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us//assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl = 
+ '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-60832716-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+ 
+</body>
+</html>
