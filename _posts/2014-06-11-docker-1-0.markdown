@@ -1,0 +1,18 @@
+---
+layout: post
+status: publish
+published: true
+title: Docker 1.0
+date: !binary |-
+  MjAxNC0wNi0xMSAxNToxMzoxOCAtMDQwMA==
+date_gmt: !binary |-
+  MjAxNC0wNi0xMSAwNToxMzoxOCAtMDQwMA==
+---
+Previously I wrote about docker (<a href="https://dodwell.us/docker/" title="What is docker?">here</a>). I'm now excited to inform you that Docker 1.0 has been released.
+
+> On March 20, 2013, we released the first version of Docker.  After 15 months, 8,741 commits from more than 460 contributors, 2.75 million downloads, over 14,000 &ldquo;Dockerized&rdquo; apps, and feedback from 10s of 1000s of users about their experience with Docker, from a single container on a laptop to 1000s in production in the cloud &hellip; we&rsquo;re excited to announce that it&rsquo;s here: Docker 1.0.
+
+
+## further reading
+
+<a href="http://blog.docker.com/2014/06/its-here-docker-1-0/" target="_blank">http://blog.docker.com/2014/06/its-here-docker-1-0/</a>

@@ -1,0 +1,99 @@
+---
+layout: post
+status: publish
+published: true
+title: Hosting OSX on ESXi
+---
+It's been awhile since I've posted.
+
+Recently I've been doing some Ops work for a company building iOS apps for different companies.
+
+While here I've been making a change to host OSX instances on Mac Mini's (due to licence restrictions). These server where previously hosted under OSX running inside VMWare Fusion VM's.
+
+OSX is a very poor candidate for Virtualization. The Operating System is very bloated and runs alot of services that allow for a very pretty interface for users. When virtualizing these services just chew alot of resources.
+
+In a future post I'll list how I try and tune down these services so that we don't waste resources with functions that we don't use.
+
+In this post I want to cover off how I managed to get OSX to work under ESXi.
+
+### packer
+
+I've previously written about packer and saw virtualization of OSX to be something that would suit it. <a href="http://macops.ca">Tim Sutton</a> is already maintaining some really nice Packer scripts over at <a href="https://github.com/timsutton/osx-vm-templates">github</a>. So i grabbed a copy of these and built the Guest OS in Fusion.
+
+### fusion
+
+There are a few things to know about if you want to upload an OS X VM to an ESXi server running 5.5, so I’ve put together a procedure for those who want to leverage Fusion 7 Pro to upload OS X VMs. See below the jump for the details.
+
+There’s three issues to be aware of when uploading OS X VMs to ESXi 5.5:
+
+* ESXi 5.5 supports up to VMware’s Hardware Version 10.
+* VMware Fusion 7 Pro will build VMs by default using VMware’s Hardware Version 11.
+* The upload process to ESXi 5.5 will not tranfer the necessary smc.present = “TRUE” attribute from the Fusion VM’s .vmx configuration file. This attribute allows the VM to check and detect that it’s running on Apple hardware. Without this check succeeding, the VM assumes it’s running on non-Apple hardware and will then hang during the boot process (which is why I was seeing the hang in my previous upload attempts.)
+
+#### pre-requisites:
+
+* VMware Fusion 7 Professional
+* A fully-updated ESXi 5.5 server running on Apple hardware. As of October 31, 2014, the latest version should be ESXi 5.5 Patch03 (ESXi550-201410001).
+Setting Fusion-built VMs to use Hardware Version 10
+
+1. Create a new VM and choose an appropriate OS.
+
+Note: If you’re planning to upload a 10.10 VM, choose OS X 10.9 in this window. VMware Fusion’s setup process will not allow a 10.10 VM to use Hardware Version 10. In my testing, 10.10 runs fine even when the VM’s selected OS is 10.9.
+
+2. Once the VM is created and you’ve set your preferred memory, processor and memory settings, shut down the VM and then go into the VM settings.
+
+3. In the VM settings, go into USB & Bluetooth
+
+4. In the USB & Bluetooth settings, set it to use USB 2.0 instead of USB 3.0. USB 3.0 is a new feature with VMware’s Hardware Version 11 and not supported on Hardware Version 10.
+
+5. Go back out to the VM settings, then select Camera.
+
+6. In the Camera settings, click the Remove Camera button.
+
+7. When prompted, confirm that you want to remove the camera by clicking the Remove button. The camera is a new feature with VMware’s Hardware Version 11 and not supported on Hardware Version 10.
+
+8. Go back out to the VM settings, then select Compatibility.
+
+9. Change the Use Hardware Version: setting to 10 and click the Apply button.
+
+At this point, your OS X VM should be set to use Hardware Version 10 and ready for uploading to ESXi 5.5.
+
+#### Connecting to ESXi 5.5 from VMware Fusion 7 Professional
+
+1. Launch VMware Fusion 7 Professional if needed.
+
+2. Under the File menu, select Connect to Server…
+
+3. In the login window that appears, enter the server address of your ESXi server, username and password as appropriate.
+
+#### Exporting VMs from VMware Fusion 7 Professional to ESXi
+
+1. Shut down the Fusion VM that you want to copy to your ESXi server.
+
+2. Connect to your ESXi server if you hadn’t previously.
+
+3. Right-click on the shutdown VM and select Upload to Server…
+
+4. If prompted, select your destination server and click the Continue button.
+
+5. A new Upload Virtual Machine window will appear.
+
+6. Select the ESXi datastore that you want to upload your Fusion-built VM into and click the Upload button.
+
+7. The selected VM will upload to the ESXi server.
+
+8. Once the upload is completed, the newly-uploaded VM will appear in your ESXi server’s list of VMs as a powered-off VM.
+
+#### Editing the OS X VM’s .vmx file
+
+Before booting your VM, you will need to edit the uploaded VM’s .vmx configuration file to add the smc.present = “TRUE” attribute back to the .vmx file. Make sure you enable SSH on the ESXi host.
+
+1. SSH to the ESXi server
+
+2. Navigate to /vmfs/volumes/datastore_name_here/uploaded_vm_name_here/
+
+3. Run 'echo 'smc.present = "TRUE" >> uploaded_vm_name_here.vmx'
+
+4. Disconnect
+
+Once the VM has been uploaded and the VM’s uploaded_vm_name_here.vmx configuration file has been edited, your ESXi-hosted OS X VM should now be ready to go.
