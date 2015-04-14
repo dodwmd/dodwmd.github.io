@@ -2,23 +2,23 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Ubuntu LTS "trusty" affected kernel bug &#8211; dodwell.us</title>
-<meta name="description" content="Kernel bug plagues java users on current Ubuntu LTS">
+<title>Rate Limit the FCC &#8211; dodwell.us</title>
+<meta name="description" content="How to rate limit FCC ips ranges">
 <meta name="keywords" content="">
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://dodwell.us//images/devops_logo.gif">
-<meta name="twitter:title" content="Ubuntu LTS "trusty" affected kernel bug">
-<meta name="twitter:description" content="Kernel bug plagues java users on current Ubuntu LTS">
+<meta name="twitter:title" content="Rate Limit the FCC">
+<meta name="twitter:description" content="How to rate limit FCC ips ranges">
 <meta name="twitter:creator" content="@MichaelDodwell">
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubuntu LTS "trusty" affected kernel bug">
-<meta property="og:description" content="Kernel bug plagues java users on current Ubuntu LTS">
-<meta property="og:url" content="https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug">
+<meta property="og:title" content="Rate Limit the FCC">
+<meta property="og:description" content="How to rate limit FCC ips ranges">
+<meta property="og:url" content="https://dodwell.us//funny/rate-limit-fcc">
 <meta property="og:site_name" content="dodwell.us">
 <meta property="og:image" content="https://dodwell.us//images/default_bg1.jpg">
 
@@ -26,7 +26,7 @@
 
 
 
-<link rel="canonical" href="https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug">
+<link rel="canonical" href="https://dodwell.us//funny/rate-limit-fcc">
 <link href="https://dodwell.us//feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
 
 
@@ -105,7 +105,7 @@
                 
             </a>
             <h2 class="blog-description light bordered bordered-top" itemprop="description">
-                Ubuntu LTS "trusty" affected kernel bug
+                Rate limiting IP ranges that belong to the FCC
             </h2>
         </div>
     </div>
@@ -142,39 +142,24 @@
                     <header class="post-header entry-header">
                     
                         
-                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Ubuntu LTS "trusty" affected kernel bug</h1>
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Rate Limit the FCC</h1>
                         
-                        <div class="cursive" style="color: #000; font-style:italic;">Kernel bug plagues java users on current Ubuntu LTS</div>
+                        <div class="cursive" style="color: #000; font-style:italic;">How to rate limit FCC ips ranges</div>
                         <div class="post-info text-center small">
-                            <span class="entry-date date published updated"><time datetime="2014-05-19T00:00:00+10:00" class="post-time" itemprop="datePublished">19 May 2014</time><span>
-                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;Less than 1 minute read</span>
+                            <span class="entry-date date published updated"><time datetime="2014-05-11T00:00:00+10:00" class="post-time" itemprop="datePublished">11 May 2014</time><span>
+                            in <span class="post-tags"><a href="https://dodwell.us//categories/index.html#funny" data-toggle="tooltip" title="Other posts from the Funny category" rel="tag">Funny</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;Less than 1 minute read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
                         
-                        <p>Turns out the kernel that’s currently shipping with trusty LTS causes most java applications to ‘bork’ when starting up.</p>
+                        <p>I came across an interesting plan by a group of webmasters to rate limit the speed of hosted sites for members of the FCC so they could get a taste of what the end of Net Neutrality would mean.</p>
 
-<p>This is due to a kernel bug that was introduced in the Linux kernel around 3.12 and then fixed in 3.13.5. Unfortunately Ubuntu 14.04-LTS ships with kernel 3.13.0.</p>
-
-<p>I’d suggesting holding off on that upgrade for a little while longer.</p>
-
-<p>If you already took the plunge maybe the mainline kernel build might help you out.</p>
-
-<h3 id="installation">installation</h3>
-
-<p>For 32-Bit Systems</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo dpkg -i http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305-generic_3.13.5-031305.201402221823_i386.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305_3.13.5-031305.201402221823_all.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-image-3.13.5-031305-generic_3.13.5-031305.201402221823_i386.deb
-sudo reboot</code></pre></div>
-
-<p>For 64-Bit Systems</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo dpkg -i http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305-generic_3.13.5-031305.201402221823_amd64.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305_3.13.5-031305.201402221823_all.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-image-3.13.5-031305-generic_3.13.5-031305.201402221823_amd64.deb
-sudo reboot</code></pre></div>
+<p>The webmasters are rate limiting all web requests to their hosts if the users are coming from FCC IP addresses. The code to limit has been posted on a gist <a href="https://gist.github.com/kyledrake/e6046644115f185f7af0" title="How to throttle the FCC to dial up modem speeds on your website using Nginx" target="_blank">here.</a></p>
 
 <h2 id="further-reading">further reading</h2>
 
-<p><a href="https://www.kernel.org/pub/linux/kernel/v3.0/ChangeLog-3.13.5">https://www.kernel.org/pub/linux/kernel/v3.0/ChangeLog-3.13.5</a></p>
+<p><a href="https://neocities.org/blog/the-fcc-is-now-rate-limited" title="neocities blog" target="_blank">https://neocities.org/blog/the-fcc-is-now-rate-limited</a>
+<a href="http://en.wikipedia.org/wiki/Net_neutrality" title="Wikipedia Net Neutrality" target="_blank">http://en.wikipedia.org/wiki/Net_neutrality</a></p>
 
                         <br>
                     
@@ -188,19 +173,19 @@ sudo reboot</code></pre></div>
     </p>
     <ul class="social-mini">
         <li>
-            <a href="https://twitter.com/intent/tweet?text=&quot;Ubuntu LTS "trusty" affected kernel bug&quot;%20https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug%20via%20&#64;MichaelDodwell"
+            <a href="https://twitter.com/intent/tweet?text=&quot;Rate Limit the FCC&quot;%20https://dodwell.us//funny/rate-limit-fcc%20via%20&#64;MichaelDodwell"
             onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
                 <i class="icon-twitter"></i>
             </a>
         </li>
         <li>
-            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug"
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us//funny/rate-limit-fcc"
             onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
                 <i class="icon-facebook"></i>
             </a>
         </li>
         <li>
-            <a href="https://plus.google.com/share?url=https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug"
+            <a href="https://plus.google.com/share?url=https://dodwell.us//funny/rate-limit-fcc"
            onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
                 <i class="icon-google-plus"></i>
             </a>

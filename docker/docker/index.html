@@ -2,23 +2,23 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Ubuntu LTS "trusty" affected kernel bug &#8211; dodwell.us</title>
-<meta name="description" content="Kernel bug plagues java users on current Ubuntu LTS">
+<title>What is docker? &#8211; dodwell.us</title>
+<meta name="description" content="A description on what docker and containers are.">
 <meta name="keywords" content="">
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://dodwell.us//images/devops_logo.gif">
-<meta name="twitter:title" content="Ubuntu LTS "trusty" affected kernel bug">
-<meta name="twitter:description" content="Kernel bug plagues java users on current Ubuntu LTS">
+<meta name="twitter:title" content="What is docker?">
+<meta name="twitter:description" content="A description on what docker and containers are.">
 <meta name="twitter:creator" content="@MichaelDodwell">
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubuntu LTS "trusty" affected kernel bug">
-<meta property="og:description" content="Kernel bug plagues java users on current Ubuntu LTS">
-<meta property="og:url" content="https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug">
+<meta property="og:title" content="What is docker?">
+<meta property="og:description" content="A description on what docker and containers are.">
+<meta property="og:url" content="https://dodwell.us//docker/docker">
 <meta property="og:site_name" content="dodwell.us">
 <meta property="og:image" content="https://dodwell.us//images/default_bg1.jpg">
 
@@ -26,7 +26,7 @@
 
 
 
-<link rel="canonical" href="https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug">
+<link rel="canonical" href="https://dodwell.us//docker/docker">
 <link href="https://dodwell.us//feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
 
 
@@ -105,7 +105,7 @@
                 
             </a>
             <h2 class="blog-description light bordered bordered-top" itemprop="description">
-                Ubuntu LTS "trusty" affected kernel bug
+                What is docker?
             </h2>
         </div>
     </div>
@@ -142,39 +142,55 @@
                     <header class="post-header entry-header">
                     
                         
-                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Ubuntu LTS "trusty" affected kernel bug</h1>
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">What is docker?</h1>
                         
-                        <div class="cursive" style="color: #000; font-style:italic;">Kernel bug plagues java users on current Ubuntu LTS</div>
+                        <div class="cursive" style="color: #000; font-style:italic;">A description on what docker and containers are.</div>
                         <div class="post-info text-center small">
-                            <span class="entry-date date published updated"><time datetime="2014-05-19T00:00:00+10:00" class="post-time" itemprop="datePublished">19 May 2014</time><span>
-                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;Less than 1 minute read</span>
+                            <span class="entry-date date published updated"><time datetime="2014-05-07T00:00:00+10:00" class="post-time" itemprop="datePublished">07 May 2014</time><span>
+                            in <span class="post-tags"><a href="https://dodwell.us//categories/index.html#docker" data-toggle="tooltip" title="Other posts from the Docker category" rel="tag">Docker</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">2.945</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
                         
-                        <p>Turns out the kernel that’s currently shipping with trusty LTS causes most java applications to ‘bork’ when starting up.</p>
+                        <p>To understand Docker you first need to understand two pieces of software that it utilizes to do its tasks:</p>
 
-<p>This is due to a kernel bug that was introduced in the Linux kernel around 3.12 and then fixed in 3.13.5. Unfortunately Ubuntu 14.04-LTS ships with kernel 3.13.0.</p>
+<h3 id="linux-containers-lxc-and-aufs">linux containers (lxc) and aufs</h3>
 
-<p>I’d suggesting holding off on that upgrade for a little while longer.</p>
+<h4 id="what-are-linux-containers-lxc">what are linux containers (lxc)?</h4>
 
-<p>If you already took the plunge maybe the mainline kernel build might help you out.</p>
+<p>LXC (LinuX Containers) is an operating system–level virtualization method for running multiple isolated Linux systems (containers) on a single control host.</p>
 
-<h3 id="installation">installation</h3>
+<p>The Linux kernel comprises cgroups for resource isolation (CPU, memory, block I/O, network, etc.) that does not require starting any virtual machines. Cgroups also provides namespace isolation to completely isolate application’s view of the operating environment, including process trees, network, user ids and mounted file systems.</p>
 
-<p>For 32-Bit Systems</p>
+<p>LXC combines cgroups and namespace support to provide an isolated environment for applications.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo dpkg -i http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305-generic_3.13.5-031305.201402221823_i386.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305_3.13.5-031305.201402221823_all.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-image-3.13.5-031305-generic_3.13.5-031305.201402221823_i386.deb
-sudo reboot</code></pre></div>
+<h4 id="what-is-aufs">what is aufs?</h4>
 
-<p>For 64-Bit Systems</p>
+<p>AUFS uses a technique called ‘union mounting’ that allows you to overlay different file-systems to appear to be part of the same file system.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo dpkg -i http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305-generic_3.13.5-031305.201402221823_amd64.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305_3.13.5-031305.201402221823_all.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-image-3.13.5-031305-generic_3.13.5-031305.201402221823_amd64.deb
-sudo reboot</code></pre></div>
+<h3 id="bringing-it-all-together">bringing it all together</h3>
+
+<p>Docker currently uses LinuX Containers (LXC) to isolate a hosts resources so that containers are able to run applications without interfering with other containers, while only requiring a single instance of a kernel to function. This enables you to set up virtual instances on a host without having to duplicate system utilities that are required to manage the hardware of the server. Think of LXC as an extension to chroot jail’s where instead of it just being a jail on the file system it can also put a jail (or container) around memory and CPU.</p>
+
+<p>Docker uses AuFS to de-duplicate filesystems. Meaning it creates base images of your servers and then uses AuFS to layer the differences over the top of the base image.</p>
+
+<p>Docker also takes care of your networking by allowing containers to expose ports for services that they are hosting.</p>
+
+<h3 id="so-what-does-all-this-mean">so what does all this mean</h3>
+
+<p>So let’s say you wanted to set up X number of servers on a traditional virtual machine host. Each of these virtual machines would need separate base file-systems and all the applications that they need to function installed to each of them. If you had 10 servers and the virtual machine size of each was 1 gigabyte that would mean you’d need 10 gigabytes of disk space.</p>
+
+<p>With AuFS your able to create a base OS and share that OS with each of the instances. So now instead of using 10 gigabytes of storage you would just need 1 gigabyte. Lets say for example’s sake that half of the servers are web servers, with the remainder are mail servers. Lets also say that the application install on each of these servers was another gigabyte. Traditional virtualization platforms you would now need 20 gigabytes of storage. With AuFS you would only need 3G. This means a massive cost savings in storage for your infrastructure.</p>
+
+<p>Docker also goes further by allowing file systems called volumes to be made. These volumes are shared amongst clusters of servers further saving you from having to duplicate data (think web apps or sharing the log files from your web servers to your log processing servers). These volumes are mounted on multiple instances at the same time.</p>
+
+<p>Traditional virtualization is about taking a hosts resources and chopping it up into smaller parts. Very little sharing takes place between the parts. With Docker much more of the resources are shared.</p>
+
+<p>Because the kernel is already running start-up times of instances is also dramatically reduced. LXC containers are started and stopped in a few seconds. This could completely change how administrators use computing. Instead of having servers standing by waiting for work, containers are created and destroyed as needed. Further saving resources for other tasks.</p>
 
 <h2 id="further-reading">further reading</h2>
 
-<p><a href="https://www.kernel.org/pub/linux/kernel/v3.0/ChangeLog-3.13.5">https://www.kernel.org/pub/linux/kernel/v3.0/ChangeLog-3.13.5</a></p>
+<p><a href="https://www.docker.io/">https://www.docker.io/</a></p>
 
                         <br>
                     
@@ -188,19 +204,19 @@ sudo reboot</code></pre></div>
     </p>
     <ul class="social-mini">
         <li>
-            <a href="https://twitter.com/intent/tweet?text=&quot;Ubuntu LTS "trusty" affected kernel bug&quot;%20https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug%20via%20&#64;MichaelDodwell"
+            <a href="https://twitter.com/intent/tweet?text=&quot;What is docker?&quot;%20https://dodwell.us//docker/docker%20via%20&#64;MichaelDodwell"
             onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
                 <i class="icon-twitter"></i>
             </a>
         </li>
         <li>
-            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug"
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us//docker/docker"
             onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
                 <i class="icon-facebook"></i>
             </a>
         </li>
         <li>
-            <a href="https://plus.google.com/share?url=https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug"
+            <a href="https://plus.google.com/share?url=https://dodwell.us//docker/docker"
            onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
                 <i class="icon-google-plus"></i>
             </a>

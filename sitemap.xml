@@ -24,7 +24,7 @@
     </url>
     
     <url>
-        <loc>https://dodwell.us//personal/brain-hack</loc>
+        <loc>https://dodwell.us//videos/brain-hack</loc>
     </url>
     
     <url>
@@ -36,11 +36,11 @@
     </url>
     
     <url>
-        <loc>https://dodwell.us//personal/what-do-you-do</loc>
+        <loc>https://dodwell.us//videos/what-do-you-do</loc>
     </url>
     
     <url>
-        <loc>https://dodwell.us//mixed-member-proportional-representation</loc>
+        <loc>https://dodwell.us//videos/mixed-member-proportional-representation</loc>
     </url>
     
     <url>
@@ -72,15 +72,15 @@
     </url>
     
     <url>
-        <loc>https://dodwell.us//illusionist-kristian-jyoti-levitation-yoga-crystal-ball-contact-juggling-dance-by-jiva</loc>
-    </url>
-    
-    <url>
         <loc>https://dodwell.us//ssl-setup</loc>
     </url>
     
     <url>
         <loc>https://dodwell.us//disk-debugging</loc>
+    </url>
+    
+    <url>
+        <loc>https://dodwell.us//videos/illusionist-kristian-jyoti-levitation-yoga-crystal-ball-contact-juggling-dance-by-jiva</loc>
     </url>
     
     <url>
@@ -120,11 +120,11 @@
     </url>
     
     <url>
-        <loc>https://dodwell.us//relativity-paradox-sixty-symbols</loc>
+        <loc>https://dodwell.us//videos/relativity-paradox-sixty-symbols</loc>
     </url>
     
     <url>
-        <loc>https://dodwell.us//testing-puppet</loc>
+        <loc>https://dodwell.us//configuration%20management/testing-puppet</loc>
     </url>
     
     <url>
@@ -132,39 +132,39 @@
     </url>
     
     <url>
-        <loc>https://dodwell.us//setting-up-ssh-and-byobu</loc>
+        <loc>https://dodwell.us//unix/setting-up-ssh-and-byobu</loc>
     </url>
     
     <url>
-        <loc>https://dodwell.us//rate-limit-fcc</loc>
+        <loc>https://dodwell.us//funny/rate-limit-fcc</loc>
     </url>
     
     <url>
-        <loc>https://dodwell.us//passing-variables-shell-scripts-gnu-make</loc>
+        <loc>https://dodwell.us//unix/passing-variables-shell-scripts-gnu-make</loc>
     </url>
     
     <url>
-        <loc>https://dodwell.us//the-expert</loc>
+        <loc>https://dodwell.us//videos/the-expert</loc>
     </url>
     
     <url>
-        <loc>https://dodwell.us//packer-io</loc>
+        <loc>https://dodwell.us//configuration%20management/packer-io</loc>
     </url>
     
     <url>
-        <loc>https://dodwell.us//docker</loc>
+        <loc>https://dodwell.us//configuration%20management/use-asg</loc>
     </url>
     
     <url>
-        <loc>https://dodwell.us//use-asg</loc>
+        <loc>https://dodwell.us//configuration%20management/linux-build-environment</loc>
     </url>
     
     <url>
-        <loc>https://dodwell.us//linux-build-environment</loc>
+        <loc>https://dodwell.us//security/encryption-cloud-storage</loc>
     </url>
     
     <url>
-        <loc>https://dodwell.us//encryption-cloud-storage</loc>
+        <loc>https://dodwell.us//docker/docker</loc>
     </url>
     
 </urlset>

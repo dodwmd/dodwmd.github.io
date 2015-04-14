@@ -2,23 +2,23 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Ubuntu LTS "trusty" affected kernel bug &#8211; dodwell.us</title>
-<meta name="description" content="Kernel bug plagues java users on current Ubuntu LTS">
+<title>Setting up SSH & Byobu &#8211; dodwell.us</title>
+<meta name="description" content="How to setup putty and screen to look nice and function well">
 <meta name="keywords" content="">
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://dodwell.us//images/devops_logo.gif">
-<meta name="twitter:title" content="Ubuntu LTS "trusty" affected kernel bug">
-<meta name="twitter:description" content="Kernel bug plagues java users on current Ubuntu LTS">
+<meta name="twitter:title" content="Setting up SSH & Byobu">
+<meta name="twitter:description" content="How to setup putty and screen to look nice and function well">
 <meta name="twitter:creator" content="@MichaelDodwell">
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubuntu LTS "trusty" affected kernel bug">
-<meta property="og:description" content="Kernel bug plagues java users on current Ubuntu LTS">
-<meta property="og:url" content="https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug">
+<meta property="og:title" content="Setting up SSH & Byobu">
+<meta property="og:description" content="How to setup putty and screen to look nice and function well">
+<meta property="og:url" content="https://dodwell.us//unix/setting-up-ssh-and-byobu">
 <meta property="og:site_name" content="dodwell.us">
 <meta property="og:image" content="https://dodwell.us//images/default_bg1.jpg">
 
@@ -26,7 +26,7 @@
 
 
 
-<link rel="canonical" href="https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug">
+<link rel="canonical" href="https://dodwell.us//unix/setting-up-ssh-and-byobu">
 <link href="https://dodwell.us//feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
 
 
@@ -105,7 +105,7 @@
                 
             </a>
             <h2 class="blog-description light bordered bordered-top" itemprop="description">
-                Ubuntu LTS "trusty" affected kernel bug
+                Setting up SSH & Byobu to give Windows users a nice shell prompt
             </h2>
         </div>
     </div>
@@ -142,39 +142,80 @@
                     <header class="post-header entry-header">
                     
                         
-                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Ubuntu LTS "trusty" affected kernel bug</h1>
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Setting up SSH & Byobu</h1>
                         
-                        <div class="cursive" style="color: #000; font-style:italic;">Kernel bug plagues java users on current Ubuntu LTS</div>
+                        <div class="cursive" style="color: #000; font-style:italic;">How to setup putty and screen to look nice and function well</div>
                         <div class="post-info text-center small">
-                            <span class="entry-date date published updated"><time datetime="2014-05-19T00:00:00+10:00" class="post-time" itemprop="datePublished">19 May 2014</time><span>
-                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;Less than 1 minute read</span>
+                            <span class="entry-date date published updated"><time datetime="2014-05-12T00:00:00+10:00" class="post-time" itemprop="datePublished">12 May 2014</time><span>
+                            in <span class="post-tags"><a href="https://dodwell.us//categories/index.html#unix" data-toggle="tooltip" title="Other posts from the Unix category" rel="tag">Unix</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">3.835</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
                         
-                        <p>Turns out the kernel that’s currently shipping with trusty LTS causes most java applications to ‘bork’ when starting up.</p>
+                        <p>Like a lot of Unix Administrators I spend most of my day staring at a ssh session. I thought today I’d write about how I connect to servers. Currently I use a windows laptop to do most of my work. This OS was mainly chosen for a couple of reasons. </p>
 
-<p>This is due to a kernel bug that was introduced in the Linux kernel around 3.12 and then fixed in 3.13.5. Unfortunately Ubuntu 14.04-LTS ships with kernel 3.13.0.</p>
+<ul>
+  <li>If I have Linux as my desktop I tend to do most of my development work on the desktop and forget to sync it to the projects I’m working on often enough. By using Windows I treat my laptop almost like a chrome book where everything is stored remotely.</li>
+  <li>I do a lot of work with VMWare. The tools unfortunately are mainly written for Windows OS’s and having to run a Virtual Machine locally just to check the status of the cluster was chewing up too much memory.</li>
+  <li>I simply just don’t like X Windows. Microsoft Windows as a client Operating System is simply superior for my needs. I would never recommend it for a server operating system but that’s a whole different blog post.</li>
+</ul>
 
-<p>I’d suggesting holding off on that upgrade for a little while longer.</p>
+<h3 id="putty">putty</h3>
 
-<p>If you already took the plunge maybe the mainline kernel build might help you out.</p>
+<p>To connect to servers I’ve been using <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/" title="PuTTY" target="_blank">PuTTY</a> for a number of years. It’s a fantastic SSH client that is lightweight while in my opinion acts in a sane manner when dealing with Terminal settings across a wide range of server types. It also allows for quick highlighting (useful when showing someone on your shoulder something on the screen) and X-Windows based cut and pasting (left click to highlight, right-click to paste).</p>
 
-<h3 id="installation">installation</h3>
+<h4 id="colour-theme">colour theme</h4>
 
-<p>For 32-Bit Systems</p>
+<p>I have found that the default PuTTY colour themes can be a little harsh on your eyes after a while. To solve this problem I’m using the <a href="http://ethanschoonover.com/solarized" title="SOLARIZED - Precision colors for machines and people" target="_blank">Solarized</a> colour palette (dark). </p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo dpkg -i http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305-generic_3.13.5-031305.201402221823_i386.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305_3.13.5-031305.201402221823_all.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-image-3.13.5-031305-generic_3.13.5-031305.201402221823_i386.deb
-sudo reboot</code></pre></div>
+<p>To install solarized colour palette for PuTTY simply download the Windows registry file from <a href="https://github.com/brantb/solarized/tree/master/putty-colors-solarized" target="_blank">here.</a>. Once you’ve installed the registry key into the system registry you can simply open PuTTY and select the ‘Solarized Dark’ saved session as a template for any new sessions you wish to save.</p>
 
-<p>For 64-Bit Systems</p>
+<h4 id="ssh-key-management">ssh key management</h4>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo dpkg -i http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305-generic_3.13.5-031305.201402221823_amd64.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-headers-3.13.5-031305_3.13.5-031305.201402221823_all.deb http://kernel.ubuntu.com/~kernel-ppa/mainline/v3.13.5-trusty/linux-image-3.13.5-031305-generic_3.13.5-031305.201402221823_amd64.deb
-sudo reboot</code></pre></div>
+<p>I’m also using the PuTTY authentication agent to manage the different SSH keys I hold for the projects I’m working on. This saves me from having to enter a SSH key password every time I want to connect to a server.</p>
+
+<h4 id="generate-ssh-keys">generate ssh keys</h4>
+
+<p>To generate an SSH key with PuTTYgen follow these steps:</p>
+
+<ul>
+  <li>Open the PuTTYgen program</li>
+  <li>For Type of key to generate, select SSH-2 RSA</li>
+  <li>Click the Generate button</li>
+  <li>Move your mouse in the area below the progress bar. When the progress bar is full, PuTTYgen generates your key pair</li>
+  <li>Type a pass phrase in the Key pass phrase field. Type the same pass phrase in the Confirm pass phrase field. You can use a key without a pass phrase, but this is not recommended</li>
+  <li>Click the Save private key button to save the private key</li>
+  <li>Right-click in the text field labelled Public key for pasting into OpenSSH ~/.ssh/authorized_keys file and choose Select All</li>
+  <li>Right-click again in the same text field and choose Copy</li>
+</ul>
+
+<p>To install the public key on a remote server you will need to login and paste the contents of your mouse buffer into your ~/.ssh/authorized_keys file. Making sure that the file is owned by you and the file and directory ~/.ssh/ is ‘go-rwx’ (chmod -R go-rwx ~/.ssh/).</p>
+
+<p>Now that you have a Private key file you can open PuTTY authentication agent and simply click the ‘Add Key’ box and select the key file. I’d suggest setting up the agent to start on system boot and having it auto load your key files by simply running the agent with the key files as the arguments.</p>
+
+<p>You will also need to enter in your username into the ‘Auto-login username’ field within the “Connection-&gt;Data” settings tab from within PuTTY.</p>
+
+<h3 id="byobu">byobu</h3>
+
+<blockquote>
+  <p>Byobu is an enhancement for the terminal multiplexers GNU Screen or tmux that can be used to provide on-screen notification or status as well as tabbed multi window management. It is aimed at providing a better user experience for terminal sessions when connecting to remote servers.</p>
+
+  <p>– <a href="http://en.wikipedia.org/wiki/Byobu_(software)" title="Wikipedia" target="_blank">http://en.wikipedia.org/wiki/Byobu_(software)</a></p>
+</blockquote>
+
+<p>Ubuntu is currently setup for the byobu package to use tmux as it’s backend. I prefer to use screen. To configure byobu to use screen as it’s backend you just need to run the following command:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>byobu-select-backend screen</code></pre></div>
+
+<p>I would also suggest having byobu start when you first login to the server.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>byobu-launcher-install</code></pre></div>
 
 <h2 id="further-reading">further reading</h2>
 
-<p><a href="https://www.kernel.org/pub/linux/kernel/v3.0/ChangeLog-3.13.5">https://www.kernel.org/pub/linux/kernel/v3.0/ChangeLog-3.13.5</a></p>
+<p><a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/" title="PuTTY" target="_blank">http://www.chiark.greenend.org.uk/~sgtatham/putty/</a>
+<a href="http://ethanschoonover.com/solarized" title="Solarized" target="_blank">http://ethanschoonover.com/solarized</a>
+<a href="http://byobu.co/" title="byobu" target="_blank">http://byobu.co/</a></p>
 
                         <br>
                     
@@ -188,19 +229,19 @@ sudo reboot</code></pre></div>
     </p>
     <ul class="social-mini">
         <li>
-            <a href="https://twitter.com/intent/tweet?text=&quot;Ubuntu LTS "trusty" affected kernel bug&quot;%20https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug%20via%20&#64;MichaelDodwell"
+            <a href="https://twitter.com/intent/tweet?text=&quot;Setting up SSH & Byobu&quot;%20https://dodwell.us//unix/setting-up-ssh-and-byobu%20via%20&#64;MichaelDodwell"
             onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
                 <i class="icon-twitter"></i>
             </a>
         </li>
         <li>
-            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug"
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us//unix/setting-up-ssh-and-byobu"
             onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
                 <i class="icon-facebook"></i>
             </a>
         </li>
         <li>
-            <a href="https://plus.google.com/share?url=https://dodwell.us//ubuntu-lts-trusty-affected-kernel-bug"
+            <a href="https://plus.google.com/share?url=https://dodwell.us//unix/setting-up-ssh-and-byobu"
            onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
                 <i class="icon-google-plus"></i>
             </a>

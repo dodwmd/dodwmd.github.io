@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Testing Puppet &#8211; dodwell.us</title>
+<meta name="description" content="How to test puppet manifests">
+<meta name="keywords" content="">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dodwell.us//images/devops_logo.gif">
+<meta name="twitter:title" content="Testing Puppet">
+<meta name="twitter:description" content="How to test puppet manifests">
+<meta name="twitter:creator" content="@MichaelDodwell">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Testing Puppet">
+<meta property="og:description" content="How to test puppet manifests">
+<meta property="og:url" content="https://dodwell.us//configuration%20management/testing-puppet">
+<meta property="og:site_name" content="dodwell.us">
+<meta property="og:image" content="https://dodwell.us//images/default_bg1.jpg">
+
+
+
+
+
+<link rel="canonical" href="https://dodwell.us//configuration%20management/testing-puppet">
+<link href="https://dodwell.us//feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us//assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us//assets/css/style.css" />
+
+
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="https://dodwell.us//favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="https://dodwell.us//favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="https://dodwell.us//images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://dodwell.us//images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://dodwell.us//images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us//images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
+<div id="fade"></div>
+<a id="slide" class="animated fade"></a>
+<aside id="sidebar">
+    <nav id="navigation">
+    <h2>MENU</h2>
+    <hr>
+
+            <li>
+                    <a href="https://dodwell.us//">Home</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//resume"><i class="icon-book"></i> Resume</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//categories">Categories</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//tags">Tags</a>
+                 </li>
+            
+           <li><a href="https://dodwell.us//feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+    </nav>
+    
+    
+</aside>
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom"  style="background-image: url(https://dodwell.us//images/default_bg1.jpg)" itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand light" href="https://dodwell.us/" role="banner" itemprop="url">
+
+                <img itemprop="logo" src="https://dodwell.us//images/devops_logo.gif" alt="dodwell.us Logo" />
+
+            <h1 class="blog-title light" itemprop="name">
+                dodwell.us
+            </h1>
+                
+            </a>
+            <h2 class="blog-description light bordered bordered-top" itemprop="description">
+                Different ways of testing puppet
+            </h2>
+        </div>
+    </div>
+    
+    
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+
+        </svg>
+    </div>
+    
+</header>
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+    <div class="container">
+        <div class="row">
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Testing Puppet</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;">How to test puppet manifests</div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published updated"><time datetime="2014-05-14T00:00:00+10:00" class="post-time" itemprop="datePublished">14 May 2014</time><span>
+                            in <span class="post-tags"><a href="https://dodwell.us//categories/index.html#configuration management" data-toggle="tooltip" title="Other posts from the Configuration management category" rel="tag">Configuration management</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">6.98</span> minutes read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p>I’d like to cover some information about how you can test puppet modules. I’ve seen a lot of companies creating puppet modules and testing them via direct deployments onto machines. Or worst yet making changes to manifests without any testing at all. The world of puppet testing can seem quite daunting but with the following paragraphs I hope to show you that you can make some very small changes to how you develop puppet modules that will hopefully save you from some very bad situations.</p>
+
+<h3 id="syntax-checking">syntax checking</h3>
+
+<p>At the minimum on the checking list, you can use the puppet client to check the syntax of your modules. It’s very easy for simple typos to break a puppet run. When editing a manifest file simply type the following (using init.pp as an example):</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~/puppet/modules/postgresql/manifests<span class="nv">$ </span>puppet parser validate init.pp
+Error: Could not parse <span class="k">for</span> environment production: Syntax error at end of file<span class="p">;</span> expected <span class="s1">&#39;}&#39;</span> at /etc/puppet/modules/postgresql/manifests/init.pp:631
+dodwmd@puppet:~/puppet/modules/postgresql/manifests<span class="err">$</span></code></pre></div>
+
+<p>As you can see I’ve left out the ‘}’ somewhere around line 631.</p>
+
+<h3 id="lint">lint</h3>
+
+<p>Once we’re happy that the syntax is correct in our file we may want to work on how we’ve written the file so other developers are able to understand it. We can do this with a tool called ‘<a href="http://puppet-lint.com/" title="puppet-lint" target="_blank">puppet-lint</a>’. Once it’s installed we can once again run a test against our init.pp file:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~/puppet/modules/postgresql/manifests<span class="nv">$ </span>puppet-lint init.pp
+WARNING: line has more than <span class="m">80</span> characters on line 20
+WARNING: line has more than <span class="m">80</span> characters on line 36
+WARNING: line has more than <span class="m">80</span> characters on line 37
+WARNING: line has more than <span class="m">80</span> characters on line 55
+WARNING: line has more than <span class="m">80</span> characters on line 59
+WARNING: line has more than <span class="m">80</span> characters on line 125
+WARNING: line has more than <span class="m">80</span> characters on line 147
+WARNING: line has more than <span class="m">80</span> characters on line 158
+WARNING: line has more than <span class="m">80</span> characters on line 423
+WARNING: line has more than <span class="m">80</span> characters on line 431
+WARNING: line has more than <span class="m">80</span> characters on line 462
+WARNING: line has more than <span class="m">80</span> characters on line 463
+WARNING: line has more than <span class="m">80</span> characters on line 487
+WARNING: line has more than <span class="m">80</span> characters on line 622
+dodwmd@puppet:~/puppet/modules/postgresql/manifests<span class="err">$</span></code></pre></div>
+
+<h3 id="jenkins-and-puppet-lint">jenkins and puppet-lint</h3>
+
+<p>A fun way to encourage a team to work on lint warnings is to create a Jenkins job that will graph the warnings over time to encourage members to get rid of them. Here is a quick run down that will help you do some CI testing on your puppet modules tree.</p>
+
+<ul>
+  <li>Install the “Warnings” plugin from the Jenkins “Manage Jenkins-&gt;Manage Plugins” page</li>
+  <li>Update the Rakefile in the root directory of puppet module/tree to contain the following to invoke puppet-lint with a specific log format</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># /etc/puppet/Rakefile</span>
+<span class="no">LINT_IGNORES</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;rvm&#39;</span><span class="o">]</span>
+<span class="n">namespace</span> <span class="ss">:lint</span> <span class="k">do</span>
+  <span class="n">desc</span> <span class="s2">&quot;Check puppet module code style.&quot;</span>
+  <span class="n">task</span> <span class="ss">:ci</span> <span class="k">do</span>
+    <span class="k">begin</span>
+      <span class="nb">require</span> <span class="s1">&#39;puppet-lint&#39;</span>
+    <span class="k">rescue</span> <span class="no">LoadError</span>
+      <span class="nb">fail</span> <span class="s1">&#39;Cannot load puppet-lint, did you install it?&#39;</span>
+    <span class="k">end</span>
+    <span class="n">success</span> <span class="o">=</span> <span class="kp">true</span>
+    <span class="n">linter</span> <span class="o">=</span> <span class="no">PuppetLint</span><span class="o">.</span><span class="n">new</span>
+    <span class="n">linter</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">log_format</span> <span class="o">=</span>
+        <span class="s1">&#39;%{path}:%{linenumber}:%{check}:%{KIND}:%{message}&#39;</span>
+    <span class="n">lintrc</span> <span class="o">=</span> <span class="s2">&quot;.puppet-lintrc&quot;</span>
+    <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">file?</span><span class="p">(</span><span class="n">lintrc</span><span class="p">)</span>
+      <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">lintrc</span><span class="p">)</span><span class="o">.</span><span class="n">each_line</span> <span class="k">do</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span>
+        <span class="n">check</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/--no-([a-zA-Z0-9_]*)-check/</span><span class="p">,</span> <span class="s1">&#39;\1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">chomp</span>
+        <span class="n">linter</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;disable_</span><span class="si">#{</span><span class="n">check</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="no">FileList</span><span class="o">[</span><span class="s1">&#39;**/*.pp&#39;</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">puppet_file</span><span class="o">|</span>
+      <span class="k">if</span> <span class="n">puppet_file</span><span class="o">.</span><span class="n">start_with?</span> <span class="s1">&#39;modules&#39;</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">puppet_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="n">module_name</span> <span class="o">=</span> <span class="n">parts</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span>
+        <span class="k">next</span> <span class="k">if</span> <span class="no">LINT_IGNORES</span><span class="o">.</span><span class="n">include?</span> <span class="n">module_name</span>
+      <span class="k">end</span>
+      <span class="nb">puts</span> <span class="s2">&quot;Evaluating code style for </span><span class="si">#{</span><span class="n">puppet_file</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="n">linter</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">puppet_file</span>
+      <span class="n">linter</span><span class="o">.</span><span class="n">run</span>
+      <span class="n">success</span> <span class="o">=</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">linter</span><span class="o">.</span><span class="n">errors?</span>
+    <span class="k">end</span>
+    <span class="nb">abort</span> <span class="s2">&quot;Checking puppet module code style FAILED&quot;</span> <span class="k">if</span> <span class="n">success</span><span class="o">.</span><span class="n">is_a?</span><span class="p">(</span><span class="no">FalseClass</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<ul>
+  <li>Create a new Jenkins Project and have Jenkins pull a copy of your modules out of your source repository</li>
+  <li>Configure the project to execute a new Rake task as part of the build (rake lint:ci)</li>
+  <li>Add a ‘Post-build Action’ to ‘Scan console log’ using the ‘Puppet-lint’ parser</li>
+  <li>Then just run a build</li>
+</ul>
+
+<p>Once the build finishes successfully you should get some interesting statistics on the Jenkins Project’s homepage. Fix some of the errors and it’ll be graphed over time. You might also want to install some git hooks that will automatically kick off this job on a commit.</p>
+
+<h3 id="rspec">rspec</h3>
+
+<p>I don’t want to cover that much of rspec because the tutorial at <a href="http://rspec-puppet.com/tutorial/" title="rspec tutorial" target="_blank">http://rspec-puppet.com/tutorial/</a> covers anything that I’d touch on. But it has to be mentioned, as catalog testing is a must for puppet module developers. If you want to go even further with your testing maybe beaker is for you!</p>
+
+<h3 id="beaker">beaker</h3>
+
+<p>Each of the methods described above push modules further to ensure you’re delivering the highest quality code to customers. beaker is a framework by puppetlabs to spin up dedicated test instances and actually attempt to apply the manifest and rspec tests to the instances. This is a method to fully test puppet manifests without applying the changes to live production servers. The following hyper visor methods are supported:</p>
+
+<ul>
+  <li><a href="http://www.vmware.com/au/products/vsphere-hypervisor" target="_blank">VMWare vSphere</a></li>
+  <li><a href="http://www.vmware.com/products/fusion" target="_blank">VMWare Fusion</a></li>
+  <li><a href="https://aws.amazon.com/ec2/" target="_blank">EC2</a></li>
+  <li><a href="http://en.wikipedia.org/wiki/Solaris_Containers" target="_blank">Solaris via Zones/Containers</a></li>
+  <li><a href="http://www.vagrantup.com/" target="_blank">Vagrant</a></li>
+  <li><a href="https://cloud.google.com/products/compute-engine/" target="_blank">Google Compute Engine</a></li>
+  <li><a href="http://docker.io/" target="_blank">Docker</a></li>
+</ul>
+
+<p>The following walk through is going to focus on using EC2 to spin up instances for testing puppet manifests. Let’s get started!
+We need to install puppetlabs_spec_helper via:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone git://github.com/puppetlabs/puppetlabs_spec_helper.git
+<span class="nv">$ </span><span class="nb">cd </span>puppetlabs_spec_helper
+<span class="nv">$ </span>rake package:gem
+<span class="nv">$ </span>gem install pkg/puppetlabs_spec_helper-*.gem</code></pre></div>
+
+<p>Lets grab an example puppet module that already has most of the required files needed for our testing.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/puppetlabs/puppetlabs-mysql.git mysql
+<span class="nv">$ </span><span class="nb">cd </span>mysql</code></pre></div>
+
+<p>Take a look in spec/acceptance and you can find pre-written acceptance tests.</p>
+
+<p>Now we need to describe the nodes that are going to be used to test the mysql module. You need to describe the node(s) in the nodesets directory under the acceptance sub-directory.</p>
+
+<p>Lets change the default mysql/spec/nodesets/default.yml which describes the instances to startup for our module testing:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># cat mysql/spec/nodesets/default.yml</span>
+HOSTS:
+  ubuntu-1204-64-1:
+    roles:
+      - master
+      - database
+      - dashboard
+      - agent
+    vmname: ubuntu-dodwell
+    platform: ubuntu-12.04-amd64
+    amisize: c1.medium
+    hypervisor: ec2
+    snapshot: foss
+  ubuntu-1204-64-2:
+    roles:
+      - agent
+    vmname: ubuntu-dodwell
+    platform: ubuntu-12.04-amd64
+    amisize: c1.medium
+    hypervisor: ec2
+    snapshot: foss
+CONFIG:
+  nfs_server: none
+  consoleport: 443</code></pre></div>
+
+<p>This is the file that describes where we want to run our test instances. Documentation has been created <a href="https://github.com/puppetlabs/beaker/wiki/Creating-A-Test-Environment">here</a> that describes how to support different hypervisors.</p>
+
+<p>We will also need a file in config/images_templates called ec2.yaml that describes how the ‘vmname’ (Host/SUT) is tied to a AMI.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># mysql/config/images_templates/ec2.yaml</span>
+AMI:
+  ubuntu-ap:
+    :image:
+      :foss: ami-4d51ca77
+    :region: ap-southeast-2</code></pre></div>
+
+<blockquote>
+  <p>Hosts, or SUTs (Systems Under Test), must meet the following requirements:</p>
+
+  <ul>
+    <li>The SUT will need a properly configured network, hosts will need to be able to reach each other by hostname.</li>
+    <li>On the SUT, you must configure passwordless SSH authentication for the root user.</li>
+    <li>The SUT must have the ntpdate binary installed</li>
+    <li>The SUT must have the curl binary installed</li>
+    <li>On Windows, Cygwin must be installed (with curl, sshd, bash) and the necessary windows gems (sys-admin, win32-dir, etc).</li>
+    <li>FOSS install: you must have git, ruby, and rdoc installed on your SUT.</li>
+  </ul>
+</blockquote>
+
+<p>Take a read of <a href="http://dodwell.us/packer-io/">this blog post</a> on how to use packer.io to create custom AMI’s.</p>
+
+<p>The last step of config will be to ensure fog.io is set up. Create a file in your home directory called ~/.fog and put your EC2 credentials inside it:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># ~/.fog</span>
+:default:
+  :aws_access_key_id: XXXXXXXXXXXXXXXXX
+  :aws_secret_access_key: XXXXXXXXXXXXXXXXXXXXXXXXXXX</code></pre></div>
+
+<p>Let’s give it a spin.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/mysql<span class="nv">$ </span>bundle <span class="nb">exec </span>beaker --log-level debug --hosts spec/acceptance/nodesets/default.yml --tests spec/acceptance
+Hypervisor <span class="k">for</span> ubuntu-1204-64-1 is ec2
+Hypervisor <span class="k">for</span> ubuntu-1204-64-2 is ec2
+Beaker::Hypervisor, found some ec2 boxes to create
+aws-sdk: Iterate across all hosts in configuration and launch them
+aws-sdk: Checking image ami-4d51ca77 exists and getting its root device
+<span class="o">[</span>AWS EC2 <span class="m">200</span> 0.313706 <span class="m">0</span> retries<span class="o">]</span> describe_images<span class="o">(</span>:image_ids<span class="o">=</span>&gt;<span class="o">[</span><span class="s2">&quot;ami-4d51ca77&quot;</span><span class="o">])</span>
+aws-sdk: Image block_device_mappings: <span class="o">{</span><span class="s2">&quot;/dev/sda1&quot;</span><span class="o">=</span>&gt;<span class="o">{</span>:snapshot_id<span class="o">=</span>&gt;<span class="s2">&quot;snap-4a216d7e&quot;</span>, :volume_size<span class="o">=</span>&gt;8, :delete_on_termination<span class="o">=</span>&gt;true, :volume_type<span class="o">=</span>&gt;<span class="s2">&quot;standard&quot;</span><span class="o">}}</span>
+aws-sdk: Launch instance
+aws-sdk: Ensure key pair exists, create <span class="k">if</span> not
+<span class="o">[</span>AWS EC2 <span class="m">200</span> 0.076698 <span class="m">0</span> retries<span class="o">]</span> describe_key_pairs<span class="o">(</span>:filters<span class="o">=</span>&gt;<span class="o">[{</span>:name<span class="o">=</span>&gt;<span class="s2">&quot;key-name&quot;</span>,:values<span class="o">=</span>&gt;<span class="o">[</span><span class="s2">&quot;Beaker-root-puppet-dodwell-us&quot;</span><span class="o">]}])</span>
+....
+....
+....</code></pre></div>
+
+<h3 id="conclusion">conclusion</h3>
+
+<p>With each method of testing you can quickly see that more and more effort needs to go into ensuring quality puppet manifests are created. How far down the testing rabbit hole you choose to go will be something you should decide on a project by project basis. Thanks for reading!</p>
+
+<h2 id="further-reading">further reading</h2>
+<p><a href="http://rspec-puppet.com/" target="_blank">http://rspec-puppet.com/</a>
+<a href="http://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/" target="_blank">http://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/</a>
+<a href="http://bombasticmonkey.com/2012/03/02/automatically-test-your-puppet-modules-with-travis-ci/" target="_blank">http://bombasticmonkey.com/2012/03/02/automatically-test-your-puppet-modules-with-travis-ci/</a>
+<a href="https://wiki.jenkins-ci.org/display/JENKINS/Warnings+Plugin">https://wiki.jenkins-ci.org/display/JENKINS/Warnings+Plugin</a>
+<a href="https://github.com/puppetlabs/beaker/wiki" target="_blank">https://github.com/puppetlabs/beaker/wiki</a></p>
+
+                        <br>
+                    
+                    
+                    </div>
+        </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;Testing Puppet&quot;%20https://dodwell.us//configuration%20management/testing-puppet%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us//configuration%20management/testing-puppet"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us//configuration%20management/testing-puppet"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us//images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us//resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
+    </div>
+</div>
+
+<footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us//images/default_bg1.jpg)" >
+
+
+    <div class="inner">
+        <div class="container">
+
+            <ul class="social-icons">
+            <li>
+                <a href="http://twitter.com/MichaelDodwell" data-toggle="tooltip" title="Michael Dodwell on Twitter" target="_blank">
+                    <i class="icon-twitter"></i>
+                </a>
+            </li>
+            
+            
+            
+            <li>
+                <a href="https://au.linkedin.com/in/michaeldodwell" data-toggle="tooltip" title="Michael Dodwell on LinkedIn" target="_blank">
+                    <i class="icon-linkedin"></i>
+                </a>
+            </li>
+            
+            
+            <li>
+                <a href="http://github.com/dodwmd" data-toggle="tooltip" title="Michael Dodwell on Github" target="_blank">
+                    <i class="icon-github"></i>
+                </a>
+            </li>
+        </ul>
+            <div>
+                <a href="https://dodwell.us//resume/">Michael Dodwell</a> &copy; 2015 &bull; All rights reserved.
+            </div>
+            <ul class="menu-items">
+            
+            <li>
+                
+                    <a href="https://dodwell.us//"><i class="icon-home"></i></a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//resume"><i class="icon-book"></i> Resume</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//categories">Categories</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//tags">Tags</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li><a href="https://dodwell.us//feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+        </ul>
+        </div>
+    </div>
+    
+        <div class="decor-wrapper">
+            <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+                <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+                <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+
+                <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+
+                <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+
+                <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+
+            </svg>
+        </div>
+    
+</footer>
+
+
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://dodwell.us//assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="https://dodwell.us//assets/js/scripts.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us//assets/js/waypoints.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us//assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl = 
+ '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-60832716-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+ 
+</body>
+</html>
