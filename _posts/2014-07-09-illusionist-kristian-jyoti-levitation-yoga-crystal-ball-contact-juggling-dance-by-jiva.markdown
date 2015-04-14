@@ -1,13 +1,12 @@
 ---
 layout: post
-status: publish
-published: true
-title: ! 'Illusionist Kristian Jyoti: Levitation, Yoga, Crystal Ball Contact Juggling
-  & Dance by Jiva'
-date: !binary |-
-  MjAxNC0wNy0wOSAwMDozNzoxNyAtMDQwMA==
-date_gmt: !binary |-
-  MjAxNC0wNy0wOCAxNDozNzoxNyAtMDQwMA==
+type:  video                # ! Important
+title: Contact Juggling with Kristian Jyoti
+description: A video of Contact Juggler Kristian Jyoti doing a performance. An amazing amount of dedication.
+headline: Contact Juggling with Kristian Jyoti       # Will appear in bold letters on top of the post
+category: videos
+tags: []
+comments: false
+mathjax:
 ---
 {% youtube 5W5Oh4gYBqg %}
-An amazing amount of dedication.

@@ -1,13 +1,14 @@
 ---
 layout: post
-status: publish
-published: true
 title: Testing Puppet
-date: !binary |-
-  MjAxNC0wNS0xNCAxNjo1NDoxOCAtMDQwMA==
-date_gmt: !binary |-
-  MjAxNC0wNS0xNCAwNjo1NDoxOCAtMDQwMA==
+description: How to test puppet manifests
+headline: Different ways of testing puppet
+category: "configuration management"
+tags: []
+comments: false
+mathjax:
 ---
+
 I'd like to cover some information about how you can test puppet modules. I've seen a lot of companies creating puppet modules and testing them via direct deployments onto machines. Or worst yet making changes to manifests without any testing at all. The world of puppet testing can seem quite daunting but with the following paragraphs I hope to show you that you can make some very small changes to how you develop puppet modules that will hopefully save you from some very bad situations.
 
 

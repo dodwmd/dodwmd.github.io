@@ -1,12 +1,12 @@
 ---
 layout: post
-status: publish
-published: true
 title: Encryption for Cloud Storage
-date: !binary |-
-  MjAxNC0wNS0wNyAwNTo1NDo1MyAtMDQwMA==
-date_gmt: !binary |-
-  MjAxNC0wNS0wNyAwNTo1NDo1MyAtMDQwMA==
+description: Some information on how I encrypt my archived mail
+headline: Using PGP encryption for mail and file storage
+category: security
+tags: []
+comments: false
+mathjax:
 ---
 
 With all the recent talk about how NSA is reading archived email I thought it might be worthwhile to share how I secure my archived email with the wider audience.

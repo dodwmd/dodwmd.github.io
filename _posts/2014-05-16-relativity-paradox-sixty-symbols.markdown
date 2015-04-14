@@ -1,11 +1,12 @@
 ---
 layout: post
-status: publish
-published: true
+type:  video                # ! Important
 title: Relativity Paradox - Sixty Symbols
-date: !binary |-
-  MjAxNC0wNS0xNiAyMTo1OTo0NyAtMDQwMA==
-date_gmt: !binary |-
-  MjAxNC0wNS0xNiAxMTo1OTo0NyAtMDQwMA==
+description: Trains, tunnels, muons and giant guillotines - strange things happen when you travel close to the speed of light. Discussing relativity, time dilation and Lorentz contraction.
+headline: Relativity Paradox - Sixty Symbols
+category: videos
+tags: []
+comments: false
+mathjax:
 ---
 {% youtube kGsbBw1I0Rg %}

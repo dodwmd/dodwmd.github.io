@@ -1,13 +1,14 @@
 ---
 layout: post
-status: publish
-published: true
 title: Setting up SSH & Byobu
-date: !binary |-
-  MjAxNC0wNS0xMiAxMzowMzo1OSAtMDQwMA==
-date_gmt: !binary |-
-  MjAxNC0wNS0xMiAwMzowMzo1OSAtMDQwMA==
+description: How to setup putty and screen to look nice and function well
+headline: Setting up SSH & Byobu to give Windows users a nice shell prompt
+category: unix
+tags: []
+comments: false
+mathjax:
 ---
+
 Like a lot of Unix Administrators I spend most of my day staring at a ssh session. I thought today I'd write about how I connect to servers. Currently I use a windows laptop to do most of my work. This OS was mainly chosen for a couple of reasons. 
 
 * If I have Linux as my desktop I tend to do most of my development work on the desktop and forget to sync it to the projects I'm working on often enough. By using Windows I treat my laptop almost like a chrome book where everything is stored remotely.

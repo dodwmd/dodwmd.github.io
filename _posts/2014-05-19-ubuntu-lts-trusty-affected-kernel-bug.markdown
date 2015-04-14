@@ -1,13 +1,10 @@
 ---
 layout: post
-status: publish
-published: true
 title: Ubuntu LTS "trusty" affected kernel bug
-date: !binary |-
-  MjAxNC0wNS0xOSAxNjoxOTo0MyAtMDQwMA==
-date_gmt: !binary |-
-  MjAxNC0wNS0xOSAwNjoxOTo0MyAtMDQwMA==
+description: Kernel bug plagues java users on current Ubuntu LTS
+headline: Ubuntu LTS "trusty" affected kernel bug             # Will appear in bold letters on top of the post
 ---
+
 Turns out the kernel that's currently shipping with trusty LTS causes most java applications to 'bork' when starting up.
 
 This is due to a kernel bug that was introduced in the Linux kernel around 3.12 and then fixed in 3.13.5. Unfortunately Ubuntu 14.04-LTS ships with kernel 3.13.0.

@@ -1,12 +1,12 @@
 ---
 layout: post
-status: publish
-published: true
-title: What is docker?
-date: !binary |-
-  MjAxNC0wNS0wNyAxNDo0MTo1MyAtMDQwMA==
-date_gmt: !binary |-
-  MjAxNC0wNS0wNyAxNDo0MTo1MyAtMDQwMA==
+title: "What is docker?"
+description: A description on what docker and containers are.
+headline: What is docker?
+category: docker
+tags: []
+comments: false
+mathjax:
 ---
 To understand Docker you first need to understand two pieces of software that it utilizes to do its tasks:
 

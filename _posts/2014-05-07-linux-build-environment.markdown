@@ -1,14 +1,16 @@
 ---
 layout: post
-status: publish
-published: true
 title: Linux Build Environment
-date: !binary |-
-  MjAxNC0wNS0wNyAwNjoxNToyNCAtMDQwMA==
-date_gmt: !binary |-
-  MjAxNC0wNS0wNyAwNjoxNToyNCAtMDQwMA==
+description: Overview of using Razor
+headline: Linux Build Environment             # Will appear in bold letters on top of the post
+category: "configuration management" 
+tags: []
+image:
+  feature: razor_overview.jpg
+comments: false
+mathjax:
 ---
-[/images/razor_overview1-300x121.jpg](https://github.com/puppetlabs/razor-server/wiki)
+[/images/razor_overview.jpg](https://github.com/puppetlabs/razor-server/wiki)
 
 Most system administrators prefer to use an automated installation method to install Linux on their machines. To satisfy this need different distributions of Linux have created a number of methods (kickstart, preseed etc). This offers the advantage of allowing a single file solution that contains logic ordered questions that are asked during a typical installation.
 

@@ -1,13 +1,14 @@
 ---
 layout: post
-status: publish
-published: true
 title: Passing variables from shell scripts to GNU Make
-date: !binary |-
-  MjAxNC0wNS0wOSAwNDowNDowNyAtMDQwMA==
-date_gmt: !binary |-
-  MjAxNC0wNS0wOSAwNDowNDowNyAtMDQwMA==
+description: How to pass variables from shell scripts to GNU make
+headline: Using shell variables from GNU make
+category: unix
+tags: []
+comments: false
+mathjax:
 ---
+
 Make is a really useful tool when you want to be able to write simple jobs. You don't just need to use it for compiling source code. One thing you may wish to do is be able to pass variables to make commands. Lets take a look at a pretty simple Makefile that will delete all the indexes in Elastic Search.
 
 {% highlight bash %}

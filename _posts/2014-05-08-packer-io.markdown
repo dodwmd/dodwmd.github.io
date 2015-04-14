@@ -1,13 +1,16 @@
 ---
 layout: post
-status: publish
-published: true
 title: Packer.io
-date: !binary |-
-  MjAxNC0wNS0wOCAwMjoxMToyNiAtMDQwMA==
-date_gmt: !binary |-
-  MjAxNC0wNS0wOCAwMjoxMToyNiAtMDQwMA==
+description: Overview of using packer
+headline: Packer.io lets you create templates for virtulization from your CM
+category: "configuration management"
+tags: []
+image:
+  feature: razor_overview.jpg
+comments: false
+mathjax:
 ---
+
 In a previous post I wrote about how we can use Auto-Scaling Groups (ASG's) to <a href="http://dodwell.us/use-asg/" title="How to use ASG">quickly adapt to user load</a>. In this post I intend to explain a method to create custom Amazon Machine Image's (AMI's) using a project called <a href="http://www.packer.io/" title="packer.io" target="_blank">packer.io</a>
 
 
