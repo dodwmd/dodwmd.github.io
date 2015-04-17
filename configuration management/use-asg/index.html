@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>How to use ASG &#8211; dodwell.us</title>
+<meta name="description" content="Overview of using Auto scaling groups at AWS">
+<meta name="keywords" content="">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dodwell.us//images/devops_logo.gif">
+<meta name="twitter:title" content="How to use ASG">
+<meta name="twitter:description" content="Overview of using Auto scaling groups at AWS">
+<meta name="twitter:creator" content="@MichaelDodwell">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to use ASG">
+<meta property="og:description" content="Overview of using Auto scaling groups at AWS">
+<meta property="og:url" content="https://dodwell.us//configuration%20management/use-asg">
+<meta property="og:site_name" content="dodwell.us">
+<meta property="og:image" content="https://dodwell.us//images/default_bg1.jpg">
+
+
+
+
+
+<link rel="canonical" href="https://dodwell.us//configuration%20management/use-asg">
+<link href="https://dodwell.us//feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us//assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us//assets/css/style.css" />
+
+
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="https://dodwell.us//favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="https://dodwell.us//favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="https://dodwell.us//images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://dodwell.us//images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://dodwell.us//images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us//images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
+<div id="fade"></div>
+<a id="slide" class="animated fade"></a>
+<aside id="sidebar">
+    <nav id="navigation">
+    <h2>MENU</h2>
+    <hr>
+
+            <li>
+                    <a href="https://dodwell.us//">Home</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//resume"><i class="icon-book"></i> Resume</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//categories">Categories</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//tags">Tags</a>
+                 </li>
+            
+           <li><a href="https://dodwell.us//feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+    </nav>
+    
+    
+</aside>
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom"  style="background-image: url(https://dodwell.us//images/default_bg1.jpg)" itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand light" href="https://dodwell.us/" role="banner" itemprop="url">
+
+                <img itemprop="logo" src="https://dodwell.us//images/devops_logo.gif" alt="dodwell.us Logo" />
+
+            <h1 class="blog-title light" itemprop="name">
+                dodwell.us
+            </h1>
+                
+            </a>
+            <h2 class="blog-description light bordered bordered-top" itemprop="description">
+                AWS EC2 ASG overview
+            </h2>
+        </div>
+    </div>
+    
+    
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+
+        </svg>
+    </div>
+    
+</header>
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+    <div class="container">
+        <div class="row">
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">How to use ASG</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;">Overview of using Auto scaling groups at AWS</div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published updated"><time datetime="2014-05-07T00:00:00+10:00" class="post-time" itemprop="datePublished">07 May 2014</time><span>
+                            in <span class="post-tags"><a href="https://dodwell.us//categories/index.html#configuration management" data-toggle="tooltip" title="Other posts from the Configuration management category" rel="tag">Configuration management</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">8.42</span> minutes read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p>The following explains how I utilize Auto Scaling Group’s (ASG’s) and puppet to automatically expand clusters during high load.</p>
+
+<h3 id="asg">asg</h3>
+
+<p>Auto Scaling allows you to scale your Amazon EC2 capacity up or down automatically according to conditions you define. With Auto Scaling, you can ensure that the number of Amazon EC2 instances you’re using increases seamlessly during demand spikes to maintain performance, and decreases automatically during demand lulls to minimize costs. Auto Scaling is particularly well suited for applications that experience hourly, daily, or weekly variability in usage. Auto Scaling is enabled by Amazon CloudWatch and available at no additional charge beyond Amazon CloudWatch fees.</p>
+
+<h3 id="creation-of-asg">creation of asg</h3>
+
+<p>The following script was used to create the RabbitMQ ASG:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+<span class="nv">ASG_GROUP</span><span class="o">=</span><span class="s2">&quot;web-asg&quot;</span>
+<span class="nv">LAUNCH_GROUP</span><span class="o">=</span><span class="s2">&quot;web-l&quot;</span>
+<span class="nv">EC2_AMI</span><span class="o">=</span><span class="s2">&quot;ami-09f26b33&quot;</span>
+<span class="nv">EC2_USERDATA</span><span class="o">=</span><span class="s2">&quot;user-data-file.txt&quot;</span>
+<span class="nv">EC2_SECURITYGROUPS</span><span class="o">=</span><span class="s2">&quot;sg-ffffffff,sg-fffffffe&quot;</span>
+<span class="nv">EC2_LB</span><span class="o">=</span><span class="s2">&quot;web&quot;</span>
+<span class="nv">EC2_MIN</span><span class="o">=</span><span class="s2">&quot;2&quot;</span>
+<span class="nv">EC2_MAX</span><span class="o">=</span><span class="s2">&quot;10&quot;</span>
+<span class="nv">EC2_TYPE</span><span class="o">=</span><span class="s2">&quot;t1.micro&quot;</span>
+<span class="nb">echo</span> -n <span class="s2">&quot;Checking if group already exists..&quot;</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;`as-describe-auto-scaling-groups | grep ${ASG_GROUP}`&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="nb">echo</span> <span class="s2">&quot;exists&quot;</span>
+  as-delete-auto-scaling-group --force-delete --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
+  <span class="nb">echo</span> <span class="s2">&quot;&quot;</span>
+  <span class="nb">printf</span> <span class="s2">&quot;Waiting until Amazon actually removes group |&quot;</span>
+  <span class="nv">rotate</span><span class="o">=</span><span class="s1">&#39;|/-\&#39;</span>
+<span class="s1">  while [ &quot;`as-describe-auto-scaling-groups | grep ${ASG_GROUP}`&quot; ]; do</span>
+<span class="s1">    rotate=&quot;${rotate#?}${rotate%???}&quot;</span>
+<span class="s1">    printf &#39;</span><span class="se">\b</span>%.1s<span class="s1">&#39; &quot;$rotate&quot;</span>
+<span class="s1">  done</span>
+<span class="s1">  echo</span>
+<span class="s1">else</span>
+<span class="s1">  echo &quot;none&quot;</span>
+<span class="s1">fi</span>
+<span class="s1">echo -n &quot;Checking if launch config already exists..&quot;</span>
+<span class="s1">if [ &quot;`as-describe-launch-configs | grep ${LAUNCH_GROUP}`&quot; ]; then</span>
+<span class="s1">  echo &quot;yes&quot;</span>
+<span class="s1">  as-delete-launch-config --force --launch-config ${LAUNCH_GROUP}</span>
+<span class="s1">  echo &quot;&quot;</span>
+<span class="s1">  printf &quot;Waiting until Amazon actually removes config |&quot;</span>
+<span class="s1">  rotate=&#39;</span><span class="p">|</span>/-<span class="se">\&#39;</span>
+  <span class="k">while</span> <span class="o">[</span> <span class="s2">&quot;`as-describe-launch-configs | grep ${LAUNCH_GROUP}`&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span>
+    <span class="nv">rotate</span><span class="o">=</span><span class="s2">&quot;${rotate#?}${rotate%???}&quot;</span>
+    <span class="nb">printf</span> <span class="s1">&#39;\b%.1s&#39;</span> <span class="s2">&quot;$rotate&quot;</span>
+  <span class="k">done</span>
+  <span class="nb">echo</span>
+<span class="k">else</span>
+  <span class="nb">echo</span> <span class="s2">&quot;nope&quot;</span>
+<span class="k">fi</span>
+as-create-launch-config <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> --image-id <span class="k">${</span><span class="nv">EC2_AMI</span><span class="k">}</span> --instance-type <span class="k">${</span><span class="nv">EC2_TYPE</span><span class="k">}</span> --monitoring-enabled --key root --group <span class="k">${</span><span class="nv">EC2_SECURITYGROUPS</span><span class="k">}</span> --user-data-file <span class="k">${</span><span class="nv">EC2_USERDATA</span><span class="k">}</span>
+as-create-auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span> --launch-configuration <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> --min-size <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span> --max-size <span class="k">${</span><span class="nv">EC2_MAX</span><span class="k">}</span> --load-balancers <span class="k">${</span><span class="nv">EC2_LB</span><span class="k">}</span> --desired-capacity <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span>
+mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-add <span class="se">\</span>
+  --alarm-actions <span class="s2">&quot;`as-put-scaling-policy ${ASG_GROUP}-add --type ChangeInCapacity --adjustment 1 --auto-scaling-group ${ASG_GROUP}`&quot;</span> <span class="se">\</span>
+  --comparison-operator GreaterThanThreshold <span class="se">\</span>
+  --dimensions <span class="s2">&quot;AutoScalingGroupName=${ASG_GROUP}&quot;</span> <span class="se">\</span>
+  --evaluation-periods <span class="m">3</span> <span class="se">\</span>
+  --metric-name CPUUtilization <span class="se">\</span>
+  --namespace <span class="s2">&quot;AWS/EC2&quot;</span> <span class="se">\</span>
+  --period <span class="m">60</span> <span class="se">\</span>
+  --statistic Average <span class="se">\</span>
+  --threshold <span class="m">90</span> <span class="se">\</span>
+  --unit Percent
+mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-del <span class="se">\</span>
+  --alarm-actions <span class="s2">&quot;`as-put-scaling-policy ${ASG_GROUP}-del --type ChangeInCapacity --adjustment=&#39;-1&#39; --auto-scaling-group ${ASG_GROUP}`&quot;</span> <span class="se">\</span>
+  --comparison-operator LessThanThreshold <span class="se">\</span>
+  --dimensions <span class="s2">&quot;AutoScalingGroupName=${ASG_GROUP}&quot;</span> <span class="se">\</span>
+  --evaluation-periods <span class="m">10</span> <span class="se">\</span>
+  --metric-name CPUUtilization <span class="se">\</span>
+  --namespace <span class="s2">&quot;AWS/EC2&quot;</span> <span class="se">\</span>
+  --period <span class="m">60</span> <span class="se">\</span>
+  --statistic Average <span class="se">\</span>
+  --threshold <span class="m">30</span> <span class="se">\</span>
+  --unit Percent <span class="se">\</span></code></pre></div>
+
+<p>A copy of the user-data-file.txt file is as follows:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
+<span class="nv">INSTANCE_TYPE</span><span class="o">=</span>something
+<span class="nv">DOMAIN</span><span class="o">=</span>dodwell.us
+<span class="nv">INSTANCE_ID</span><span class="o">=</span><span class="sb">`</span>/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id <span class="p">|</span> cut -d- -f2<span class="sb">`</span>
+<span class="nv">HOSTNAME</span><span class="o">=</span><span class="nv">$INSTANCE_TYPE</span>-<span class="nv">$INSTANCE_ID</span>
+<span class="c">#set also the hostname to the running instance</span>
+hostname <span class="nv">$HOSTNAME</span>.ec2-int.<span class="nv">$DOMAIN</span>
+<span class="nb">export </span><span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+<span class="c"># Set APT to fetch packages from a apt-cacher-np install</span>
+<span class="nb">echo</span> <span class="s1">&#39;Acquire::http::Proxy &quot;http://puppet.ec2-int.dodwell.us:3142&quot;;&#39;</span> &gt; /etc/apt/apt.conf
+aptitude -y install puppet
+<span class="nb">echo</span> <span class="s2">&quot;</span>
+<span class="s2">[agent]</span>
+<span class="s2">server = puppet.dodwell.us</span>
+<span class="s2">certname = puppet.ec2-int.dodwell.us</span>
+<span class="s2">&quot;</span> &gt;&gt; /etc/puppet/puppet.conf
+/usr/bin/puppet agent -t --pluginsync <span class="nb">true</span>
+sleep 10
+/usr/bin/puppet agent -t --pluginsync <span class="nb">true</span>
+sleep 10
+/usr/bin/puppet agent -t --pluginsync <span class="nb">true</span>
+sleep 10
+reboot</code></pre></div>
+
+<h4 id="overview">overview</h4>
+
+<p>In the first part of the script we define bash variables that we can use later. This is done so we can easily use this script for the Web and Elastic Search ASG’s. After we’ve defined the variables we check if the ASG’s have already been created and delete them. This will cause instances to also be Terminated. Once the groups have been Terminated the script will then create a Launch configuration. Once the launch configuration has been created we create the auto scaling group. Then we need to create scaling policies and then link CloudWatch events to these polices to create and destroy instances.</p>
+
+<h4 id="launch-configs">launch configs</h4>
+
+<p>The first command to setting up autoscale is as-create-launch-config. Using this command, you tell AWS:</p>
+
+<ul>
+  <li>a unique name for the configuration</li>
+  <li>which AMI ID you want to use as your template for creating more EC2 instances</li>
+  <li>the EC2 instance type (the size and power of the server) to launch using your AMI</li>
+  <li>your access key</li>
+  <li>a security group to deploy the instances into</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-create-launch-config <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> --image-id <span class="k">${</span><span class="nv">EC2_AMI</span><span class="k">}</span> --instance-type <span class="k">${</span><span class="nv">EC2_TYPE</span><span class="k">}</span> --monitoring-enabled --key root --group <span class="k">${</span><span class="nv">EC2_SECURITYGROUPS</span><span class="k">}</span> --user-data-file <span class="k">${</span><span class="nv">EC2_USERDATA</span><span class="k">}</span>
+OK-Created launch config.</code></pre></div>
+
+<p>The API replies with: “OK-Created launch config.” Please refer to the below ‘Puppet’ section for more detail on the user-data-file.</p>
+
+<h3 id="auto-scaling-group">auto scaling group</h3>
+
+<p>Use the as-create-auto-scaling-group command to define the properties for your group of servers. Auto scaling groups are the core component of an auto-scaling configuration. This command takes the launch_config_name you defined from the step before as a parameter, the name of the ELB you want to use, and most importantly, lets you define the minimum and maximum number of servers you want to have in your cluster. In the example below, we define a group with a minimum of 2 servers and a maximum of 10.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-create-auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span> --availability-zones <span class="k">${</span><span class="nv">REGION</span><span class="k">}</span>b,<span class="k">${</span><span class="nv">REGION</span><span class="k">}</span>a --launch-configuration <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> <span class="se">\</span>
+--min-size <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span> --max-size <span class="k">${</span><span class="nv">EC2_MAX</span><span class="k">}</span> --load-balancers <span class="k">${</span><span class="nv">EC2_LB</span><span class="k">}</span> --desired-capacity <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span>
+OK-Created ASG.</code></pre></div>
+
+<h3 id="auto-scaling-policies">auto scaling policies</h3>
+
+<p>Once we have our EC2 AMI, an AS launch config, and an AS group defined to deploy our instances into, we’re ready to define the auto scaling policies that will actually cause more (or fewer) EC2 instances to be launched and attached behind the ELB.</p>
+
+<p>The command used to change the number of servers in the group is the as-put-scaling-policy command. With auto scaling, you use EC2 monitoring within CloudWatch to trigger a certain policy, but before we can do that, we need to define the actual policies that will be triggered. You can use this command to manually trigger scaling events as well, for testing before your traffic burst arrives, and in doing so, you can not only see the effect of scaling up and down, but you can watch AWS work its magic by refreshing your Instances view—new server instances appear in the AWS Management Console as your traffic increases beyond the thresholds you set.</p>
+
+<p>The as-put-scaling-policy command takes the auto scaling group name we defined in step 1, a name for the policy, such a “scale-up” or “scale-down,” the type of scaling change the policy defines, and a cool down period. Again, the cool down period is used to prevent AWS from executing multiple policies within a very short time.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-add --type ChangeInCapacity --adjustment <span class="m">1</span> --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
+arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-add</code></pre></div>
+
+<p>Above you can see the basic upscale policy we defined, named “rabbitmq-asg-add,” a ChangeInCapacity policy to add 1 server and wait 3 minutes before another policy can be triggered. Below is the reverse operation, or a “rabbitmq-asg-del” policy to remove 1 server from our group.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-del --type ChangeInCapacity --adjustment<span class="o">=</span><span class="s1">&#39;-1&#39;</span> --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
+arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-del</code></pre></div>
+
+<p>In both cases, AWS replies with a return message including the unique auto-generated name of our two new auto scaling policies. We’ll use those unique policy identifiers to connect to our CloudWatch events in the final step.</p>
+
+<h3 id="link-a-cloudwatch-event-to-an-auto-scaling-policy">link a cloudwatch event to an auto scaling policy</h3>
+
+<p>At the moment we have everything we need for an intelligent auto-scaling configuration except one thing—the intelligence! The smarts come from choosing a CloudWatch event, such as 80% CPU utilization of an EC2 instance in our group, and wiring up that condition to automatically trigger the scale-up policy we defined. We’re also going to want to do the same in reverse for scaling back down at 20% CPU utilization.</p>
+
+<p>The command to do this comes from the CloudWatch command line tools, and is called mon-put-metric-alarm. This command takes several parameters:</p>
+
+<ul>
+  <li>a name for the alarm that you choose</li>
+  <li>a description for what the alarm is monitoring,</li>
+  <li>the namespace for the alarm (in this case, AWS/EC2)</li>
+  <li>the name of the [namespace] metric that you want to monitor</li>
+  <li>the statistic type of the monitoring metric, such as Average or Percent,</li>
+  <li>a period or time interval,</li>
+  <li>a threshold for the statistic you choose,</li>
+  <li>a comparison operator, such as greater than or lesser than</li>
+  <li>a dimension, which is the ID of an EC2 instance to monitor</li>
+  <li>and the number of evaluation periods during which the metric you choose has to consistently return over or under the average or percent unit you define</li>
+</ul>
+
+<p>As you can see, there’s a lot to this command, but once we look at every parameter, you can see that without each of them, you wouldn’t have the ability to control auto scaling changes with enough granularity. The name and description are shown back to you later when using the mon-describe-alarmscommand. The statistics you’re watching, and the thresholds and time intervals, are important to test for your particular application. For example, we chose to monitor average CPU utilization for a period of 60 seconds, and an evaluation period of 3 intervals (or 3 minutes), for an event of 80% or greater level. Here’s the command to achieve this.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-add <span class="se">\</span>
+  --alarm-actions <span class="s2">&quot;arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-add&quot;</span> <span class="se">\</span>
+  --comparison-operator GreaterThanThreshold <span class="se">\</span>
+  --dimensions <span class="s2">&quot;AutoScalingGroupName=${ASG_GROUP}&quot;</span> <span class="se">\</span>
+  --evaluation-periods <span class="m">3</span> <span class="se">\</span>
+  --metric-name CPUUtilization <span class="se">\</span>
+  --namespace <span class="s2">&quot;AWS/EC2&quot;</span> <span class="se">\</span>
+  --period <span class="m">60</span> <span class="se">\</span>
+  --statistic Average <span class="se">\</span>
+  --threshold <span class="m">90</span> <span class="se">\</span>
+  --unit Percent <span class="se">\</span>
+OK-Created Alarm</code></pre></div>
+
+<p>In English, the above command says, “If the average CPU utilization of instances in the ASG group ‘rabbitmq-asg’ is measured at 80% or greater 3 times over 3 minutes, then trigger our scale-up policy.</p>
+
+<p>Here is the reverse mon-put-metric-alarm command we used to terminate one of the servers if the CPU utilization drops below an average of 20% over 3 minutes.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-del <span class="se">\</span>
+  --alarm-actions <span class="s2">&quot;arn:aws:autoscaling:ap-southeast-2:947682202348:scalingPolicy:1a31d3d1-b180-4fcb-b288-bb43e651056d:autoScalingGroupName/rabbitmq-asg:policyName/rabbitmq-asg-del&quot;</span> <span class="se">\</span>
+  --comparison-operator LessThanThreshold <span class="se">\</span>
+  --dimensions <span class="s2">&quot;AutoScalingGroupName=${ASG_GROUP}&quot;</span> <span class="se">\</span>
+  --evaluation-periods <span class="m">3</span> <span class="se">\</span>
+  --metric-name CPUUtilization <span class="se">\</span>
+  --namespace <span class="s2">&quot;AWS/EC2&quot;</span> <span class="se">\</span>
+  --period <span class="m">60</span> <span class="se">\</span>
+  --statistic Average <span class="se">\</span>
+  --threshold <span class="m">30</span> <span class="se">\</span>
+  --unit Percent
+OK-Created Alarm</code></pre></div>
+
+<p>In the above script example we nest the ‘mon-put-metric-alarm’ and ‘as-put-scaling-policy’ commands to simplify running the scripts. However this is pulled apart in this documentation to explain better.</p>
+
+<p>For more information and examples, refer to the Auto Scaling section on the Amazon developer documentation.</p>
+
+<h3 id="instance-creation-via-cloud-init">instance creation via cloud-init</h3>
+
+<p>cloud-init is the Ubuntu package that handles early initialization of a cloud instance. It is installed in the Ubuntu Cloud Images and also in the official Ubuntu images available on EC2.</p>
+
+<p>cloud-init’s behavior can be configured via user-data. User-data can be given by the user at instance launch time.</p>
+
+<p>Using the user-data script functionality we can bootstrap puppet into action.</p>
+
+                        <br>
+                    
+                    
+                    </div>
+        </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;How to use ASG&quot;%20https://dodwell.us//configuration%20management/use-asg%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us//configuration%20management/use-asg"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us//configuration%20management/use-asg"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us//images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us//resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
+    </div>
+</div>
+
+<footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us//images/default_bg1.jpg)" >
+
+
+    <div class="inner">
+        <div class="container">
+
+            <ul class="social-icons">
+            <li>
+                <a href="http://twitter.com/MichaelDodwell" data-toggle="tooltip" title="Michael Dodwell on Twitter" target="_blank">
+                    <i class="icon-twitter"></i>
+                </a>
+            </li>
+            
+            
+            
+            <li>
+                <a href="https://au.linkedin.com/in/michaeldodwell" data-toggle="tooltip" title="Michael Dodwell on LinkedIn" target="_blank">
+                    <i class="icon-linkedin"></i>
+                </a>
+            </li>
+            
+            
+            <li>
+                <a href="http://github.com/dodwmd" data-toggle="tooltip" title="Michael Dodwell on Github" target="_blank">
+                    <i class="icon-github"></i>
+                </a>
+            </li>
+        </ul>
+            <div>
+                <a href="https://dodwell.us//resume/">Michael Dodwell</a> &copy; 2015 &bull; All rights reserved.
+            </div>
+            <ul class="menu-items">
+            
+            <li>
+                
+                    <a href="https://dodwell.us//"><i class="icon-home"></i></a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//resume"><i class="icon-book"></i> Resume</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//categories">Categories</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//tags">Tags</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li><a href="https://dodwell.us//feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+        </ul>
+        </div>
+    </div>
+    
+        <div class="decor-wrapper">
+            <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+                <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+                <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+
+                <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+
+                <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+
+                <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+
+            </svg>
+        </div>
+    
+</footer>
+
+
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://dodwell.us//assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="https://dodwell.us//assets/js/scripts.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us//assets/js/waypoints.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us//assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl = 
+ '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-60832716-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+ 
+</body>
+</html>

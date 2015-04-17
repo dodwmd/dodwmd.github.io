@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hosting OSX on ESXi &#8211; dodwell.us</title>
+<meta name="description" content="DevOPS: For fun and profit">
+<meta name="keywords" content="">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dodwell.us//images/devops_logo.gif">
+<meta name="twitter:title" content="Hosting OSX on ESXi">
+<meta name="twitter:description" content="DevOPS: For fun and profit">
+<meta name="twitter:creator" content="@MichaelDodwell">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hosting OSX on ESXi">
+<meta property="og:description" content="DevOPS: For fun and profit">
+<meta property="og:url" content="https://dodwell.us//osx-esxi">
+<meta property="og:site_name" content="dodwell.us">
+<meta property="og:image" content="https://dodwell.us//images/default_bg1.jpg">
+
+
+
+
+
+<link rel="canonical" href="https://dodwell.us//osx-esxi">
+<link href="https://dodwell.us//feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us//assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us//assets/css/style.css" />
+
+
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="https://dodwell.us//favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="https://dodwell.us//favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="https://dodwell.us//images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://dodwell.us//images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://dodwell.us//images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us//images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
+<div id="fade"></div>
+<a id="slide" class="animated fade"></a>
+<aside id="sidebar">
+    <nav id="navigation">
+    <h2>MENU</h2>
+    <hr>
+
+            <li>
+                    <a href="https://dodwell.us//">Home</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//resume"><i class="icon-book"></i> Resume</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//categories">Categories</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us//tags">Tags</a>
+                 </li>
+            
+           <li><a href="https://dodwell.us//feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+    </nav>
+    
+    
+</aside>
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom"  style="background-image: url(https://dodwell.us//images/default_bg1.jpg)" itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand" href="https://dodwell.us/" role="banner" itemprop="url">
+
+                <img itemprop="logo" src="https://dodwell.us//images/devops_logo.gif" alt="dodwell.us Logo" />
+
+            <h1 class="blog-title light" itemprop="name">
+                dodwell.us
+            </h1>
+                
+            </a>
+        </div>
+    </div>
+    
+    
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+
+        </svg>
+    </div>
+    
+</header>
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+    <div class="container">
+        <div class="row">
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Hosting OSX on ESXi</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published updated"><time datetime="2014-12-08T00:00:00+11:00" class="post-time" itemprop="datePublished">08 Dec 2014</time><span>
+                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.325</span> minutes read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p>It’s been awhile since I’ve posted.</p>
+
+<p>Recently I’ve been doing some Ops work for a company building iOS apps for different companies.</p>
+
+<p>While here I’ve been making a change to host OSX instances on Mac Mini’s (due to licence restrictions). These server where previously hosted under OSX running inside VMWare Fusion VM’s.</p>
+
+<p>OSX is a very poor candidate for Virtualization. The Operating System is very bloated and runs alot of services that allow for a very pretty interface for users. When virtualizing these services just chew alot of resources.</p>
+
+<p>In a future post I’ll list how I try and tune down these services so that we don’t waste resources with functions that we don’t use.</p>
+
+<p>In this post I want to cover off how I managed to get OSX to work under ESXi.</p>
+
+<h3 id="packer">packer</h3>
+
+<p>I’ve previously written about packer and saw virtualization of OSX to be something that would suit it. <a href="http://macops.ca">Tim Sutton</a> is already maintaining some really nice Packer scripts over at <a href="https://github.com/timsutton/osx-vm-templates">github</a>. So i grabbed a copy of these and built the Guest OS in Fusion.</p>
+
+<h3 id="fusion">fusion</h3>
+
+<p>There are a few things to know about if you want to upload an OS X VM to an ESXi server running 5.5, so I’ve put together a procedure for those who want to leverage Fusion 7 Pro to upload OS X VMs. See below the jump for the details.</p>
+
+<p>There’s three issues to be aware of when uploading OS X VMs to ESXi 5.5:</p>
+
+<ul>
+  <li>ESXi 5.5 supports up to VMware’s Hardware Version 10.</li>
+  <li>VMware Fusion 7 Pro will build VMs by default using VMware’s Hardware Version 11.</li>
+  <li>The upload process to ESXi 5.5 will not tranfer the necessary smc.present = “TRUE” attribute from the Fusion VM’s .vmx configuration file. This attribute allows the VM to check and detect that it’s running on Apple hardware. Without this check succeeding, the VM assumes it’s running on non-Apple hardware and will then hang during the boot process (which is why I was seeing the hang in my previous upload attempts.)</li>
+</ul>
+
+<h4 id="pre-requisites">pre-requisites:</h4>
+
+<ul>
+  <li>VMware Fusion 7 Professional</li>
+  <li>A fully-updated ESXi 5.5 server running on Apple hardware. As of October 31, 2014, the latest version should be ESXi 5.5 Patch03 (ESXi550-201410001).
+Setting Fusion-built VMs to use Hardware Version 10</li>
+</ul>
+
+<ol>
+  <li>Create a new VM and choose an appropriate OS.</li>
+</ol>
+
+<p>Note: If you’re planning to upload a 10.10 VM, choose OS X 10.9 in this window. VMware Fusion’s setup process will not allow a 10.10 VM to use Hardware Version 10. In my testing, 10.10 runs fine even when the VM’s selected OS is 10.9.</p>
+
+<ol>
+  <li>
+    <p>Once the VM is created and you’ve set your preferred memory, processor and memory settings, shut down the VM and then go into the VM settings.</p>
+  </li>
+  <li>
+    <p>In the VM settings, go into USB &amp; Bluetooth</p>
+  </li>
+  <li>
+    <p>In the USB &amp; Bluetooth settings, set it to use USB 2.0 instead of USB 3.0. USB 3.0 is a new feature with VMware’s Hardware Version 11 and not supported on Hardware Version 10.</p>
+  </li>
+  <li>
+    <p>Go back out to the VM settings, then select Camera.</p>
+  </li>
+  <li>
+    <p>In the Camera settings, click the Remove Camera button.</p>
+  </li>
+  <li>
+    <p>When prompted, confirm that you want to remove the camera by clicking the Remove button. The camera is a new feature with VMware’s Hardware Version 11 and not supported on Hardware Version 10.</p>
+  </li>
+  <li>
+    <p>Go back out to the VM settings, then select Compatibility.</p>
+  </li>
+  <li>
+    <p>Change the Use Hardware Version: setting to 10 and click the Apply button.</p>
+  </li>
+</ol>
+
+<p>At this point, your OS X VM should be set to use Hardware Version 10 and ready for uploading to ESXi 5.5.</p>
+
+<h4 id="connecting-to-esxi-55-from-vmware-fusion-7-professional">Connecting to ESXi 5.5 from VMware Fusion 7 Professional</h4>
+
+<ol>
+  <li>
+    <p>Launch VMware Fusion 7 Professional if needed.</p>
+  </li>
+  <li>
+    <p>Under the File menu, select Connect to Server…</p>
+  </li>
+  <li>
+    <p>In the login window that appears, enter the server address of your ESXi server, username and password as appropriate.</p>
+  </li>
+</ol>
+
+<h4 id="exporting-vms-from-vmware-fusion-7-professional-to-esxi">Exporting VMs from VMware Fusion 7 Professional to ESXi</h4>
+
+<ol>
+  <li>
+    <p>Shut down the Fusion VM that you want to copy to your ESXi server.</p>
+  </li>
+  <li>
+    <p>Connect to your ESXi server if you hadn’t previously.</p>
+  </li>
+  <li>
+    <p>Right-click on the shutdown VM and select Upload to Server…</p>
+  </li>
+  <li>
+    <p>If prompted, select your destination server and click the Continue button.</p>
+  </li>
+  <li>
+    <p>A new Upload Virtual Machine window will appear.</p>
+  </li>
+  <li>
+    <p>Select the ESXi datastore that you want to upload your Fusion-built VM into and click the Upload button.</p>
+  </li>
+  <li>
+    <p>The selected VM will upload to the ESXi server.</p>
+  </li>
+  <li>
+    <p>Once the upload is completed, the newly-uploaded VM will appear in your ESXi server’s list of VMs as a powered-off VM.</p>
+  </li>
+</ol>
+
+<h4 id="editing-the-os-x-vms-vmx-file">Editing the OS X VM’s .vmx file</h4>
+
+<p>Before booting your VM, you will need to edit the uploaded VM’s .vmx configuration file to add the smc.present = “TRUE” attribute back to the .vmx file. Make sure you enable SSH on the ESXi host.</p>
+
+<ol>
+  <li>
+    <p>SSH to the ESXi server</p>
+  </li>
+  <li>
+    <p>Navigate to /vmfs/volumes/datastore_name_here/uploaded_vm_name_here/</p>
+  </li>
+  <li>
+    <p>Run ‘echo ‘smc.present = “TRUE” » uploaded_vm_name_here.vmx’</p>
+  </li>
+  <li>
+    <p>Disconnect</p>
+  </li>
+</ol>
+
+<p>Once the VM has been uploaded and the VM’s uploaded_vm_name_here.vmx configuration file has been edited, your ESXi-hosted OS X VM should now be ready to go.</p>
+
+                        <br>
+                    
+                    
+                    </div>
+        </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;Hosting OSX on ESXi&quot;%20https://dodwell.us//osx-esxi%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us//osx-esxi"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us//osx-esxi"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us//images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us//resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
+    </div>
+</div>
+
+<footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us//images/default_bg1.jpg)" >
+
+
+    <div class="inner">
+        <div class="container">
+
+            <ul class="social-icons">
+            <li>
+                <a href="http://twitter.com/MichaelDodwell" data-toggle="tooltip" title="Michael Dodwell on Twitter" target="_blank">
+                    <i class="icon-twitter"></i>
+                </a>
+            </li>
+            
+            
+            
+            <li>
+                <a href="https://au.linkedin.com/in/michaeldodwell" data-toggle="tooltip" title="Michael Dodwell on LinkedIn" target="_blank">
+                    <i class="icon-linkedin"></i>
+                </a>
+            </li>
+            
+            
+            <li>
+                <a href="http://github.com/dodwmd" data-toggle="tooltip" title="Michael Dodwell on Github" target="_blank">
+                    <i class="icon-github"></i>
+                </a>
+            </li>
+        </ul>
+            <div>
+                <a href="https://dodwell.us//resume/">Michael Dodwell</a> &copy; 2015 &bull; All rights reserved.
+            </div>
+            <ul class="menu-items">
+            
+            <li>
+                
+                    <a href="https://dodwell.us//"><i class="icon-home"></i></a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//resume"><i class="icon-book"></i> Resume</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//categories">Categories</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us//tags">Tags</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li><a href="https://dodwell.us//feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+        </ul>
+        </div>
+    </div>
+    
+        <div class="decor-wrapper">
+            <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+                <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+                <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+
+                <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+
+                <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+
+                <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+
+            </svg>
+        </div>
+    
+</footer>
+
+
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://dodwell.us//assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="https://dodwell.us//assets/js/scripts.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us//assets/js/waypoints.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us//assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl = 
+ '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-60832716-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+ 
+</body>
+</html>
