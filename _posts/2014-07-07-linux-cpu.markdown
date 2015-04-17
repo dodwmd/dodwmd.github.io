@@ -1,0 +1,102 @@
+---
+layout: post
+status: publish
+published: true
+title: Linux CPU
+date: !binary |-
+  MjAxNC0wNy0wNyAxNDozNjo0NiAtMDQwMA==
+date_gmt: !binary |-
+  MjAxNC0wNy0wNyAwNDozNjo0NiAtMDQwMA==
+---
+Previously I wrote about <a href="https://dodwell.us/linux-memory/" title="Linux Memory">how memory works in Linux</a>. In this post I want to write about how the CPU is handled to service processes.
+
+
+### processes
+
+Before we get started pulling out stats it's important to understand how processes in Linux work. All processes in Linux except process 0 (the swapper) is created when another process executes the fork() system call. The process that calls fork() is what is called the parent process and all the subsequent processes that it calls are called child processes. Every process (except process 0) has one parent process, but can have many child processes.
+
+The operating system kernel identifies each process by its process identifier. Process 0 is a special process that is created when the system boots; after forking a child process (process 1), process 0 becomes the swapper process (sometimes also known as the "idle task"). Process 1, known as init, is the ancestor of every other process in the system.
+
+
+### threads
+
+Threads like processes are a mechanism to allow a program to do more than one thing at a time. As with processes, threads appear to run concurrently; the Linux kernel schedules them asynchronously, interrupting each thread from time to time to give others a chance to execute.
+
+A thread exists within a process. Threads are a finer-grained unit of execution than processes. When you invoke a program, Linux creates a new process and in that process creates a single thread, which runs the program sequentially. That thread can create additional threads; all these threads run the same program in the same process, but each thread may be executing a different part of the program at any given time.
+
+Unlike a child process where the process is separated from the parent and has it's own resources (file descriptors, memory etc) a thread shares it's processes resources. If a process has multiple threads and one of the threads closes a file descriptor for example the change affects all the other threads of the process.
+
+
+### scheduling
+
+As a note in versions of Linux kernel 2.6 prior to 2.6.23, the scheduler used is an O(1) scheduler by Ingo Moln&aacute;r. The scheduler used thereafter is the Completely Fair Scheduler, also by Ingo Moln&aacute;r, which runs in O(log N) time.
+
+Because you can have multiple processes all running at the same time but we usually have a smaller number of core processors on the host, it's important to realise that the kernel will switch (known as context switching) what process is running on the CPU at any time to another process that is in the queue waiting for CPU cycles. We end up with 2 different types of content switches, involuntary context switches and voluntary context switches. A voluntary context switch can occur whenever a thread/process makes a system call that blocks. An involuntary context switch occurs when a thread has been running too long (usually something like 10 ms) without making a system call that blocks and there are processes waiting for the CPU. 
+
+I don't want to go into detail on how the scheduler works we just need to understand that context switching can be an important metric that we'll talk about later.
+
+
+### getting information
+
+Now that we have a basic understanding on processors in Linux lets take a look at how we can find information about a running system.
+
+If the server your investigating has multiple cores it's useful to see the breakdown of each CPU. You can use a command called 'mpstat' to do this.
+
+{% highlight bash %}
+root@earth:~# mpstat -P ALL
+Linux 3.11.0-15-generic (ultima)        07/01/2014      _x86_64_        (4 CPU)
+09:14:01 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+09:14:01 PM  all    2.03    0.00    2.41    0.24    0.00    0.18    0.00    0.00    0.00   95.14
+09:14:01 PM    0    2.76    0.00    2.20    0.38    0.00    0.28    0.00    0.00    0.00   94.38
+09:14:01 PM    1    2.93    0.01    2.55    0.50    0.00    0.43    0.00    0.00    0.00   93.58
+09:14:01 PM    2    1.24    0.01    2.52    0.04    0.00    0.00    0.00    0.00    0.00   96.20
+09:14:01 PM    3    1.21    0.00    2.36    0.04    0.00    0.00    0.00    0.00    0.00   96.38
+root@earth:~#
+{% endhighlight %}
+
+The mpstat command display activities for each available processor, processor 0 being the first one. Global average activities among all processors are also reported. 
+
+Sometimes you may wish to see how the CPU has been running over the day and a tool called 'sar' takes care of this. sar by default will grab archived information that has been written to via a cron job.
+
+{% highlight bash %}
+root@earth:~# sar
+Linux 3.11.0-15-generic (earth)        07/01/2014      _x86_64_        (8 CPU)
+07:35:01 PM     CPU     %user     %nice   %system   %iowait    %steal     %idle
+07:45:01 PM     all      0.31      0.00      0.38      0.06      0.00     99.25
+07:55:01 PM     all      0.39      0.00      0.50      0.07      0.00     99.05
+08:05:01 PM     all      0.31      0.00      0.37      0.05      0.00     99.27
+08:15:01 PM     all      0.31      0.00      0.39      0.05      0.00     99.25
+08:25:01 PM     all      0.38      0.00      0.50      0.05      0.00     99.06
+08:35:01 PM     all      0.30      0.00      0.39      0.05      0.00     99.26
+08:42:37 PM     all      0.55      0.00      0.57      0.19      0.00     98.69
+08:45:01 PM     all      4.52      0.00      2.87      9.36      0.00     83.25
+08:55:01 PM     all      4.64      0.00      1.47     10.02      0.00     83.87
+09:05:01 PM     all      2.20      0.00      1.01      3.95      0.00     92.84
+09:15:01 PM     all      3.31      0.00      1.15      3.71      0.00     91.83
+Average:        all      1.36      0.00      0.73      2.04      0.00     95.87
+root@earth:~#
+{% endhighlight %}
+
+The sar command can also be ran so that you can see a live summary over time.
+
+{% highlight bash %}
+root@earth:~# sar -u 2 5
+Linux 3.11.0-15-generic (earth)        07/01/2014      _x86_64_        (8 CPU)
+09:22:16 PM     CPU     %user     %nice   %system   %iowait    %steal     %idle
+09:22:18 PM     all      3.13      0.00      1.63      1.56      0.00     93.68
+09:22:20 PM     all      6.25      0.00      6.50      1.06      0.00     86.18
+09:22:22 PM     all      1.32      0.00      1.69      5.52      0.00     91.47
+09:22:24 PM     all      1.07      0.00      0.50      3.07      0.00     95.36
+09:22:26 PM     all      0.88      0.00      0.31      1.50      0.00     97.31
+Average:        all      2.53      0.00      2.13      2.54      0.00     92.80
+root@earth:~#
+{% endhighlight %}
+ 
+I think it's important to break down what we're actually reading with these outputs. %user is the percentage of CPU utilization that occurred while executing at the user level (application). %nice is the percentage of CPU utilization that occurred while executing at the user level with nice priority. %system is the percentage of CPU utilization that occurred while executing at the system level (kernel). %iowait is the percentage of time that the CPU or CPUs were idle during which the system had an outstanding disk I/O request. %steal is the percentage of time a virtual CPU waits for a real CPU while the hyper visor is servicing another virtual processor. %idle is the percentage of time that the CPU or CPUs were idle and the system did not have an outstanding disk I/O request.
+
+
+### munin
+
+<a href="/images/cpu-day.png"><img src="/images/cpu-day.png" alt="cpu-day" width="378" height="286" style="float:left;"/></a>Using programs like Munin also are helpful in determining how CPU usage is performing over time. In the graph to the side we can quickly tell that the CPU on this host is fairly idle. It saves us considerable time if we have to review lots of servers on a periodic basis for this kind of information to be graphed in a easily read fashion. It is also helpful to look at trending over long periods of time that might not be that evident when looking at hourly/daily trends. 
+
+> UPDATE (17/07/14): I just wanted to add a update to state something that I don't think is that clear about steal time. A guest's allocated CPU type will match the physical CPU of the host. If a service provider wishes to offer a 'slower CPU' but only host virtual machines on faster processors they will restrict the CPU resource on the host for the guest and when you run the guest you will see this reflected in the CPU steal time. 

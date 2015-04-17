@@ -1,0 +1,54 @@
+---
+layout: post
+title: "What is docker?"
+description: A description on what docker and containers are.
+headline: What is docker?
+category: docker
+tags: []
+comments: false
+mathjax:
+---
+To understand Docker you first need to understand two pieces of software that it utilizes to do its tasks:
+
+
+### linux containers (lxc) and aufs
+
+#### what are linux containers (lxc)?
+
+LXC (LinuX Containers) is an operating system&ndash;level virtualization method for running multiple isolated Linux systems (containers) on a single control host.
+
+The Linux kernel comprises cgroups for resource isolation (CPU, memory, block I/O, network, etc.) that does not require starting any virtual machines. Cgroups also provides namespace isolation to completely isolate application's view of the operating environment, including process trees, network, user ids and mounted file systems.
+
+LXC combines cgroups and namespace support to provide an isolated environment for applications.
+
+
+#### what is aufs?
+
+AUFS uses a technique called 'union mounting' that allows you to overlay different file-systems to appear to be part of the same file system.
+
+
+### bringing it all together
+
+Docker currently uses LinuX Containers (LXC) to isolate a hosts resources so that containers are able to run applications without interfering with other containers, while only requiring a single instance of a&nbsp;kernel to function. This enables you to set up virtual instances on a host without having to duplicate system utilities that are&nbsp;required to manage the hardware of the server. Think of LXC as an extension to chroot jail's where instead of it just being a jail on the file system it can also put a jail (or container) around memory and CPU.
+
+Docker uses AuFS to de-duplicate filesystems. Meaning it creates base images of your servers and then uses AuFS to layer the differences over the top of the base image.
+
+Docker also takes care of your networking by allowing containers to expose ports for services that they are hosting.
+
+
+### so what does all this mean
+
+So let's say you wanted to set up X number of servers on a traditional virtual machine&nbsp;host. Each of these virtual machines&nbsp;would need separate base file-systems and all the applications that they need to function installed to each of them. If you had 10 servers and the virtual machine&nbsp;size of each was 1 gigabyte&nbsp;that would mean you'd need 10 gigabytes&nbsp;of disk space.
+
+With AuFS your able to create a base OS and share that OS with each of the instances. So now instead of using 10 gigabytes&nbsp;of storage you would just need 1 gigabyte. Lets say for example's sake that half of the servers are&nbsp;web servers, with the remainder are mail servers. Lets also say that the&nbsp;application install on each of these servers was another gigabyte. Traditional virtualization platforms you would now need 20 gigabytes of&nbsp;storage. With AuFS you would only need 3G. This means a massive cost savings in storage for your infrastructure.
+
+Docker also goes further by allowing file systems called volumes to be made. These volumes are shared amongst clusters of servers further saving you from having to duplicate data (think web apps or sharing the log files from your web servers to your log processing servers). These volumes are&nbsp;mounted on multiple instances at the same time.
+
+Traditional virtualization is about taking a hosts resources and chopping it up into smaller parts. Very little sharing takes place between the parts. With Docker much more of the resources are&nbsp;shared.
+
+Because the kernel is already running start-up times of instances is also dramatically reduced. LXC containers are&nbsp;started and stopped in a few seconds. This could completely change how administrators use computing. Instead of having servers standing by waiting for work, containers are&nbsp;created and destroyed as needed. Further saving resources for other tasks.
+
+
+## further reading
+
+<a href="https://www.docker.io/">https://www.docker.io/</a>
