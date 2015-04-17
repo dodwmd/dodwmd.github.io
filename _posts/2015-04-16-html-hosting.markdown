@@ -31,7 +31,7 @@ The [jekyll docs](http://jekyllrb.com/docs/usage/) has some really good informat
 
 ### Webhosting
 
-[Github](http://github.com/) which I already used to host [code](https://github.com/dodwmd/) also allows for [Github Pages](https://pages.github.com/). This is a web hosting service that takes a special branch from your repository 'gh-pages' and hosts the site for you. You can also setup personal sites naming them in a certain way and the master branch is used to host the site. This method also allows you to setup a 'CNAME' file that can use used to host custom domains/hostnames. Take a look at [this documentation](https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages/) for more information. Unfortunately Github Pages doesn't allow for SSL termination.
+[Github](http://github.com/) which I already used to host [code](https://github.com/dodwmd/) also allows for [Github Pages](https://pages.github.com/). This is a web hosting service that takes a special branch from your repository 'gh-pages' and allows you to host a some documentation for your project. You can also setup personal sites naming them in a certain way (username.github.io) and github will checkout the master and automatically setup a subdomain with the contents of 'master' being the webroot. This method also allows you to setup a 'CNAME' file in that branch file that can use used to host custom domains/hostnames. Take a look at [this documentation](https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages/) for more information. Unfortunately Github Pages doesn't allow for SSL termination.
 
 ### SSL Certificates
 
