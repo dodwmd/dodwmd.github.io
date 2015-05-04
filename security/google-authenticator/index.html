@@ -2,23 +2,23 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Disk Debugging &#8211; dodwell.us</title>
-<meta name="description" content="DevOPS: For fun and profit">
+<title>Google Authenticator for SSH &#8211; dodwell.us</title>
+<meta name="description" content="Add Google Authenticator support to SSH">
 <meta name="keywords" content="">
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://dodwell.us/images/devops_logo.gif">
-<meta name="twitter:title" content="Disk Debugging">
-<meta name="twitter:description" content="DevOPS: For fun and profit">
+<meta name="twitter:title" content="Google Authenticator for SSH">
+<meta name="twitter:description" content="Add Google Authenticator support to SSH">
 <meta name="twitter:creator" content="@MichaelDodwell">
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Disk Debugging">
-<meta property="og:description" content="DevOPS: For fun and profit">
-<meta property="og:url" content="https://dodwell.us/disk-debugging">
+<meta property="og:title" content="Google Authenticator for SSH">
+<meta property="og:description" content="Add Google Authenticator support to SSH">
+<meta property="og:url" content="https://dodwell.us/security/google-authenticator">
 <meta property="og:site_name" content="dodwell.us">
 <meta property="og:image" content="https://dodwell.us/images/default_bg1.jpg">
 
@@ -26,7 +26,7 @@
 
 
 
-<link rel="canonical" href="https://dodwell.us/disk-debugging">
+<link rel="canonical" href="https://dodwell.us/security/google-authenticator">
 <link href="https://dodwell.us/feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
 
 
@@ -95,7 +95,7 @@
 
     <div class="inner">
         <div class="container">
-            <a class="brand" href="https://dodwell.us" role="banner" itemprop="url">
+            <a class="brand light" href="https://dodwell.us" role="banner" itemprop="url">
 
                 <img itemprop="logo" src="https://dodwell.us/images/devops_logo.gif" alt="dodwell.us Logo" />
 
@@ -104,6 +104,9 @@
             </h1>
                 
             </a>
+            <h2 class="blog-description light bordered bordered-top" itemprop="description">
+                Setup Google Authenticator in SSH
+            </h2>
         </div>
     </div>
     
@@ -139,120 +142,114 @@
                     <header class="post-header entry-header">
                     
                         
-                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Disk Debugging</h1>
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Google Authenticator for SSH</h1>
                         
-                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+                        <div class="cursive" style="color: #000; font-style:italic;">Add Google Authenticator support to SSH</div>
                         <div class="post-info text-center small">
-                            <span class="entry-date date published updated"><time datetime="2014-07-09T02:05:01+10:00" class="post-time" itemprop="datePublished">09 Jul 2014</time><span>
-                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">5.035</span> minutes read</span>
+                            <span class="entry-date date published"><time datetime="2015-05-04T00:00:00+10:00" class="post-time" itemprop="datePublished">04 May 2015</time><span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.17</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
                         
-                        <p><a href="https://dodwell.us/linux-cpu/" title="Linux CPU">sar</a> gives us an overview of what the system is doing. If you had a high %iowait you might want to figure out what drive is currently being used. To do this we use ‘iostat’. ‘iostat’ will by default give you all the reads and writes that the server has performed since start up.</p>
+                        <p>Previously I posted on how to make some changes to SSH to improve it’s security. One of the configuration options I said to change was to disable password authentication. I want to cover how we can keep password authentication enable by using 2-factor authentication powered by Google Authenticator.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# iostat
-Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span><span class="m">8</span> CPU<span class="o">)</span>
-avg-cpu:  %user   %nice %system %iowait  %steal   %idle
-           4.71    0.08    1.76    2.70    0.00   90.75
-Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
-sda              43.18       444.49       377.38 <span class="m">4868027082</span> 4133006543
-sdb              43.21       390.18       437.79 <span class="m">4273169451</span> 4794601370
-sdc              43.37       372.14       455.47 <span class="m">4075619576</span> 4988231906
-sdd              43.12       303.40       520.57 <span class="m">3322820691</span> 5701198578
-md0             112.68       196.71       987.63 <span class="m">2154354407</span> 10816361389
-dm-0              0.02         0.00         0.02       <span class="m">3710</span>     191813
-dm-1              0.07         0.13         0.15    <span class="m">1415036</span>    1608712
-dm-2            105.45       196.58       987.46 <span class="m">2152916405</span> 10814560864
-root@earth:~#</code></pre></div>
+<h3 id="what-is-it">what is it?</h3>
 
-<p>You can specify the following command to tell you where data is currently being written to disk.</p>
+<blockquote>
+  <p>Two-factor authentication (also known as 2FA) provides unambiguous identification of users by means of the combination of two different components. These components may be something that the user knows, something that the user possesses or something that is inseparable from the user. A good example from everyday life is the withdrawing of money from a cash machine. Only the correct combination of a bank card (something that the user possesses) and a PIN (personal identification number, i.e. something that the user knows) allows the transaction to be carried out. Two-factor authentication is a type of multi-factor authentication.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# iostat <span class="m">5</span> 2
-Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span><span class="m">8</span> CPU<span class="o">)</span>
-avg-cpu:  %user   %nice %system %iowait  %steal   %idle
-           4.71    0.08    1.75   32.70    0.00   70.75
-Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
-sda              43.19       444.48       377.40 <span class="m">4870534754</span> 4135461454
-sdb              43.22       390.15       437.81 <span class="m">4275250131</span> 4797504917
-sdc              43.37       372.11       455.50 <span class="m">4077567336</span> 4991286137
-sdd              43.12       303.37       520.60 <span class="m">3324288487</span> 5704684509
-md0             112.70       196.63       987.67 <span class="m">2154614063</span> 10822740329
-dm-0              0.02         0.00         0.02       <span class="m">3710</span>     191813
-dm-1              0.07         0.13         0.15    <span class="m">1415124</span>    1608712
-dm-2            105.46       196.50       987.50 <span class="m">2153175973</span> 10820939804
-dm-3            123.51       420.50      9537.33 <span class="m">93284825825</span> 394839274299
-avg-cpu:  %user   %nice %system %iowait  %steal   %idle
-          13.69    0.00    0.35   22.20    0.00   63.76
-Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
-sda              27.40         3.20       283.40         <span class="m">16</span>       1417
-sdb              23.40         7.20       227.40         <span class="m">36</span>       1137
-sdc              17.40       158.40        57.80        <span class="m">792</span>        289
-sdd              14.20       165.60         1.80        <span class="m">828</span>          9
-md0              77.80         3.20       281.60         <span class="m">16</span>       1408
-dm-0              0.00         0.00         0.00          <span class="m">0</span>          0
-dm-1              0.00         0.00         0.00          <span class="m">0</span>          0
-dm-2             70.60         3.20       281.60         <span class="m">16</span>       1408
-dm-3           1392.60      1209.40      9012.49       <span class="m">4931</span>       5912
-root@earth:~#</code></pre></div>
+  <p>– <a href="http://en.wikipedia.org/wiki/Two_factor_authentication">http://en.wikipedia.org/wiki/Two_factor_authentication</a></p>
+</blockquote>
 
-<p>It should be noted that the first block of text is indeed the total summary since startup. The second block is an average from the last 5 seconds.</p>
+<h3 id="why-would-i-give-my-keys-to-google">why would i give my keys to google?</h3>
 
-<p>On a heavily used system, sometimes, it’s not that apparent what process is causing a high amount of load to a certain drive. Once we have identified what drive is under load with iostat we can find the drives mount point (dmsetup ls) and then use a program called ‘lsof’ to find what processes have files open on that mount.</p>
+<p>Google Authenticator’s time-based one-time password (TOTP) system doesn’t “phone home” to Google all the work happens on your server. By enabling TOTP your account information isn’t actually shared with Google nor do you require a Google account. The key exchange is done via a pre-shared key that’s used with the current UTC timestamp to generate a one time password that you use to authenticate to the server.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# dmsetup ls
-vg_earth-boot  <span class="o">(</span>252:0<span class="o">)</span>
-vg_earth-swap  <span class="o">(</span>252:1<span class="o">)</span>
-vg_earth-root  <span class="o">(</span>252:2<span class="o">)</span>
-vg_earth-usr   <span class="o">(</span>252:2<span class="o">)</span>
-root@earth:~# mount <span class="p">|</span> grep vg_earth-usr
-/dev/mapper/vg_earth-app on /app <span class="nb">type </span>ext4 <span class="o">(</span>rw,errors<span class="o">=</span>remount-ro<span class="o">)</span>
-root@earth:~# lsof +D /usr/
-COMMAND     PID     USER   FD   TYPE DEVICE SIZE/OFF     NODE NAME
-irqbalanc  <span class="m">1421</span>     root  txt    REG  252,2    <span class="m">44136</span> <span class="m">13896668</span> /usr/sbin/irqbalance
-sshd       <span class="m">8424</span>     root  mem    REG  252,2    <span class="m">14536</span> <span class="m">13894192</span> /usr/lib/x86_64-linux-gnu/libck-connector.so.0.0.0
-sshd       <span class="m">8518</span>   dodwmd  mem    REG  252,2    <span class="m">14536</span> <span class="m">13894192</span> /usr/lib/x86_64-linux-gnu/libck-connector.so.0.0.0
-php-cgi    <span class="m">9346</span> www-data  cwd    DIR  252,2    <span class="m">49152</span> <span class="m">13893777</span> /usr/bin
-php-cgi    <span class="m">9346</span> www-data  txt    REG  252,2  <span class="m">9022832</span> <span class="m">13894634</span> /usr/bin/php5-cgi
-php-cgi    <span class="m">9346</span> www-data  mem    REG  252,2   <span class="m">162032</span>  <span class="m">4333607</span> /usr/lib/php5/20121212/xcache.so
-php-cgi    <span class="m">9346</span> www-data  mem    REG  252,2   <span class="m">179184</span> <span class="m">13894891</span> /usr/lib/x86_64-linux-gnu/libedit.so.2.0.47
-php-cgi    <span class="m">9346</span> www-data  mem    REG  252,2    <span class="m">31472</span>  <span class="m">4332415</span> /usr/lib/php5/20121212/readline.so
-...
-...</code></pre></div>
+<p>The project is also open source and you can review the code <a href="http://code.google.com/p/google-authenticator/">here</a>.</p>
 
-<h3 id="iotop">iotop</h3>
+<h3 id="install-google-authenticator">install google authenticator</h3>
 
-<p>If we still don’t know what file(s) are being written to the most, you can use a program called ‘iotop’ to figure out what files on a certain mount are being written to more than anything else.</p>
+<p>To implement multifactor authentication with Google Authenticator, you’ll need the open-source Google Authenticator PAM module. PAM stands for ‘pluggable authentication module’ it’s a way to easily plug different forms of authentication into a Linux system.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:/# iotop -o -a -P -b -d <span class="m">5</span> -n <span class="m">5</span> <span class="sb">`</span>lsof +D /usr -t <span class="p">|</span> sed <span class="s1">&#39;s/^/-p /g&#39;</span><span class="sb">`</span>
-Total DISK READ :       0.00 B/s <span class="p">|</span> Total DISK WRITE :       0.00 B/s
-Actual DISK READ:       0.00 B/s <span class="p">|</span> Actual DISK WRITE:       0.00 B/s
-  PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
-Total DISK READ :       0.00 B/s <span class="p">|</span> Total DISK WRITE :      27.94 K/s
-Actual DISK READ:       0.00 B/s <span class="p">|</span> Actual DISK WRITE:     107.77 K/s
-  PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
-<span class="m">20396</span> be/4 www-data      0.00 B     24.00 K  0.00 %  2.24 % php-cgi
-<span class="m">32108</span> be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
-Total DISK READ :      59.67 K/s <span class="p">|</span> Total DISK WRITE :       3.98 K/s
-Actual DISK READ:      59.67 K/s <span class="p">|</span> Actual DISK WRITE:       3.98 K/s
-  PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
-<span class="m">20396</span> be/4 www-data      0.00 B     24.00 K  0.00 %  1.12 % php-cgi
-<span class="m">32108</span> be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
-Total DISK READ :       0.00 B/s <span class="p">|</span> Total DISK WRITE :       0.00 B/s
-Actual DISK READ:       0.00 B/s <span class="p">|</span> Actual DISK WRITE:       0.00 B/s
-  PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
-<span class="m">20396</span> be/4 www-data      0.00 B     24.00 K  0.00 %  0.75 % php-cgi
-<span class="m">32108</span> be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
-Total DISK READ :       0.00 B/s <span class="p">|</span> Total DISK WRITE :       3.98 K/s
-Actual DISK READ:       0.00 B/s <span class="p">|</span> Actual DISK WRITE:     286.66 K/s
-  PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
-<span class="m">20396</span> be/4 www-data      0.00 B     24.00 K  0.00 %  0.56 % php-cgi
-<span class="m">32108</span> be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
-root@earth:/#</code></pre></div>
+<p>Ubuntu’s software repositories contain an easy-to-install package for the Google Authenticator PAM module. If your Linux distribution doesn’t contain a package for this, you’ll have to download it from the Google Authenticator downloads page on Google Code and compile it yourself.</p>
 
-<p>In the above command we ask iotop: (-o) Only show processes or threads actually doing I/O, (-a) Show accumulated I/O instead of bandwidth, (-P) only show processes - not threads, (-b) turn on non-interactive mode, (-d 5) set the delay between iterations in seconds, (-n 5) set the number of iterations before quitting. Then we call lsof +D /usr -t to output only the PID’s that are currently using /usr and use sed to put -p in front of the PID so that it can be called with iotop. In the output you now have a list of PID’s that are currently using disk I/O on the drive in question.</p>
+<p>To install the package on Ubuntu, run the following command:</p>
 
-<p>Using some really great tools we’re able to figure out exactly what is causing heavy load of a file system so that we can deliver a better experience to users while ensuring we don’t over deliver and increase the costs of hosting.</p>
+<p>sudo apt-get install libpam-google-authenticator</p>
+
+<p>(This will only install the PAM module on your system you will have to activate it for SSH logins manually.)</p>
+
+<h3 id="create-an-authentication-key">create an authentication key</h3>
+
+<p>Now that the PAM module has been installed you will need to generate a authentication key. This is the pre-shared key that’s used as part of the seed to the TOTP.</p>
+
+<p>Login as the user you wish to use 2FA and type:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>google-authenticator</code></pre></div>
+
+<p>After answering ‘yes’ to the question if you want authentication tokens to be time-based, it should produce some output that looks like the following:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">Do you want authentication tokens to be <span class="nb">time</span>-based <span class="o">(</span>y/n<span class="o">)</span> y                                                                                                      <span class="o">[</span>11/220<span class="o">]</span>
+https://www.google.com/chart?chs<span class="o">=</span>200x200<span class="p">&amp;</span><span class="nv">chld</span><span class="o">=</span>M<span class="p">|</span>0<span class="p">&amp;</span><span class="nv">cht</span><span class="o">=</span>qr<span class="p">&amp;</span><span class="nv">chl</span><span class="o">=</span>otpauth://totp/root@vps%3Fsecret%3DS5JUU47ZVAE2IX4R
+
+&lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;/images/qr_code.jpg&quot;</span>&gt;
+
+Your new secret key is: S5JUU47ZVAE2IX4R
+Your verification code is 983290
+Your emergency scratch codes are:
+  97505839
+  65363572
+  25577686
+  65028652
+  13575975
+
+Do you want me to update your <span class="s2">&quot;/home/USERNAME/.google_authenticator&quot;</span> file <span class="o">(</span>y/n<span class="o">)</span> y</code></pre></div>
+
+<p>Google Authenticator will present you with a secret key and several ‘emergency scratch codes’. Write down the emergency scratch codes somewhere safe they can only be used one time each, and they’re intended for use if you lose your phone.</p>
+
+<p>You will also need to add the ‘secret key’ to your phone’s Google Authenticator app.</p>
+
+<p>Once you’ve added the ‘secret key’ to your phones Google Authenticator app, Answer ‘yes’ to updating your .google_authenticator file and then answer the following questions:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">Do you want to disallow multiple uses of the same authentication
+token? This restricts you to one login about every 30s, but it increases
+your chances to notice or even prevent man-in-the-middle attacks <span class="o">(</span>y/n<span class="o">)</span> y
+
+By default, tokens are good <span class="k">for</span> <span class="m">30</span> seconds and in order to compensate <span class="k">for</span>
+possible <span class="nb">time</span>-skew between the client and the server, we allow an extra
+token before and after the current time. If you experience problems with poor
+<span class="nb">time </span>synchronization, you can increase the window from its default
+size of 1:30min to about 4min. Do you want to <span class="k">do</span> so <span class="o">(</span>y/n<span class="o">)</span> n
+
+If the computer that you are logging into isn<span class="err">&#39;</span>t hardened against brute-force
+login attempts, you can <span class="nb">enable </span>rate-limiting <span class="k">for</span> the authentication module.
+By default, this limits attackers to no more than <span class="m">3</span> login attempts every 30s.
+Do you want to <span class="nb">enable </span>rate-limiting <span class="o">(</span>y/n<span class="o">)</span> y</code></pre></div>
+
+<h2 id="enable-google-authenticator">enable Google Authenticator</h2>
+
+<p>Now that you’ve setup everything it’s time to actually enable the PAM module. You can do this with the following:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;auth required pam_google_authenticator.so&#39;</span> <span class="p">|</span> sudo tee -a /etc/pam.d/sshd</code></pre></div>
+
+<p>You will also need to edit /etc/ssh/sshd_config. Look for the ‘ChallengeResponseAuthentication’ line and enable it.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">ChallengeResponseAuthentication yes</code></pre></div>
+
+<p>Finally, restart the SSH server so your changes will take effect:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo service ssh restart</code></pre></div>
+
+<h3 id="testing">testing</h3>
+
+<p>You can now simply ssh to localhost and see if you get the 2FA.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>ssh localhost
+Password:
+Verification code:
+<span class="err">$</span></code></pre></div>
+
 
                         <br>
                     
@@ -266,19 +263,19 @@ root@earth:/#</code></pre></div>
     </p>
     <ul class="social-mini">
         <li>
-            <a href="https://twitter.com/intent/tweet?text=&quot;Disk Debugging&quot;%20https://dodwell.us/disk-debugging%20via%20&#64;MichaelDodwell"
+            <a href="https://twitter.com/intent/tweet?text=&quot;Google Authenticator for SSH&quot;%20https://dodwell.us/security/google-authenticator%20via%20&#64;MichaelDodwell"
             onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
                 <i class="icon-twitter"></i>
             </a>
         </li>
         <li>
-            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us/disk-debugging"
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us/security/google-authenticator"
             onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
                 <i class="icon-facebook"></i>
             </a>
         </li>
         <li>
-            <a href="https://plus.google.com/share?url=https://dodwell.us/disk-debugging"
+            <a href="https://plus.google.com/share?url=https://dodwell.us/security/google-authenticator"
            onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
                 <i class="icon-google-plus"></i>
             </a>

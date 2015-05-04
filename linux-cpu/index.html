@@ -169,7 +169,7 @@
 
 <p>As a note in versions of Linux kernel 2.6 prior to 2.6.23, the scheduler used is an O(1) scheduler by Ingo Molnár. The scheduler used thereafter is the Completely Fair Scheduler, also by Ingo Molnár, which runs in O(log N) time.</p>
 
-<p>Because you can have multiple processes all running at the same time but we usually have a smaller number of core processors on the host, it’s important to realise that the kernel will switch (known as context switching) what process is running on the CPU at any time to another process that is in the queue waiting for CPU cycles. We end up with 2 different types of content switches, involuntary context switches and voluntary context switches. A voluntary context switch can occur whenever a thread/process makes a system call that blocks. An involuntary context switch occurs when a thread has been running too long (usually something like 10 ms) without making a system call that blocks and there are processes waiting for the CPU. </p>
+<p>Because you can have multiple processes all running at the same time but we usually have a smaller number of core processors on the host, it’s important to realise that the kernel will switch (known as context switching) what process is running on the CPU at any time to another process that is in the queue waiting for CPU cycles. We end up with 2 different types of content switches, involuntary context switches and voluntary context switches. A voluntary context switch can occur whenever a thread/process makes a system call that blocks. An involuntary context switch occurs when a thread has been running too long (usually something like 10 ms) without making a system call that blocks and there are processes waiting for the CPU.</p>
 
 <p>I don’t want to go into detail on how the scheduler works we just need to understand that context switching can be an important metric that we’ll talk about later.</p>
 
@@ -189,7 +189,7 @@ Linux 3.11.0-15-generic <span class="o">(</span>ultima<span class="o">)</span>  
 09:14:01 PM    <span class="m">3</span>    1.21    0.00    2.36    0.04    0.00    0.00    0.00    0.00    0.00   96.38
 root@earth:~#</code></pre></div>
 
-<p>The mpstat command display activities for each available processor, processor 0 being the first one. Global average activities among all processors are also reported. </p>
+<p>The mpstat command display activities for each available processor, processor 0 being the first one. Global average activities among all processors are also reported.</p>
 
 <p>Sometimes you may wish to see how the CPU has been running over the day and a tool called ‘sar’ takes care of this. sar by default will grab archived information that has been written to via a cron job.</p>
 
@@ -227,10 +227,10 @@ root@earth:~#</code></pre></div>
 
 <h3 id="munin">munin</h3>
 
-<p><a href="/images/cpu-day.png"><img src="/images/cpu-day.png" alt="cpu-day" width="378" height="286" style="float:left;" /></a>Using programs like Munin also are helpful in determining how CPU usage is performing over time. In the graph to the side we can quickly tell that the CPU on this host is fairly idle. It saves us considerable time if we have to review lots of servers on a periodic basis for this kind of information to be graphed in a easily read fashion. It is also helpful to look at trending over long periods of time that might not be that evident when looking at hourly/daily trends. </p>
+<p><a href="/images/cpu-day.png"><img src="/images/cpu-day.png" alt="cpu-day" width="378" height="286" style="float:left;" /></a>Using programs like Munin also are helpful in determining how CPU usage is performing over time. In the graph to the side we can quickly tell that the CPU on this host is fairly idle. It saves us considerable time if we have to review lots of servers on a periodic basis for this kind of information to be graphed in a easily read fashion. It is also helpful to look at trending over long periods of time that might not be that evident when looking at hourly/daily trends.</p>
 
 <blockquote>
-  <p>UPDATE (17/07/14): I just wanted to add a update to state something that I don’t think is that clear about steal time. A guest’s allocated CPU type will match the physical CPU of the host. If a service provider wishes to offer a ‘slower CPU’ but only host virtual machines on faster processors they will restrict the CPU resource on the host for the guest and when you run the guest you will see this reflected in the CPU steal time. </p>
+  <p>UPDATE (17/07/14): I just wanted to add a update to state something that I don’t think is that clear about steal time. A guest’s allocated CPU type will match the physical CPU of the host. If a service provider wishes to offer a ‘slower CPU’ but only host virtual machines on faster processors they will restrict the CPU resource on the host for the guest and when you run the guest you will see this reflected in the CPU steal time.</p>
 </blockquote>
 
                         <br>
