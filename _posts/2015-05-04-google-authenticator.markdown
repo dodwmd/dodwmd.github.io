@@ -49,7 +49,7 @@ $ google-authenticator
 
 After answering 'yes' to the question if you want authentication tokens to be time-based, it should produce some output that looks like the following:
 
-{% highlight %}
+{% highlight bash %}
 Do you want authentication tokens to be time-based (y/n) y                                                                                                      [11/220]
 https://www.google.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/root@vps%3Fsecret%3DS5JUU47ZVAE2IX4R
 
@@ -73,7 +73,7 @@ You will also need to add the 'secret key' to your phone's Google Authenticator 
 
 Once you've added the 'secret key' to your phones Google Authenticator app, Answer 'yes' to updating your .google_authenticator file and then answer the following questions:
 
-{% highlight %}
+{% highlight bash %}
 Do you want to disallow multiple uses of the same authentication
 token? This restricts you to one login about every 30s, but it increases
 your chances to notice or even prevent man-in-the-middle attacks (y/n) y
