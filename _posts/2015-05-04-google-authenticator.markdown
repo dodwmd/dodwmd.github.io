@@ -33,7 +33,9 @@ Ubuntu's software repositories contain an easy-to-install package for the Google
 
 To install the package on Ubuntu, run the following command:
 
-sudo apt-get install libpam-google-authenticator
+{% highlight bash %}
+$ sudo apt-get install libpam-google-authenticator
+{% endhighlight %}
 
 (This will only install the PAM module on your system you will have to activate it for SSH logins manually.)
 
@@ -50,10 +52,7 @@ $ google-authenticator
 After answering 'yes' to the question if you want authentication tokens to be time-based, it should produce some output that looks like the following:
 
 {% highlight bash %}
-Do you want authentication tokens to be time-based (y/n) y                                                                                                      [11/220]
-https://www.google.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/root@vps%3Fsecret%3DS5JUU47ZVAE2IX4R
-
-<img src="/images/qr_code.jpg">
+Do you want authentication tokens to be time-based (y/n) y
 
 Your new secret key is: S5JUU47ZVAE2IX4R
 Your verification code is 983290
@@ -90,7 +89,7 @@ By default, this limits attackers to no more than 3 login attempts every 30s.
 Do you want to enable rate-limiting (y/n) y
 {% endhighlight %}
 
-## enable Google Authenticator
+### enable Google Authenticator
 
 Now that you've setup everything it's time to actually enable the PAM module. You can do this with the following:
 
@@ -107,7 +106,7 @@ ChallengeResponseAuthentication yes
 Finally, restart the SSH server so your changes will take effect:
 
 {% highlight bash %}
-sudo service ssh restart
+$ sudo service ssh restart
 {% endhighlight %}
 
 ### testing
