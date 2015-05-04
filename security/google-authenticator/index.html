@@ -147,7 +147,7 @@
                         <div class="cursive" style="color: #000; font-style:italic;">Add Google Authenticator support to SSH</div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published"><time datetime="2015-05-04T00:00:00+10:00" class="post-time" itemprop="datePublished">04 May 2015</time><span>
-                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.17</span> minutes read</span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.205</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
@@ -176,7 +176,7 @@
 
 <p>To install the package on Ubuntu, run the following command:</p>
 
-<p>sudo apt-get install libpam-google-authenticator</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo apt-get install libpam-google-authenticator</code></pre></div>
 
 <p>(This will only install the PAM module on your system you will have to activate it for SSH logins manually.)</p>
 
@@ -190,10 +190,7 @@
 
 <p>After answering ‘yes’ to the question if you want authentication tokens to be time-based, it should produce some output that looks like the following:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">Do you want authentication tokens to be <span class="nb">time</span>-based <span class="o">(</span>y/n<span class="o">)</span> y                                                                                                      <span class="o">[</span>11/220<span class="o">]</span>
-https://www.google.com/chart?chs<span class="o">=</span>200x200<span class="p">&amp;</span><span class="nv">chld</span><span class="o">=</span>M<span class="p">|</span>0<span class="p">&amp;</span><span class="nv">cht</span><span class="o">=</span>qr<span class="p">&amp;</span><span class="nv">chl</span><span class="o">=</span>otpauth://totp/root@vps%3Fsecret%3DS5JUU47ZVAE2IX4R
-
-&lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;/images/qr_code.jpg&quot;</span>&gt;
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">Do you want authentication tokens to be <span class="nb">time</span>-based <span class="o">(</span>y/n<span class="o">)</span> y
 
 Your new secret key is: S5JUU47ZVAE2IX4R
 Your verification code is 983290
@@ -227,7 +224,7 @@ login attempts, you can <span class="nb">enable </span>rate-limiting <span class
 By default, this limits attackers to no more than <span class="m">3</span> login attempts every 30s.
 Do you want to <span class="nb">enable </span>rate-limiting <span class="o">(</span>y/n<span class="o">)</span> y</code></pre></div>
 
-<h2 id="enable-google-authenticator">enable Google Authenticator</h2>
+<h3 id="enable-google-authenticator">enable Google Authenticator</h3>
 
 <p>Now that you’ve setup everything it’s time to actually enable the PAM module. You can do this with the following:</p>
 
@@ -239,7 +236,7 @@ Do you want to <span class="nb">enable </span>rate-limiting <span class="o">(</s
 
 <p>Finally, restart the SSH server so your changes will take effect:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo service ssh restart</code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo service ssh restart</code></pre></div>
 
 <h3 id="testing">testing</h3>
 
