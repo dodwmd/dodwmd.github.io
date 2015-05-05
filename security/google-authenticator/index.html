@@ -147,12 +147,12 @@
                         <div class="cursive" style="color: #000; font-style:italic;">Add Google Authenticator support to SSH</div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published"><time datetime="2015-05-04T00:00:00+10:00" class="post-time" itemprop="datePublished">04 May 2015</time><span>
-                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.205</span> minutes read</span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.335</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
                         
-                        <p>Previously I posted on how to make some changes to SSH to improve it’s security. One of the configuration options I said to change was to disable password authentication. I want to cover how we can keep password authentication enable by using 2-factor authentication powered by Google Authenticator.</p>
+                        <p><a href="http://dodwell.us/security/ssh-setup/">Previously</a> I posted on how to make some changes to SSH to improve it’s security. One of the configuration options I said to change was to disable password authentication. I want to cover how you can keep password authentication enable by using 2-factor authentication powered by Google Authenticator.</p>
 
 <h3 id="what-is-it">what is it?</h3>
 
@@ -233,6 +233,10 @@ Do you want to <span class="nb">enable </span>rate-limiting <span class="o">(</s
 <p>You will also need to edit /etc/ssh/sshd_config. Look for the ‘ChallengeResponseAuthentication’ line and enable it.</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">ChallengeResponseAuthentication yes</code></pre></div>
+
+<p>If you followed my <a href="https://dodwell.us/security/ssh-setup/">previous post</a>, you will also need to update ‘PasswordAuthentication’ from ‘no’ to ‘yes’.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">PasswordAuthentication yes</code></pre></div>
 
 <p>Finally, restart the SSH server so your changes will take effect:</p>
 
