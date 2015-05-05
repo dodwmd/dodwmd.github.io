@@ -11,7 +11,7 @@ image:
 comments: false
 mathjax:
 ---
-Previously I posted on how to make some changes to SSH to improve it's security. One of the configuration options I said to change was to disable password authentication. I want to cover how we can keep password authentication enable by using 2-factor authentication powered by Google Authenticator.
+[Previously](http://dodwell.us/security/ssh-setup/) I posted on how to make some changes to SSH to improve it's security. One of the configuration options I said to change was to disable password authentication. I want to cover how you can keep password authentication enable by using 2-factor authentication powered by Google Authenticator.
 
 ### what is it? 
 
@@ -101,6 +101,12 @@ You will also need to edit /etc/ssh/sshd_config. Look for the 'ChallengeResponse
 
 {% highlight bash %}
 ChallengeResponseAuthentication yes
+{% endhighlight %}
+
+If you followed my [previous post](https://dodwell.us/security/ssh-setup/), you will also need to update 'PasswordAuthentication' from 'no' to 'yes'.
+
+{% highlight bash %}
+PasswordAuthentication yes
 {% endhighlight %}
 
 Finally, restart the SSH server so your changes will take effect:
