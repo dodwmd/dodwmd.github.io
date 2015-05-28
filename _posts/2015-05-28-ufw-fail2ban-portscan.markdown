@@ -1,29 +1,29 @@
 ---
 layout: post
-title: "ufw, fail2ban, portscans oh my!"
-description: Falling down the rabbit hole
-headline: ufw, fail2ban, portscans oh my!             # Will appear in bold letters on top of the post
+title: "UFW, fail2ban and blocking portscans oh my!"
+description: Using fail2ban and UFW together to block unwanted traffic
+headline: How to get UFW and fail2ban to work together to block port scanning  # Will appear in bold letters on top of the post
 modified: 2015-05-28                # Date
 category: security
 tags: []
 comments: false
 mathjax:
 ---
-I just wanted to write down some issues I had as a reminder to myself and some notes that other people might find useful. I want to be able to setup some automatic host based firewalling for some servers I look after so help mitigate any possible brute force attacks and general nastiness that you get on the internet. To do this I'm going to install ufw, fail2ban and setup some filters and actions in fail2ban to use information from ufw on Ubuntu 14.04.2.
+I just wanted to write down some issues I had as a reminder to myself and some notes that other people might find useful. I want to be able to setup some automatic host based firewall rules for some servers I look after so help mitigate any possible brute force attacks and general nastiness that you get on the internet. To do this I'm going to install UFW, fail2ban and setup some filters and actions in fail2ban to use information from UFW on Ubuntu 14.04.2.
 
 ### what is it? 
 
 *fail2ban*
 
-I've used [fail2ban](http://www.fail2ban.org/) as a minimal method to stop brute force attacks. Basically it will read config files for different services and if someone enters in the wrong password too many times will firewall them from the server for a period of time. This wont stop someone from 'eventually' brute forcing poor passwords but it increases the time taken expoentually and hopefully they get bored and move onto softer targets.
+I've used [fail2ban](http://www.fail2ban.org/) as a minimal method to stop brute force attacks. Basically it will read config files for different services and if someone enters in the wrong password too many times will firewall them from the server for a period of time. This wont stop someone from 'eventually' brute forcing poor passwords but it increases the time taken exponentially and hopefully they get bored and move onto softer targets.
 
-*ufw*
+*UFW*
 
-I've started using [ufw](https://help.ubuntu.com/community/UFW) a little while ago. Normally I prefer to use [shorewall](http://shorewall.net/) but it can be a little complex to setup at times so for this post I'm going to focus just on ufw.
+I've started using [UFW](https://help.ubuntu.com/community/UFW) a little while ago. Normally I prefer to use [shorewall](http://shorewall.net/) but it can be a little complex to setup at times so for this post I'm going to focus just on UFW.
 
 ### where to start
 
-First you need to get ufw all installed and ready to go.
+First you need to get UFW all installed and ready to go.
 
 {% highlight bash %}
 $ sudo apt-get -y install ufw fail2ban
@@ -36,7 +36,7 @@ $ sudo ufw disable
 $ sudo ufw enable
 {% endhighlight %}
 
-The above should install ufw & fail2ban. In UFW it should enable IPv6 support, allow ssh and setup some default firewall direction rules. We also want to only log denined packets to the kernel logger. The last step gives it a restart (disable/enable).
+The above should install UFW & fail2ban. In UFW it should enable IPv6 support, allow ssh and setup some default firewall direction rules. We also want to only log denined packets to the kernel logger. The last step gives it a restart (disable/enable).
 
 Now if we generate some port open requests from another server to a port other than ssh we should see this:
 {% highlight bash %}
@@ -55,7 +55,7 @@ root@vps:/etc/rsyslog.d# cat 20-ufw.conf
 root@vps:/etc/rsyslog.d#
 {% endhighlight %}
 
-Great ufw has already setup a method to log ufw messages. But when i checked /var/log/ufw.log it didn't exist. Restarting rsyslog didn't seem to help. But then i noticed /etc/rsyslogd.conf:
+Great UFW has already setup a method to log UFW messages. But when I checked /var/log/ufw.log it didn't exist. Restarting rsyslog didn't seem to help. But then I noticed /etc/rsyslogd.conf:
 
 
 {% highlight bash %}
@@ -98,7 +98,7 @@ Checking /var/log/ufw.log it now exists and it has some data in it for us to pla
 
 ### fail2ban
 
-fail2ban will insert iptables rules when it chooses to ban hosts. This can cause a problem with ufw so lets make fail2ban play nicely with ufw.
+fail2ban will insert iptables rules when it chooses to ban hosts. This can cause a problem with UFW so lets make fail2ban play nicely with UFW.
 
 First lets setup a action rule that we can use to deny/allow users:
 
