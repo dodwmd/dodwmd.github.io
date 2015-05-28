@@ -2,22 +2,22 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>ufw, fail2ban, portscans oh my! &#8211; dodwell.us</title>
-<meta name="description" content="Falling down the rabbit hole">
+<title>UFW, fail2ban and blocking portscans oh my! &#8211; dodwell.us</title>
+<meta name="description" content="Using fail2ban and UFW together to block unwanted traffic">
 <meta name="keywords" content="">
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://dodwell.us/images/devops_logo.gif">
-<meta name="twitter:title" content="ufw, fail2ban, portscans oh my!">
-<meta name="twitter:description" content="Falling down the rabbit hole">
+<meta name="twitter:title" content="UFW, fail2ban and blocking portscans oh my!">
+<meta name="twitter:description" content="Using fail2ban and UFW together to block unwanted traffic">
 <meta name="twitter:creator" content="@MichaelDodwell">
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ufw, fail2ban, portscans oh my!">
-<meta property="og:description" content="Falling down the rabbit hole">
+<meta property="og:title" content="UFW, fail2ban and blocking portscans oh my!">
+<meta property="og:description" content="Using fail2ban and UFW together to block unwanted traffic">
 <meta property="og:url" content="https://dodwell.us/security/ufw-fail2ban-portscan">
 <meta property="og:site_name" content="dodwell.us">
 <meta property="og:image" content="https://dodwell.us/images/default_bg1.jpg">
@@ -105,7 +105,7 @@
                 
             </a>
             <h2 class="blog-description light bordered bordered-top" itemprop="description">
-                ufw, fail2ban, portscans oh my!
+                How to get UFW and fail2ban to work together to block port scanning
             </h2>
         </div>
     </div>
@@ -142,31 +142,31 @@
                     <header class="post-header entry-header">
                     
                         
-                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">ufw, fail2ban, portscans oh my!</h1>
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">UFW, fail2ban and blocking portscans oh my!</h1>
                         
-                        <div class="cursive" style="color: #000; font-style:italic;">Falling down the rabbit hole</div>
+                        <div class="cursive" style="color: #000; font-style:italic;">Using fail2ban and UFW together to block unwanted traffic</div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published"><time datetime="2015-05-28T00:00:00+10:00" class="post-time" itemprop="datePublished">28 May 2015</time><span>
-                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.085</span> minutes read</span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.09</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
                         
-                        <p>I just wanted to write down some issues I had as a reminder to myself and some notes that other people might find useful. I want to be able to setup some automatic host based firewalling for some servers I look after so help mitigate any possible brute force attacks and general nastiness that you get on the internet. To do this I’m going to install ufw, fail2ban and setup some filters and actions in fail2ban to use information from ufw on Ubuntu 14.04.2.</p>
+                        <p>I just wanted to write down some issues I had as a reminder to myself and some notes that other people might find useful. I want to be able to setup some automatic host based firewall rules for some servers I look after so help mitigate any possible brute force attacks and general nastiness that you get on the internet. To do this I’m going to install UFW, fail2ban and setup some filters and actions in fail2ban to use information from UFW on Ubuntu 14.04.2.</p>
 
 <h3 id="what-is-it">what is it?</h3>
 
 <p><em>fail2ban</em></p>
 
-<p>I’ve used <a href="http://www.fail2ban.org/">fail2ban</a> as a minimal method to stop brute force attacks. Basically it will read config files for different services and if someone enters in the wrong password too many times will firewall them from the server for a period of time. This wont stop someone from ‘eventually’ brute forcing poor passwords but it increases the time taken expoentually and hopefully they get bored and move onto softer targets.</p>
+<p>I’ve used <a href="http://www.fail2ban.org/">fail2ban</a> as a minimal method to stop brute force attacks. Basically it will read config files for different services and if someone enters in the wrong password too many times will firewall them from the server for a period of time. This wont stop someone from ‘eventually’ brute forcing poor passwords but it increases the time taken exponentially and hopefully they get bored and move onto softer targets.</p>
 
-<p><em>ufw</em></p>
+<p><em>UFW</em></p>
 
-<p>I’ve started using <a href="https://help.ubuntu.com/community/UFW">ufw</a> a little while ago. Normally I prefer to use <a href="http://shorewall.net/">shorewall</a> but it can be a little complex to setup at times so for this post I’m going to focus just on ufw.</p>
+<p>I’ve started using <a href="https://help.ubuntu.com/community/UFW">UFW</a> a little while ago. Normally I prefer to use <a href="http://shorewall.net/">shorewall</a> but it can be a little complex to setup at times so for this post I’m going to focus just on UFW.</p>
 
 <h3 id="where-to-start">where to start</h3>
 
-<p>First you need to get ufw all installed and ready to go.</p>
+<p>First you need to get UFW all installed and ready to go.</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo apt-get -y install ufw fail2ban
 <span class="nv">$ </span>sudo sed -i <span class="s1">&#39;s/IPV6=no/IPV6=yes/g&#39;</span> /etc/default/ufw
@@ -177,7 +177,7 @@
 <span class="nv">$ </span>sudo ufw disable
 <span class="nv">$ </span>sudo ufw <span class="nb">enable</span></code></pre></div>
 
-<p>The above should install ufw &amp; fail2ban. In UFW it should enable IPv6 support, allow ssh and setup some default firewall direction rules. We also want to only log denined packets to the kernel logger. The last step gives it a restart (disable/enable).</p>
+<p>The above should install UFW &amp; fail2ban. In UFW it should enable IPv6 support, allow ssh and setup some default firewall direction rules. We also want to only log denined packets to the kernel logger. The last step gives it a restart (disable/enable).</p>
 
 <p>Now if we generate some port open requests from another server to a port other than ssh we should see this:</p>
 
@@ -193,7 +193,7 @@ root@vps:/etc/rsyslog.d# cat 20-ufw.conf
 :msg,contains,<span class="s2">&quot;[UFW &quot;</span> /var/log/ufw.log
 root@vps:/etc/rsyslog.d#</code></pre></div>
 
-<p>Great ufw has already setup a method to log ufw messages. But when i checked /var/log/ufw.log it didn’t exist. Restarting rsyslog didn’t seem to help. But then i noticed /etc/rsyslogd.conf:</p>
+<p>Great UFW has already setup a method to log UFW messages. But when I checked /var/log/ufw.log it didn’t exist. Restarting rsyslog didn’t seem to help. But then I noticed /etc/rsyslogd.conf:</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#  /etc/rsyslog.conf    Configuration file for rsyslog.</span>
 <span class="c">#</span>
@@ -228,7 +228,7 @@ root@vps:/etc/rsyslog.d#</code></pre></div>
 
 <h3 id="fail2ban">fail2ban</h3>
 
-<p>fail2ban will insert iptables rules when it chooses to ban hosts. This can cause a problem with ufw so lets make fail2ban play nicely with ufw.</p>
+<p>fail2ban will insert iptables rules when it chooses to ban hosts. This can cause a problem with UFW so lets make fail2ban play nicely with UFW.</p>
 
 <p>First lets setup a action rule that we can use to deny/allow users:</p>
 
@@ -273,7 +273,7 @@ root@vps:/etc/rsyslog.d#</code></pre></div>
     </p>
     <ul class="social-mini">
         <li>
-            <a href="https://twitter.com/intent/tweet?text=&quot;ufw, fail2ban, portscans oh my!&quot;%20https://dodwell.us/security/ufw-fail2ban-portscan%20via%20&#64;MichaelDodwell"
+            <a href="https://twitter.com/intent/tweet?text=&quot;UFW, fail2ban and blocking portscans oh my!&quot;%20https://dodwell.us/security/ufw-fail2ban-portscan%20via%20&#64;MichaelDodwell"
             onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
                 <i class="icon-twitter"></i>
             </a>
