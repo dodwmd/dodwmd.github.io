@@ -147,7 +147,7 @@
                         <div class="cursive" style="color: #000; font-style:italic;">Using fail2ban and UFW together to block unwanted traffic</div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published"><time datetime="2015-05-28T00:00:00+10:00" class="post-time" itemprop="datePublished">28 May 2015</time><span>
-                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.55</span> minutes read</span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.555</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
@@ -237,7 +237,7 @@ root@vps:/etc/rsyslog.d#</code></pre></div>
 <span class="s1">actionstop =</span>
 <span class="s1">actioncheck =</span>
 <span class="s1">actionban = ufw deny in from &lt;ip&gt;</span>
-<span class="s1">actionunban = ufw allow in from &lt;ip&gt;&#39;</span> <span class="p">|</span> sudo tee /etc/fail2ban/action.d/ufw.conf</code></pre></div>
+<span class="s1">actionunban = ufw delete deny in from &lt;ip&gt;&#39;</span> <span class="p">|</span> sudo tee /etc/fail2ban/action.d/ufw.conf</code></pre></div>
 
 <p>While here you might want to edit your jail.conf file and update where required the actions of other services you want to monitor.</p>
 
