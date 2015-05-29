@@ -147,7 +147,7 @@
                         <div class="cursive" style="color: #000; font-style:italic;">Using fail2ban and UFW together to block unwanted traffic</div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published"><time datetime="2015-05-28T00:00:00+10:00" class="post-time" itemprop="datePublished">28 May 2015</time><span>
-                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.09</span> minutes read</span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.55</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
@@ -230,14 +230,14 @@ root@vps:/etc/rsyslog.d#</code></pre></div>
 
 <p>fail2ban will insert iptables rules when it chooses to ban hosts. This can cause a problem with UFW so lets make fail2ban play nicely with UFW.</p>
 
-<p>First lets setup a action rule that we can use to deny/allow users:</p>
+<p>First lets setup a action rule that we can use to deny/allow users from being able to connect in:</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">&#39;[Definition]</span>
 <span class="s1">actionstart =</span>
 <span class="s1">actionstop =</span>
 <span class="s1">actioncheck =</span>
-<span class="s1">actionban = ufw deny from &lt;ip&gt;</span>
-<span class="s1">actionunban = ufw allow from &lt;ip&gt;&#39;</span> <span class="p">|</span> sudo tee /etc/fail2ban/action.d/ufw.conf</code></pre></div>
+<span class="s1">actionban = ufw deny in from &lt;ip&gt;</span>
+<span class="s1">actionunban = ufw allow in from &lt;ip&gt;&#39;</span> <span class="p">|</span> sudo tee /etc/fail2ban/action.d/ufw.conf</code></pre></div>
 
 <p>While here you might want to edit your jail.conf file and update where required the actions of other services you want to monitor.</p>
 
@@ -247,6 +247,12 @@ root@vps:/etc/rsyslog.d#</code></pre></div>
 <span class="s1">failregex = UFW BLOCK.* SRC=&lt;HOST&gt;</span>
 <span class="s1">ignoreregex =&#39;</span> <span class="p">|</span> sudo tee /etc/fail2ban/filter.d/portscan.conf</code></pre></div>
 
+<p>Now the clever amoung you will realise that UFW will block port ATTEMPTS which means that some nice fellow could craft some packets so that the connection attempt comes from hosts that should be allowed to connect.</p>
+
+<p>Lets setup some whitelist rules to make sure our networks and hosts that should never be firewalled aren’t. In jail.conf you will find a ‘whitelist’ varible. Lets update this with all our friendly networks.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">whilelist</span> <span class="o">=</span> 10.0.0.0/8</code></pre></div>
+
 <p>Ok now we just need to add a rule to tie it all together in our jail.conf file:</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">&#39;[portscan]</span>
@@ -254,6 +260,7 @@ root@vps:/etc/rsyslog.d#</code></pre></div>
 <span class="s1">filter   = portscan</span>
 <span class="s1">logpath  = /var/log/ufw.log</span>
 <span class="s1">action   = ufw</span>
+<span class="s1">maxretry = 5</span>
 <span class="s1">&#39;</span> <span class="p">|</span> tee -a /etc/fail2ban/jail.conf</code></pre></div>
 
 <p>And lastly don’t forget to reload fail2ban:</p>
