@@ -100,15 +100,15 @@ Checking /var/log/ufw.log it now exists and it has some data in it for us to pla
 
 fail2ban will insert iptables rules when it chooses to ban hosts. This can cause a problem with UFW so lets make fail2ban play nicely with UFW.
 
-First lets setup a action rule that we can use to deny/allow users:
+First lets setup a action rule that we can use to deny/allow users from being able to connect in:
 
 {% highlight bash %}
 echo '[Definition]
 actionstart =
 actionstop =
 actioncheck =
-actionban = ufw deny from <ip>
-actionunban = ufw allow from <ip>' | sudo tee /etc/fail2ban/action.d/ufw.conf
+actionban = ufw deny in from <ip>
+actionunban = ufw allow in from <ip>' | sudo tee /etc/fail2ban/action.d/ufw.conf
 {% endhighlight %}
 
 While here you might want to edit your jail.conf file and update where required the actions of other services you want to monitor.
@@ -121,6 +121,14 @@ failregex = UFW BLOCK.* SRC=<HOST>
 ignoreregex =' | sudo tee /etc/fail2ban/filter.d/portscan.conf
 {% endhighlight %}
 
+Now the clever amoung you will realise that UFW will block port ATTEMPTS which means that some nice fellow could craft some packets so that the connection attempt comes from hosts that should be allowed to connect.
+
+Lets setup some whitelist rules to make sure our networks and hosts that should never be firewalled aren't. In jail.conf you will find a 'whitelist' varible. Lets update this with all our friendly networks.
+
+{% highlight bash %}
+whilelist = 10.0.0.0/8
+{% endhighlight %}
+
 Ok now we just need to add a rule to tie it all together in our jail.conf file:
 
 {% highlight bash %}
@@ -129,6 +137,7 @@ enabled  = true
 filter   = portscan
 logpath  = /var/log/ufw.log
 action   = ufw
+maxretry = 5
 ' | tee -a /etc/fail2ban/jail.conf
 {% endhighlight %}
 
