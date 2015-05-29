@@ -108,7 +108,7 @@ actionstart =
 actionstop =
 actioncheck =
 actionban = ufw deny in from <ip>
-actionunban = ufw allow in from <ip>' | sudo tee /etc/fail2ban/action.d/ufw.conf
+actionunban = ufw delete deny in from <ip>' | sudo tee /etc/fail2ban/action.d/ufw.conf
 {% endhighlight %}
 
 While here you might want to edit your jail.conf file and update where required the actions of other services you want to monitor.
