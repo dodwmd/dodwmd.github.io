@@ -35,7 +35,7 @@ Ensure that each of your web pages have a unique meta description that is explic
 
 A good description acts as a potential organic advertisement and encourages the viewer to click through to your site.
 
-Check your GoogleTM Webmaster Tools (Search Appearance > HTML Improvements) for any warning messages to identify meta descriptions that are too long/short or duplicated across more than one page.
+Check your Google Webmaster Tools (Search Appearance > HTML Improvements) for any warning messages to identify meta descriptions that are too long/short or duplicated across more than one page.
 
 ### Headings 
 
@@ -63,7 +63,7 @@ Adding alternative text can help to reinforce how relevant a page is to its targ
 
 Check the images on your website and make sure effective alternative text is specified for each image.
 
-Restrict the number of characters in alt text to 150, including spaces, and minimize the size of images to optimize your website's page [load times](https://dodwell.us/website-minification/).
+Restrict the number of characters in alt text to 150, including spaces, and minimize the size of images to optimize your website's page [load times](https://dodwell.us/website/website-minification/).
 
 ### Text/HTML Ratio
 
@@ -113,7 +113,7 @@ Make sure you redirect your web users to a single host. Don't allow the site to 
 
 Pages that load successfully both with and without www. are treated as duplicate content!
 
-Be sure that www.plus613.com and plus613.com are not running in parallel.
+Be sure that www.dodwell.us and dodwell.us are not running in parallel.
 
 Redirecting requests from a non-preferred hostname is important because search engines consider URLs with and without "www" as two different websites.
 
@@ -275,7 +275,7 @@ Tip: Use images with a small size and optimize their download with gzip.
 
 Site speed is becoming an important factor for ranking high in Google search results and enriching the user experience.
 
-Resources: Check out GoogleTM's developer tutorials for tips on how to to make your website run faster.
+Resources: Check out Google's developer tutorials for tips on how to to make your website run faster.
 
 Monitor your server and receive SMS alerts when your website is down with a web monitoring service.
 

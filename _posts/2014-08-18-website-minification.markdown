@@ -3,6 +3,7 @@ layout: post
 status: publish
 published: true
 title: Website Minification
+category: website
 date: !binary |-
   MjAxNC0wOC0xOCAxMjoxOTowNyAtMDQwMA==
 date_gmt: !binary |-
