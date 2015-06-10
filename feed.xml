@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+	<channel>
+		<title></title>
+		<description>DevOPS: For fun and profit</description>		
+		<link>https://dodwell.us</link>
+		<atom:link href="https://dodwell.us/feed.xml" rel="self" type="application/rss+xml" />
+		
+			<item>
+				<title>SEO improvements to help your site succeed</title>
+				        
+				
+					<description>&lt;p&gt;I run a few different client sites and some personal ones and wanted to share with the greater community different tips on how to improve your search engine ranking. Alot of different sites offer this information with big price tags and most of it is just common sense.&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Thu, 04 Jun 2015 00:00:00 +1000</pubDate>
+				<link>https://dodwell.us/website/soe-improvements</link>
+				<guid isPermaLink="true">https://dodwell.us/website/soe-improvements</guid>
+			</item>
+		
+			<item>
+				<title>UFW, fail2ban and blocking portscans oh my!</title>
+				        
+				
+					<description>&lt;p&gt;I just wanted to write down some issues I had as a reminder to myself and some notes that other people might find useful. I want to be able to setup some automatic host based firewall rules for some servers I look after so help mitigate any possible brute force attacks and general nastiness that you get on the internet. To do this I&amp;#8217;m going to install UFW, fail2ban and setup some filters and actions in fail2ban to use information from UFW on Ubuntu 14.04.2.&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Thu, 28 May 2015 00:00:00 +1000</pubDate>
+				<link>https://dodwell.us/security/ufw-fail2ban-portscan</link>
+				<guid isPermaLink="true">https://dodwell.us/security/ufw-fail2ban-portscan</guid>
+			</item>
+		
+			<item>
+				<title>Google Authenticator for SSH</title>
+				        
+				
+					<description>&lt;p&gt;&lt;a href=&quot;http://dodwell.us/security/ssh-setup/&quot;&gt;Previously&lt;/a&gt; I posted on how to make some changes to SSH to improve it&amp;#8217;s security. One of the configuration options I said to change was to disable password authentication. I want to cover how you can keep password authentication enable by using 2-factor authentication powered by Google Authenticator.&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Mon, 04 May 2015 00:00:00 +1000</pubDate>
+				<link>https://dodwell.us/security/google-authenticator</link>
+				<guid isPermaLink="true">https://dodwell.us/security/google-authenticator</guid>
+			</item>
+		
+			<item>
+				<title>Free HTML Webhosting</title>
+				        
+				
+					<description>&lt;p&gt;I wanted to cover off how I currently host this blog for free using a number of services being offered by different companies.&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Thu, 16 Apr 2015 00:00:00 +1000</pubDate>
+				<link>https://dodwell.us/blog/html-hosting</link>
+				<guid isPermaLink="true">https://dodwell.us/blog/html-hosting</guid>
+			</item>
+		
+			<item>
+				<title>Hello fellow rabbits</title>
+				        
+				
+					<description>&lt;p&gt;&lt;img width=&quot;730&quot; src=&quot;/images/qu22dve.jpg&quot; /&gt;&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Tue, 10 Mar 2015 00:00:00 +1100</pubDate>
+				<link>https://dodwell.us/funny/easter</link>
+				<guid isPermaLink="true">https://dodwell.us/funny/easter</guid>
+			</item>
+		
+			<item>
+				<title>Huuuge Disappointment</title>
+				        
+				
+					<description>&lt;p&gt;&lt;img width=&quot;730&quot; src=&quot;/images/jO9v67o.png&quot; /&gt;&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Tue, 03 Mar 2015 00:00:00 +1100</pubDate>
+				<link>https://dodwell.us/funny/boomers</link>
+				<guid isPermaLink="true">https://dodwell.us/funny/boomers</guid>
+			</item>
+		
+			<item>
+				<title>Brain Hack</title>
+				        
+				
+					<description>&lt;center&gt;&lt;iframe width=&quot;560&quot; height=&quot;420&quot; src=&quot;https://player.vimeo.com/video/118342272 &quot; frameborder=&quot;0&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/center&gt;
+
+</description>
+				
+				<pubDate>Sat, 21 Feb 2015 00:00:00 +1100</pubDate>
+				<link>https://dodwell.us/videos/brain-hack</link>
+				<guid isPermaLink="true">https://dodwell.us/videos/brain-hack</guid>
+			</item>
+		
+			<item>
+				<title>Secure SSH Setup</title>
+				        
+				
+					<description>&lt;p&gt;Previously I posted on how to make some changes to SSL to improve it&amp;#8217;s security for your users. This post I want to cover off some information on how to setup SSH to secure your server for yourself.&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Wed, 21 Jan 2015 00:00:00 +1100</pubDate>
+				<link>https://dodwell.us/security/ssh-setup</link>
+				<guid isPermaLink="true">https://dodwell.us/security/ssh-setup</guid>
+			</item>
+		
+			<item>
+				<title>Hosting OSX on ESXi</title>
+				        
+				
+					<description>&lt;p&gt;It&amp;#8217;s been awhile since I&amp;#8217;ve posted.&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Mon, 08 Dec 2014 00:00:00 +1100</pubDate>
+				<link>https://dodwell.us/osx-esxi</link>
+				<guid isPermaLink="true">https://dodwell.us/osx-esxi</guid>
+			</item>
+		
+			<item>
+				<title>What do you do?</title>
+				        
+				
+					<description>&lt;center&gt;&lt;iframe width=&quot;560&quot; height=&quot;420&quot; src=&quot;https://www.youtube.com/embed/2-OQhot_ml0?color=white&amp;amp;theme=light&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;&lt;/center&gt;
+
+</description>
+				
+				<pubDate>Sun, 21 Sep 2014 00:00:00 +1000</pubDate>
+				<link>https://dodwell.us/videos/what-do-you-do</link>
+				<guid isPermaLink="true">https://dodwell.us/videos/what-do-you-do</guid>
+			</item>
+		
+	</channel>
+</rss>
