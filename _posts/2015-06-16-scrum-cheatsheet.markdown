@@ -3,7 +3,6 @@ layout: post
 type:  photo                # ! Important
 title: "Scrum Cheatsheet"
 photo: scrum-cheatsheet.jpg
-modified: 2015-03-03        # Date
 category: devops
 tags: []
 comments: false
