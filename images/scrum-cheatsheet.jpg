@@ -1,0 +1,280 @@
+ <!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=10.000"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <meta http-equiv="cache-control" content="no-cache,no-store"/>
+        <meta http-equiv="pragma" content="no-cache"/>
+        <meta http-equiv="expires" content="-1"/>
+        <meta name='mswebdialog-title' content='Connecting to Accenture'/>
+
+        <title>Sign In</title>
+        <script type='text/javascript'>
+//<![CDATA[
+function LoginErrors(){this.userNameFormatError = 'Enter your user ID in the format \u0026quot;domain\\user\u0026quot; or \u0026quot;user@domain\u0026quot;.'; this.passwordEmpty = 'Enter your password.';}
+//]]>
+</script>
+
+<script type='text/javascript'>
+//<![CDATA[
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+function InputUtil(errTextElementID, errDisplayElementID) {
+
+    if (!errTextElementID)  errTextElementID = 'errorText'; 
+    if (!errDisplayElementID)  errDisplayElementID = 'error'; 
+
+    this.hasFocus = false;
+    this.errLabel = document.getElementById(errTextElementID);
+    this.errDisplay = document.getElementById(errDisplayElementID);
+};
+InputUtil.prototype.canDisplayError = function () {
+    return this.errLabel && this.errDisplay;
+}
+InputUtil.prototype.checkError = function () {
+    if (!this.canDisplayError){
+        throw new Error ('Error element not present');
+    }
+    if (this.errLabel && this.errLabel.innerHTML) {
+        this.errDisplay.style.display = '';        
+        var cause = this.errLabel.getAttribute('for');
+        if (cause) {
+            var causeNode = document.getElementById(cause);
+            if (causeNode && causeNode.value) {
+                causeNode.focus();
+                this.hasFocus = true;
+            }
+        }
+    }
+    else {
+        this.errDisplay.style.display = 'none';
+    }
+};
+InputUtil.prototype.setInitialFocus = function (input) {
+    if (this.hasFocus) return;
+    var node = document.getElementById(input);
+    if (node) {
+        if ((/^\s*$/).test(node.value)) {
+            node.focus();
+            this.hasFocus = true;
+        }
+    }
+};
+InputUtil.prototype.setError = function (input, errorMsg) {
+    if (!this.canDisplayError) {
+        throw new Error('Error element not present');
+    }
+    input.focus();
+
+    if (errorMsg) {
+        this.errLabel.innerHTML = errorMsg;
+    }
+    this.errLabel.setAttribute('for', input.id);
+    this.errDisplay.style.display = '';
+};
+InputUtil.makePlaceholder = function (input) {
+    var ua = navigator.userAgent;
+
+    if (ua != null && 
+        (ua.match(/MSIE 9.0/) != null || 
+         ua.match(/MSIE 8.0/) != null ||
+         ua.match(/MSIE 7.0/) != null)) {
+        var node = document.getElementById(input);
+        if (node) {
+            var placeholder = node.getAttribute("placeholder");
+            if (placeholder != null && placeholder != '') {
+                var label = document.createElement('input');
+                label.type = "text";
+                label.value = placeholder;
+                label.readOnly = true;
+                label.style.position = 'absolute';
+                label.style.borderColor = 'transparent';
+                label.className = node.className + ' hint';
+                label.tabIndex = -1;
+                label.onfocus = function () { this.nextSibling.focus(); };
+
+                node.style.position = 'relative';
+                node.parentNode.style.position = 'relative';
+                node.parentNode.insertBefore(label, node);
+                node.onkeyup = function () { InputUtil.showHint(this); };
+                node.onblur = function () { InputUtil.showHint(this); };
+                node.style.background = 'transparent';
+
+                node.setAttribute("placeholder", "");
+                InputUtil.showHint(node);
+            }
+        }
+    }
+};
+InputUtil.focus = function (inputField) {
+    var node = document.getElementById(inputField);
+    if (node) node.focus();
+};
+InputUtil.hasClass = function(node, clsName) {
+    return node.className.match(new RegExp('(\\s|^)' + clsName + '(\\s|$)'));
+};
+InputUtil.addClass = function(node, clsName) {
+    if (!this.hasClass(node, clsName)) node.className += " " + clsName;
+};
+InputUtil.removeClass = function(node, clsName) {
+    if (this.hasClass(node, clsName)) {
+        var reg = new RegExp('(\\s|^)' + clsName + '(\\s|$)');
+        node.className = node.className.replace(reg, ' ');
+    }
+};
+InputUtil.showHint = function (node, gotFocus) {
+    if (node.value && node.value != '') {
+        node.previousSibling.style.display = 'none';
+    }
+    else {
+        node.previousSibling.style.display = '';
+    }
+};
+//]]>
+</script>
+
+
+        
+        <link rel="stylesheet" type="text/css" href="/adfs/portal/css/style.css?id=D9E01AABDC86AEA0959894D5479BDA2A50E06CA0E74FE3E05E5DD3798AC91B82" /><style>.illustrationClass {background-image:url(/adfs/portal/illustration/illustration.jpg?id=7C372F0BCE4F1651C73F52D432BCED7F0F694B792FF46107344FFDD9447F88A7);}</style>
+
+    </head>
+    <body dir="ltr" class="body">
+    <div id="noScript" style="position:static; width:100%; height:100%; z-index:100">
+        <h1>JavaScript required</h1>
+        <p>JavaScript is required. This web browser does not support JavaScript or JavaScript in this web browser is not enabled.</p>
+        <p>To find out if your web browser supports JavaScript or to enable JavaScript, see web browser help.</p>
+    </div>
+    <script type="text/javascript" language="JavaScript">
+         document.getElementById("noScript").style.display = "none";
+    </script>
+    <div id="fullPage">
+        <div id="brandingWrapper" class="float">
+            <div id="branding"></div>
+        </div>
+        <div id="contentWrapper" class="float">
+            <div id="content">
+                <div id="header">
+                    <img class="logoImage" src="/adfs/portal/logo/logo.png?id=AA4E9811D30F736F0A1B97F5C6DCEF02954083F86A2B5354F268AC72E2F1E57A" alt="Accenture"/>
+                </div>
+                <div id="workArea">
+                    
+    <div id="authArea" class="groupMargin">
+        
+        
+    <div id="loginArea">        
+        <div id="loginMessage" class="groupMargin">Sign in with your organizational account</div>
+
+        <form method="post" id="loginForm" autocomplete="off" novalidate="novalidate" onKeyPress="if (event && event.keyCode == 13) Login.submitLoginRequest();" action="/adfs/ls/?wa=wsignin1.0&wreply=https:%2F%2Fblog.accenture.com%2F&wct=2015-06-16T04:03:07Z&wctx=e2ac6cc0-9a3f-4585-bf01-941dae564cd3&ttpindex=0" >
+            <div id="error" class="fieldMargin error smallText">
+                <label id="errorText" for=""></label>
+            </div>
+
+            <div id="formsAuthenticationArea">
+                <div id="userNameArea">
+                    <input id="userNameInput" name="UserName" type="email" value="" tabindex="1" class="text fullWidth" 
+                        spellcheck="false" placeholder="someone@example.com" autocomplete="off"/>     
+                </div>
+
+                <div id="passwordArea">
+                     <input id="passwordInput" name="Password" type="password" tabindex="2" class="text fullWidth" 
+                        placeholder="Password" autocomplete="off"/>                                   
+                </div>
+                <div id="kmsiArea" style="display:none">
+                    <input type="checkbox" name="Kmsi" id="kmsiInput" value="true" tabindex="3" />
+                    <label for="kmsiInput">Keep me signed in</label>
+                </div>
+                <div id="submissionArea" class="submitMargin">
+                    <span id="submitButton" class="submit" tabindex="4" 
+                        onKeyPress="if (event && event.keyCode == 32) Login.submitLoginRequest();" 
+                        onclick="return Login.submitLoginRequest();">Sign in</span>
+                </div>
+            </div>
+            <input id="optionForms" type="hidden" name="AuthMethod" value="FormsAuthentication"/>
+        </form>
+
+             <div id="authOptions">
+        <form id="options"  method="post" action="https://federation-sts.accenture.com:443/adfs/ls/?wa=wsignin1.0&wreply=https:%2F%2Fblog.accenture.com%2F&wct=2015-06-16T04:03:07Z&wctx=e2ac6cc0-9a3f-4585-bf01-941dae564cd3&ttpindex=0">
+            <script type="text/javascript">
+                function SelectOption(option) {
+                    var i = document.getElementById('optionSelection');
+                    i.value = option;
+                    document.forms['options'].submit();
+                    return false;
+                }
+            </script>
+            <input id="optionSelection" type="hidden" name="AuthMethod" />
+            <div class='groupMargin'></div>
+        </form>
+      </div>
+
+        <div id="introduction" class="groupMargin">
+                                 
+        </div>
+
+        <script type="text/javascript">
+        //<![CDATA[
+
+            function Login() {
+            }
+
+            Login.userNameInput = 'userNameInput';
+            Login.passwordInput = 'passwordInput';
+
+            Login.initialize = function () {
+
+                var u = new InputUtil();
+
+                u.checkError();
+                u.setInitialFocus(Login.userNameInput);
+                u.setInitialFocus(Login.passwordInput);
+            }();
+
+            Login.submitLoginRequest = function () { 
+                var u = new InputUtil();
+                var e = new LoginErrors();
+
+                var userName = document.getElementById(Login.userNameInput);
+                var password = document.getElementById(Login.passwordInput);
+
+                if (!userName.value || !userName.value.match('[@\\\\]')) {
+                    u.setError(userName, e.userNameFormatError);
+                    return false;
+                }
+
+                if (!password.value) {
+                    u.setError(password, e.passwordEmpty);
+                    return false;
+                }
+
+                document.forms['loginForm'].submit();
+                return false;
+            };
+
+            InputUtil.makePlaceholder(Login.userNameInput);
+            InputUtil.makePlaceholder(Login.passwordInput);
+        //]]>
+        </script>
+    </div>
+
+    </div>
+
+                </div>
+                <div id="footerPlaceholder"></div>
+            </div>
+            <div id="footer">
+                <div id="footerLinks" class="floatReverse">
+                     <div><span id="copyright">&#169; 2013 Microsoft</span><a id="helpDesk" class="pageLink" href="javascript:OpenHelp();">Need help signing on?</a></div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <script type='text/javascript'>
+//<![CDATA[
+"use strict";function getStyle(n,t){var i=null;return n&&n.currentStyle?i=n.currentStyle[t]:n&&window.getComputedStyle&&(i=document.defaultView.getComputedStyle(n,null).getPropertyValue(t)),i}function FixUserName(){var i=document.getElementById("userNameInput"),t,n;i.value&&(t=i.value,n=t.split("@"),n.length>1&&(t=n[0]),n=t.split("\\"),n.length>1&&(t=n[n.length-1]),n=t.split("/"),n.length>1&&(t=n[n.length-1]),i.value="DIR\\"+t)}function OpenHelp(){document.getElementById("helpContent").style.display="block";document.getElementById("authArea").style.display="none"}function CloseHelp(){document.getElementById("helpContent").style.display="none";document.getElementById("authArea").style.display="block"}function CallHelpFile(n){var t=new XMLHttpRequest;t.open("GET",n,!0);t.onreadystatechange=function(){t.readyState==4&&(document.getElementById("helpContent").innerHTML=t.responseText)};t.send(null)}function OpenDisclaimer(){document.getElementById("disclaimerContent").style.display="block";document.getElementById("authArea").style.display="none"}function CloseDisclaimer(){document.getElementById("disclaimerContent").style.display="none";document.getElementById("authArea").style.display="block"}function CallDisclaimerFile(n){var t=new XMLHttpRequest;t.open("GET",n,!0);t.onreadystatechange=function(){t.readyState==4&&(document.getElementById("disclaimerContent").innerHTML=t.responseText)};t.send(null)}var emails,i,msViewportStyle,viewport,computeLoadIllustration,loginMessage,userNameInput,brandingWrapper,acnLogo,acnStrategy,ua,acnGreater,acnLine,contentWrapper,userName,submitRequest,workArea,helpContent,signOnTitle,header,headerLine;if(navigator.userAgent.match(/iPhone/i)!=null&&(emails=document.querySelectorAll("input[type='email']"),emails))for(i=0;i<emails.length;i++)emails[i].type="text";navigator.userAgent.match(/IEMobile\/10\.0/)&&(msViewportStyle=document.createElement("style"),msViewportStyle.appendChild(document.createTextNode("@-ms-viewport{width:auto!important}")),msViewportStyle.appendChild(document.createTextNode("@-ms-viewport{height:auto!important}")),document.getElementsByTagName("head")[0].appendChild(msViewportStyle));window.innerWidth&&window.outerWidth&&window.innerWidth!==window.outerWidth&&(viewport=document.querySelector("meta[name=viewport]"),viewport.setAttribute("content","width="+window.innerWidth+"px; initial-scale=1.0; maximum-scale=1.0"));computeLoadIllustration=function(){var n=document.getElementById("branding"),i=getStyle(n,"display"),r=getStyle(document.getElementById("brandingWrapper"),"display"),t;i&&i!=="none"&&r&&r!=="none"&&(t="illustrationClass",n.classList&&n.classList.add?n.classList.add(t):n.className!==undefined&&(n.className+=" "+t),window.removeEventListener?(window.removeEventListener("load",computeLoadIllustration,!1),window.removeEventListener("resize",computeLoadIllustration,!1)):window.detachEvent&&(window.detachEvent("onload",computeLoadIllustration),window.detachEvent("onresize",computeLoadIllustration)))};window.addEventListener?(window.addEventListener("resize",computeLoadIllustration,!1),window.addEventListener("load",computeLoadIllustration,!1)):window.attachEvent&&(window.attachEvent("onresize",computeLoadIllustration),window.attachEvent("onload",computeLoadIllustration));loginMessage=document.getElementById("loginMessage");loginMessage&&(loginMessage.innerHTML="Sign in with your Accenture account");userNameInput=document.getElementById("userNameInput");userNameInput&&(userNameInput.setAttribute("placeholder","Enterprise ID"),ua=navigator.userAgent,ua!=null&&ua.match(/MSIE 9.0/)!=null&&(userNameInput.parentNode.removeChild(userNameInput.parentNode.childNodes[1]),InputUtil.makePlaceholder("userNameInput")),ua!=null&&(ua.match(/MSIE 8.0/)!=null||ua.match(/MSIE 7.0/)!=null||ua.match(/MSIE 6.0/)!=null)&&(userNameInput.parentNode.removeChild(userNameInput.parentNode.children[0]),InputUtil.makePlaceholder("userNameInput")));brandingWrapper=document.getElementById("brandingWrapper");brandingWrapper&&(acnLogo=document.createElement("div"),acnLogo.setAttribute("id","acnLogo"),brandingWrapper.appendChild(acnLogo),acnStrategy=document.createElement("div"),acnStrategy.setAttribute("id","acnStrategy"),brandingWrapper.appendChild(acnStrategy),ua=navigator.userAgent,ua!=null&&(ua.match(/MSIE 8.0/)!=null||ua.match(/MSIE 7.0/)!=null||ua.match(/MSIE 6.0/)!=null)&&brandingWrapper.removeChild(acnStrategy),acnGreater=document.createElement("div"),acnGreater.setAttribute("id","acnGreater"),brandingWrapper.appendChild(acnGreater),acnLine=document.createElement("hr"),acnLine.setAttribute("id","acnLine"),brandingWrapper.appendChild(acnLine));contentWrapper=document.getElementById("contentWrapper");contentWrapper&&(header=document.getElementById("header"),header&&contentWrapper.insertBefore(header,contentWrapper.firstElementChild||contentWrapper.children[0]));typeof Login=="function"&&typeof Login.submitLoginRequest=="function"&&(userName=document.getElementById("userNameInput"),userName&&(userName.onblur=function(){FixUserName()},submitRequest=Login.submitLoginRequest,Login.submitLoginRequest=function(){FixUserName();submitRequest()}));workArea=document.getElementById("workArea");workArea&&(helpContent=document.createElement("div"),helpContent.setAttribute("id","helpContent"),helpContent.setAttribute("class","groupMargin"),helpContent.style.display="none",workArea.appendChild(helpContent),signOnTitle=document.createElement("h1"),signOnTitle.setAttribute("id","signOnTitle"),signOnTitle.setAttribute("class","groupMargin"),signOnTitle.innerHTML="Enterprise Sign On",workArea.insertBefore(signOnTitle,workArea.firstElementChild||workArea.children[0]),header=document.getElementById("header"),header&&(headerLine=document.createElement("hr"),headerLine.setAttribute("class","headerLine"),header.insertBefore(headerLine,header.firstElementChild||header.children[0])));var authArea=document.getElementById("authArea"),helpDesk=document.getElementById("helpDesk"),disclainmer=document.getElementById("disclaimer");authArea?helpDesk&&CallHelpFile("/static/content/help/enterprise.html"):(helpDesk&&(helpDesk.style.display="none"),disclainmer&&(disclainmer.style.display="none"))
+//]]>
+</script>
+
+
+    </body>
+</html> 
+
