@@ -7,6 +7,19 @@
 		<atom:link href="https://dodwell.us/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Linux Observability Tools Overview</title>
+				        
+				
+					<description>&lt;p&gt;&lt;img width=&quot;730&quot; src=&quot;/images/linux_observability_tools.png&quot; /&gt;&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Tue, 18 Aug 2015 00:00:00 +1000</pubDate>
+				<link>https://dodwell.us/linux/linux-performance-tools-overview</link>
+				<guid isPermaLink="true">https://dodwell.us/linux/linux-performance-tools-overview</guid>
+			</item>
+		
+			<item>
 				<title>Scrum Cheatsheet</title>
 				        
 				
@@ -121,19 +134,6 @@
 				<pubDate>Wed, 21 Jan 2015 00:00:00 +1100</pubDate>
 				<link>https://dodwell.us/security/ssh-setup</link>
 				<guid isPermaLink="true">https://dodwell.us/security/ssh-setup</guid>
-			</item>
-		
-			<item>
-				<title>Hosting OSX on ESXi</title>
-				        
-				
-					<description>&lt;p&gt;It&amp;#8217;s been awhile since I&amp;#8217;ve posted.&lt;/p&gt;
-
-</description>
-				
-				<pubDate>Mon, 08 Dec 2014 00:00:00 +1100</pubDate>
-				<link>https://dodwell.us/osx-esxi</link>
-				<guid isPermaLink="true">https://dodwell.us/osx-esxi</guid>
 			</item>
 		
 	</channel>

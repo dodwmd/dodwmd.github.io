@@ -156,6 +156,46 @@
 	               
 	                    
 	                    <h2 class="post-title text-center super lighter bordered-bottom">
+	                        <a href="https://dodwell.us/rewrite-uri-to-lowercase-using-nginxperl-nginxlua-or-apache/">rewrite uri to lowercase using nginx/perl, nginx/lua or apache</a>
+	                    
+	                    </h2>
+	                    <div class="post-info text-center small">
+	                        <time datetime="2014-06-21T05:41:21+10:00" class="post-time">21 Jun 2014</time>
+	                        in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;Less than 1 minute read</span>
+	                    </div>
+	                </header>
+	                <div class="post-body bordered-bottom">
+	                
+	                
+	                    <p>Just wanted to drop this little snippet here as I’ve seen a lot of people saying you can only rewrite to lower case using embedded Perl. You can indeed do this with LUA which is a little faster than the embedded Perl. If you need to rewrite a uri ‘/TEST’ to ‘/test’ you can do it with the following: perl method location ~ [A-Z] { perl &#39;sub { my $r = shift; $r-&gt;internal_redirect(lc($r-&gt;uri)); }&#39;; } OR http { ... # Include the perl module perl_modules perl/lib; ... # Define this function perl_set $uri_lowercase &#39;sub { my $r = shift; my...&hellip;</p>
+	                    <div class="text-center">
+	                    
+		                <a href="https://dodwell.us/rewrite-uri-to-lowercase-using-nginxperl-nginxlua-or-apache/" data-toggle="tooltip" title="Read more about rewrite uri to lowercase using nginx/perl, nginx/lua or apache" class="more-link btn btn-danger btn-large">
+		                    <i class="icon-link"></i> read more...
+		                </a>
+		                
+		                </div>
+	                </div>
+	            </article>
+	        </div>
+			
+	
+		
+		
+		
+		
+		
+			
+	        
+	        
+	        
+	        
+	        <div class="row">
+	            <article class="post post col-md-8 col-md-offset-2">
+	               <header class="post-header">
+	               
+	                    
+	                    <h2 class="post-title text-center super lighter bordered-bottom">
 	                        <a href="https://dodwell.us/linux-memory/">Linux Memory</a>
 	                    
 	                    </h2>
@@ -344,46 +384,6 @@ http://blog.docker.com/2014/06/its-here-docker-1-0/
 	                    <div class="text-center">
 	                    
 		                <a href="https://dodwell.us/insecure-default-in-elasticsearch-enables-remote-code-execution/" data-toggle="tooltip" title="Read more about Insecure default in Elasticsearch enables remote code execution" class="more-link btn btn-danger btn-large">
-		                    <i class="icon-link"></i> read more...
-		                </a>
-		                
-		                </div>
-	                </div>
-	            </article>
-	        </div>
-			
-	
-		
-		
-		
-		
-		
-			
-	        
-	        
-	        
-	        
-	        <div class="row">
-	            <article class="post post col-md-8 col-md-offset-2">
-	               <header class="post-header">
-	               
-	                    
-	                    <h2 class="post-title text-center super lighter bordered-bottom">
-	                        <a href="https://dodwell.us/integrating-bitbucket-and-jenkins/">Integrating Bitbucket and Jenkins</a>
-	                    
-	                    </h2>
-	                    <div class="post-info text-center small">
-	                        <time datetime="2014-05-22T05:07:55+10:00" class="post-time">22 May 2014</time>
-	                        in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">1.585</span> minutes read</span>
-	                    </div>
-	                </header>
-	                <div class="post-body bordered-bottom">
-	                
-	                
-	                    <p>I just had a little gotcha using Jenkins and trying to integrate it so that bitbucket can use git hooks to kick off builds on commits. So I thought I’d share how I managed to get it all working as to me it wasn’t that clear. Firstly I’ll assume you have a secured Jenkins instance setup and a repository on bitbucket. Once it’s working login to your jenkins instance as the user you wish to use to kick off builds and manually build a job you’ve configured. I’d suggest creating a user for functions like this. Lets call him ‘dodwmd_jenkins’...&hellip;</p>
-	                    <div class="text-center">
-	                    
-		                <a href="https://dodwell.us/integrating-bitbucket-and-jenkins/" data-toggle="tooltip" title="Read more about Integrating Bitbucket and Jenkins" class="more-link btn btn-danger btn-large">
 		                    <i class="icon-link"></i> read more...
 		                </a>
 		                

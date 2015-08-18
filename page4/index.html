@@ -156,6 +156,46 @@
 	               
 	                    
 	                    <h2 class="post-title text-center super lighter bordered-bottom">
+	                        <a href="https://dodwell.us/elastic-search-abuse-aws/">elastic search abuse on AWS</a>
+	                    
+	                    </h2>
+	                    <div class="post-info text-center small">
+	                        <time datetime="2014-07-29T23:47:32+10:00" class="post-time">29 Jul 2014</time>
+	                        in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;Less than 1 minute read</span>
+	                    </div>
+	                </header>
+	                <div class="post-body bordered-bottom">
+	                
+	                
+	                    <p>Previously I highlighted the release of an exploit to elastic search that results in the ability to execute unauthorized code on a server running elasticsearch 1.1.x. It has just been reported that this same exploit is now being used to install DDOS (distributed denial of service) bots on vulnerable machines hosted within AWS. Elasticsearch instances should always be treated like a database and not be directly exposed to the internet. As a minimum you should be using plugins to nginx to get JSON functionality direct from the web server and have it act as a proxy to back end processes...&hellip;</p>
+	                    <div class="text-center">
+	                    
+		                <a href="https://dodwell.us/elastic-search-abuse-aws/" data-toggle="tooltip" title="Read more about elastic search abuse on AWS" class="more-link btn btn-danger btn-large">
+		                    <i class="icon-link"></i> read more...
+		                </a>
+		                
+		                </div>
+	                </div>
+	            </article>
+	        </div>
+			
+	
+		
+		
+		
+		
+		
+			
+	        
+	        
+	        
+	        
+	        <div class="row">
+	            <article class="post post col-md-8 col-md-offset-2">
+	               <header class="post-header">
+	               
+	                    
+	                    <h2 class="post-title text-center super lighter bordered-bottom">
 	                        <a href="https://dodwell.us/sysadmin-day/">SysAdmin Day</a>
 	                    
 	                    </h2>
@@ -333,46 +373,6 @@
 	                    <div class="text-center">
 	                    
 		                <a href="https://dodwell.us/linux-cpu/" data-toggle="tooltip" title="Read more about Linux CPU" class="more-link btn btn-danger btn-large">
-		                    <i class="icon-link"></i> read more...
-		                </a>
-		                
-		                </div>
-	                </div>
-	            </article>
-	        </div>
-			
-	
-		
-		
-		
-		
-		
-			
-	        
-	        
-	        
-	        
-	        <div class="row">
-	            <article class="post post col-md-8 col-md-offset-2">
-	               <header class="post-header">
-	               
-	                    
-	                    <h2 class="post-title text-center super lighter bordered-bottom">
-	                        <a href="https://dodwell.us/rewrite-uri-to-lowercase-using-nginxperl-nginxlua-or-apache/">rewrite uri to lowercase using nginx/perl, nginx/lua or apache</a>
-	                    
-	                    </h2>
-	                    <div class="post-info text-center small">
-	                        <time datetime="2014-06-21T05:41:21+10:00" class="post-time">21 Jun 2014</time>
-	                        in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;Less than 1 minute read</span>
-	                    </div>
-	                </header>
-	                <div class="post-body bordered-bottom">
-	                
-	                
-	                    <p>Just wanted to drop this little snippet here as I’ve seen a lot of people saying you can only rewrite to lower case using embedded Perl. You can indeed do this with LUA which is a little faster than the embedded Perl. If you need to rewrite a uri ‘/TEST’ to ‘/test’ you can do it with the following: perl method location ~ [A-Z] { perl &#39;sub { my $r = shift; $r-&gt;internal_redirect(lc($r-&gt;uri)); }&#39;; } OR http { ... # Include the perl module perl_modules perl/lib; ... # Define this function perl_set $uri_lowercase &#39;sub { my $r = shift; my...&hellip;</p>
-	                    <div class="text-center">
-	                    
-		                <a href="https://dodwell.us/rewrite-uri-to-lowercase-using-nginxperl-nginxlua-or-apache/" data-toggle="tooltip" title="Read more about rewrite uri to lowercase using nginx/perl, nginx/lua or apache" class="more-link btn btn-danger btn-large">
 		                    <i class="icon-link"></i> read more...
 		                </a>
 		                
