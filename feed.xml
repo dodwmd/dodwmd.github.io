@@ -49,7 +49,7 @@
 				<title>UFW, fail2ban and blocking portscans oh my!</title>
 				        
 				
-					<description>&lt;p&gt;I just wanted to write down some issues I had as a reminder to myself and some notes that other people might find useful. I want to be able to setup some automatic host based firewall rules for some servers I look after so help mitigate any possible brute force attacks and general nastiness that you get on the internet. To do this I&amp;#8217;m going to install UFW, fail2ban and setup some filters and actions in fail2ban to use information from UFW on Ubuntu 14.04.2.&lt;/p&gt;
+					<description>&lt;p&gt;I just wanted to write down some issues I had as a reminder to myself and some notes that other people might find useful. I want to be able to setup some automatic host based firewall rules for some servers I look after so help mitigate any possible brute force attacks and general nastiness that you get on the internet. To do this I’m going to install UFW, fail2ban and setup some filters and actions in fail2ban to use information from UFW on Ubuntu 14.04.2.&lt;/p&gt;
 
 </description>
 				
@@ -62,7 +62,7 @@
 				<title>Google Authenticator for SSH</title>
 				        
 				
-					<description>&lt;p&gt;&lt;a href=&quot;http://dodwell.us/security/ssh-setup/&quot;&gt;Previously&lt;/a&gt; I posted on how to make some changes to SSH to improve it&amp;#8217;s security. One of the configuration options I said to change was to disable password authentication. I want to cover how you can keep password authentication enable by using 2-factor authentication powered by Google Authenticator.&lt;/p&gt;
+					<description>&lt;p&gt;&lt;a href=&quot;http://dodwell.us/security/ssh-setup/&quot;&gt;Previously&lt;/a&gt; I posted on how to make some changes to SSH to improve it’s security. One of the configuration options I said to change was to disable password authentication. I want to cover how you can keep password authentication enable by using 2-factor authentication powered by Google Authenticator.&lt;/p&gt;
 
 </description>
 				
@@ -127,7 +127,7 @@
 				<title>Secure SSH Setup</title>
 				        
 				
-					<description>&lt;p&gt;Previously I posted on how to make some changes to SSL to improve it&amp;#8217;s security for your users. This post I want to cover off some information on how to setup SSH to secure your server for yourself.&lt;/p&gt;
+					<description>&lt;p&gt;Previously I posted on how to make some changes to SSL to improve it’s security for your users. This post I want to cover off some information on how to setup SSH to secure your server for yourself.&lt;/p&gt;
 
 </description>
 				
