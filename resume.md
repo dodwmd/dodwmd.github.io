@@ -87,6 +87,7 @@ I have a strong analytical and problem solving background in multi-platform syst
 <h4>Feburary 2015 – Current</h4>
 <p align="justify"><i>Accenture is a management consulting, technology services and outsourcing company helping clients in Australia become high-performing</i></br>
 </p>
+</div>
 <div class="job">
 <h2>Outware</h2>
 <h3>DevOps Consultant (contract)</h3>
