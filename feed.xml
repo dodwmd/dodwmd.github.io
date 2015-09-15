@@ -7,6 +7,19 @@
 		<atom:link href="https://dodwell.us/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Fog Machine for the Datacenter</title>
+				        
+				
+					<description>&lt;p&gt;&lt;img width=&quot;730&quot; src=&quot;/images/data-centre-fog-machine.jpg&quot; /&gt;&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Tue, 15 Sep 2015 00:00:00 +1000</pubDate>
+				<link>https://dodwell.us/linux/data-center-fog-machine</link>
+				<guid isPermaLink="true">https://dodwell.us/linux/data-center-fog-machine</guid>
+			</item>
+		
+			<item>
 				<title>Linux Observability Tools Overview</title>
 				        
 				
@@ -121,19 +134,6 @@
 				<pubDate>Sat, 21 Feb 2015 00:00:00 +1100</pubDate>
 				<link>https://dodwell.us/videos/brain-hack</link>
 				<guid isPermaLink="true">https://dodwell.us/videos/brain-hack</guid>
-			</item>
-		
-			<item>
-				<title>Secure SSH Setup</title>
-				        
-				
-					<description>&lt;p&gt;Previously I posted on how to make some changes to SSL to improve it’s security for your users. This post I want to cover off some information on how to setup SSH to secure your server for yourself.&lt;/p&gt;
-
-</description>
-				
-				<pubDate>Wed, 21 Jan 2015 00:00:00 +1100</pubDate>
-				<link>https://dodwell.us/security/ssh-setup</link>
-				<guid isPermaLink="true">https://dodwell.us/security/ssh-setup</guid>
 			</item>
 		
 	</channel>
