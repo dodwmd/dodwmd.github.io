@@ -50,7 +50,7 @@ permalink: /resume/
                             </div>
                             <div class="talent">
                                 <h2>Pre-Sales</h2>
-                                <p align="justify">Able to commicate effectly and champion technologies best able to solve complex business problems.</p>
+                                <p align="justify">Able to communicate effectly and champion technologies best able to solve complex business problems.</p>
                             </div>
                         </div>
                     </div> 
