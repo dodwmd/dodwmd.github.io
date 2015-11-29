@@ -9,7 +9,7 @@ permalink: /resume/
 <div class="yui-gc">
 <div class="yui-u first">
 <h1>Michael Dodwell</h1>
-<h2>Unix Administrator, Architect</h2>
+<h2>DevOps Lead</h2>
 </div>
 <div class="yui-u">
 <div class="contact-info">
@@ -31,7 +31,7 @@ permalink: /resume/
 </div>
 <div class="yui-u">
 <p class="enlarge" align="justify">
-I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.
+With over 15 years of experience in IT and more than 10 years of experience in consulting I’ve managed to work in multiple different IT fields to gain a deep understanding of both the business and technical requirements for projects to succeed. I have a strong analytical and problem solving background in multi-platform systems solutions. I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.
 </p>
 </div>
 </div> 
@@ -41,8 +41,8 @@ I have a strong analytical and problem solving background in multi-platform syst
 </div>
 <div class="yui-u">
 <div class="talent">
-<h2>Administration</h2>
-<p align="justify">I've a long history as a Unix Administrator in diverse environments. I've extensive knowledge in all forms of Unix with a speciality in Linux and Solaris.</p>
+<h2>DevOps</h2>
+<p align="justify">I've a long history as a Unix Administrator in diverse environments. I've extensive knowledge in all forms of Unix with a speciality in Linux and Solaris this coupled with a deep desire for automation gives me a perfect background as a DevOps Consultant.</p>
 </div>
 <div class="talent">
 <h2>Cloud</h2>
@@ -60,6 +60,11 @@ I have a strong analytical and problem solving background in multi-platform syst
 </div>
 <div class="yui-u">
 <ul class="talent">
+<li>Puppet</li>
+<li>Chef</li>
+<li class="last">Ansible</li>
+</ul>
+<ul class="talent">
 <li>Solaris</li>
 <li>Unix</li>
 <li class="last">Virtualization</li>
@@ -73,6 +78,11 @@ I have a strong analytical and problem solving background in multi-platform syst
 <li>Cloud Computing</li>
 <li>SAN</li>
 <li class="last">Cisco</li>
+</ul>
+<ul class="talent">
+<li>PHP</li>
+<li>Python</li>
+<li class="last">Bash</li>
 </ul>
 </div>
 </div> 
@@ -93,12 +103,12 @@ I have a strong analytical and problem solving background in multi-platform syst
 <h3>DevOps Consultant (contract)</h3>
 <h4>October 2014 – Feburary 2015</h4>
 <p align="justify"><i>Outware Mobile is Australia's leading mobile app development and design company. Custom app developers for iPhone, iPad and Android.</i></br>
-I was asked to join the Outware team to help solve some directional problems they were having with their build environments. This role required me to work directly with one of Outware's major client, ANZ, finding a solution that would meet both ANZ and Outware' requirements for a stable/secure build environment. The existing build environment required a major redo and while contracting at Outware I was able to complete all nessesary planning and implementation of the recreation of this environment. This work consisted of upgrades to the OS/virtualization/CI and implementation of better testing framework/build reporting. This work also required generic pattern setup to allow for use with other clients.
+I was asked to join the Outware team to help solve some directional problems they were having with their build environments. This role required me to work directly with one of Outware's major clients, ANZ, finding a solution that would meet both ANZ’s and Outware's requirements for a stable/secure build environment. The existing build environment required major rework and while contracting at Outware I was able to complete all necessary planning and implementation of the recreation of the environment. This work consisted of upgrades to the OS/virtualization/CI and implementation of better testing framework/build reporting. This work also required generic pattern setup to allow for use with other clients.
 </p>
 </div>
 <div class="job">
 <h2>Geoplex</h2>
-<h3>Senior UNIX Systems Administrator (contract)</h3>
+<h3>DevOps Consultant (contract)</h3>
 <h4>March 2014 - October 2014</h4>
 <p align="justify"><i>Geoplex help organisations they work with reach their goals by providing a skilled team of spatial system architects, developers and analysts; geospatial professionals with a common interest and shared expertise. Geoplex brings a clear thinking approach to the projects they work on, by rationalising problems, and carefully designing solutions.</i></br>
 My role at Geoplex consisted of the creation and automation of server environments capable of real-time monitoring of assets for the waste management industry. This was enabled through the installation of monitoring hardware installed on all trucks that would send GPS location and status information back to a centralized database, which was frequently queried “in real-time” for reporting and tracking analysis tasks, utilised by both company and council. Analysis data included photographic-proof of incidents. On average nearly a million records of real-time activity are recorded per month.</p>
@@ -112,14 +122,14 @@ My role at UXC Connect was to assist in the contract to provide managed services
 </div>
 <div class="job">
 <h2>Australia Post</h2>
-<h3>Senior UNIX Systems Administrator (contract)</h3>
+<h3>Sr. UNIX Systems Administrator (contract)</h3>
 <h4>January 2012 - July 2012</h4>
 <p align="justify"><i>For more than 200 years, Australia Post has met the changing needs of Australians. We continue to be a trusted part of everyday life for people and businesses across the nation.</i></br>
 Australia Post has a project to create a Digital Mailbox within Australia called Redbox. The role was created to manage the operational requirement to bring to market a new solution. The original role required working with 3rd party providers to create a solution but later pivoted to use an existing solution from a supplier based out of the USA. The role required me to carry out a detailed analysis of the solution to confirm that it would fit into an Australian market. The role also required to deploy the solution into a shared hosting environment on an extremely short deadline. The hosting provider had to be selected and worked with to ensure compliance with PCI-DSS. The network consisted of over 10 environments, each environment being a sandbox to enable testing without interrupting or impacting production systems. The environment's where setup via custom built orchestration tools and puppet consisting mainly of CentOS instances. While this work was happening a local software provider was also commissioned to build front end applications that better suited the Australian market. Support for this development process was also required.</p>
 </div>
 <div class="job">
 <h2>Blue Central</h2>
-<h3>Senior UNIX Systems Administrator (contract)</h3>
+<h3>Sr. UNIX Systems Administrator (contract)</h3>
 <h4>March 2011 - September 2011</h4>
 <p align="justify"><i>A leading provider of managed infrastructure, application hosting and mobile connectivity services to small to medium business, enterprise and government.</i></br>
 Blue central has POP locations in Sydney and Melbourne. The .4th level team., which I was part of, is mainly managed out of Melbourne and support and business management directed from Sydney. The in-house environment consists of mainly Dell servers with networking provided by Jupiter networks. The business also hosts infrastructure of clients so the variety is quite large. SAN's are used to provide bulk storage for backup and provisioning to clients for virtual machine use. The network is made up of multiple environments due to acquisitions and strategic planning, making administration and planning difficult at times. Blue Central being a hosting company had large deployments of VMware ESX. Operating systems are varied due to the nature of the business; however, core blue central consisted of RedHat.</p>
