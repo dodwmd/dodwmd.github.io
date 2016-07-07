@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Website Minification &#8211; dodwell.us</title>
+<meta name="description" content="DevOPS: For fun and profit">
+<meta name="keywords" content="">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dodwell.us/images/devops_logo.gif">
+<meta name="twitter:title" content="Website Minification">
+<meta name="twitter:description" content="DevOPS: For fun and profit">
+<meta name="twitter:creator" content="@MichaelDodwell">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Website Minification">
+<meta property="og:description" content="DevOPS: For fun and profit">
+<meta property="og:url" content="https://dodwell.us/website-minification">
+<meta property="og:site_name" content="dodwell.us">
+<meta property="og:image" content="https://dodwell.us/images/default_bg1.jpg">
+
+
+
+
+
+<link rel="canonical" href="https://dodwell.us/website-minification">
+<link href="https://dodwell.us/feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us/assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us/assets/css/style.css" />
+
+
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="https://dodwell.us/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://dodwell.us/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://dodwell.us/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
+<div id="fade"></div>
+<a id="slide" class="animated fade"></a>
+<aside id="sidebar">
+    <nav id="navigation">
+    <h2>MENU</h2>
+    <hr>
+
+            <li>
+                    <a href="https://dodwell.us/">Home</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/categories">Categories</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/tags">Tags</a>
+                 </li>
+            
+           <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+    </nav>
+    
+    
+</aside>
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom"  style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand" href="https://dodwell.us" role="banner" itemprop="url">
+
+                <img itemprop="logo" src="https://dodwell.us/images/devops_logo.gif" alt="dodwell.us Logo" />
+
+            <h1 class="blog-title light" itemprop="name">
+                dodwell.us
+            </h1>
+                
+            </a>
+        </div>
+    </div>
+    
+    
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+
+        </svg>
+    </div>
+    
+</header>
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+    <div class="container">
+        <div class="row">
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Website Minification</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published updated"><time datetime="2014-08-19T02:19:07+10:00" class="post-time" itemprop="datePublished">19 Aug 2014</time><span>
+                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">5.65</span> minutes read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p><a href="/images/growth-average-web-page2014.png"><img src="/images/growth-average-web-page2014.png" alt="growth average web page 2014" width="300" height="235" style="float:left;" /></a> I wanted to cover off some interesting work I’ve been doing with website minification that I wanted to share. The size of the average web page (top 300,000 websites) passed 1600K for the first time in July. We’re cramming more images and html into our websites and with all this information we need to ensure a responsive experience for the users of our sites. It’s useful to regularly check the size of pages and take actions to try and minimize website sizes. This improves the rendering of the site for the user and lowers costs of hosting for the administrator.</p>
+
+<p>A website can be broken into 3 main parts HTML, CSS/JS and Media. This post hopes to give you some insight into where you can spend some time on the 3 main parts to ensure you aren’t wasting resources and are proving the best experience for users.</p>
+
+<h3 id="phphtml">php/html</h3>
+
+<p>The first section I wanted to cover is HTML minification. As a developer it’s important to set out code in a readable way. This means adding indentation and new lines to making reading and editing your code much easier. However, all this setting out uses valuable space. Most of the sites I administrate currently are written in PHP. I use templating engines to seperate the PHP code from the HTML code. However I don’t want to maintain multiple copies of templates (minified and non-minified). Using a bunch of code from <a href="http://code.google.com/p/minify/">here</a>. You can include the following at the start of your PHP script to minify the HTML that’s being sent to users.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">function</span> sanitize_output<span class="o">(</span><span class="nv">$buffer</span><span class="o">)</span> <span class="o">{</span>
+    require_once<span class="o">(</span><span class="s1">&#39;min/lib/Minify/HTML.php&#39;</span><span class="o">)</span><span class="p">;</span>
+    require_once<span class="o">(</span><span class="s1">&#39;min/lib/Minify/CSS.php&#39;</span><span class="o">)</span><span class="p">;</span>
+    require_once<span class="o">(</span><span class="s1">&#39;min/lib/JSMin.php&#39;</span><span class="o">)</span><span class="p">;</span>
+    <span class="nv">$buffer</span> <span class="o">=</span> Minify_HTML::minify<span class="o">(</span><span class="nv">$buffer</span>, array<span class="o">(</span>
+        <span class="s1">&#39;cssMinifier&#39;</span> <span class="o">=</span>&gt; array<span class="o">(</span><span class="s1">&#39;Minify_CSS&#39;</span>, <span class="s1">&#39;minify&#39;</span><span class="o">)</span>,
+        <span class="s1">&#39;jsMinifier&#39;</span> <span class="o">=</span>&gt; array<span class="o">(</span><span class="s1">&#39;JSMin&#39;</span>, <span class="s1">&#39;minify&#39;</span><span class="o">)</span>
+    <span class="o">))</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nv">$buffer</span><span class="p">;</span>
+<span class="o">}</span>
+ob_start<span class="o">(</span><span class="s1">&#39;sanitize_output&#39;</span><span class="o">)</span><span class="p">;</span></code></pre></figure>
+
+<h3 id="cssjs">css/js</h3>
+
+<p>For CSS/JS you can use an application called ‘<a href="http://yui.github.io/yuicompressor/">yui-compressor</a>’ to convert all your CSS/JS files to minified versions.</p>
+
+<p>Simply run the tool on your CSS/JS files and then output them into new files adding something like ‘min’ to the filename.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>yui-compressor --type css file.css &gt; file.min.css</code></pre></figure>
+
+<p>Then just include the minified version in your templates.</p>
+
+<h3 id="images">images</h3>
+
+<p>As most of the size of webpages are images I wanted to focus this post on the different steps that you should take.</p>
+
+<p>The first is to optimize your images. For various reasons images are saved in un-optimized formats. A few different tools exist that will take existing images and resave them in a more optimized format method. This can mean a 10-50% saving in the size of your sites images without losing any of the quality of the images. Depending on the type of image (JPEG/PNG) you’ll need different applications to do the optimization.</p>
+
+<p>The first is jpegoptim. jpegoptim is a utility for optimizing JPEG files. It provides lossless optimization (based on optimizing the Huffman tables) and “lossy” optimization based on setting a maximum quality factor.</p>
+
+<p>jpegoptim is included with most linux distros these days but it can be a little old (the Ubuntu version for example has a bug that changes the file permissions on the images it converts). So I’d suggest jumping over to the authors github and downloading the latest copy <a href="https://github.com/tjko/jpegoptim">here</a>.</p>
+
+<p>Once it’s installed:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/tjko/jpegoptim
+<span class="nv">$ </span><span class="nb">cd </span>jpegoptim
+<span class="nv">$ </span>./configure
+<span class="nv">$ </span>make
+<span class="nv">$ </span>make strip
+<span class="nv">$ </span>make install</code></pre></figure>
+
+<p>You can let it run rampant on your source images to ensure they are optimized:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>find ./ -name *jpg <span class="p">|</span> xargs jpegoptim
+./images/ck1.jpg 768x433 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">32411</span> --&gt; <span class="m">32411</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/ZZ379.jpg 768x461 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">55101</span> --&gt; <span class="m">55101</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/RZdaU99.jpg 768x649 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">71753</span> --&gt; <span class="m">71753</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/tmpUltimateselfie.jpg 768x511 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">66329</span> --&gt; <span class="m">66329</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/Robinwilliams46602a.jpg 768x933 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">72161</span> --&gt; <span class="m">72161</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/Elephantsarehuge.jpg 768x615 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">36062</span> --&gt; <span class="m">36062</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/1408196499535.jpg 768x1152 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">135273</span> --&gt; <span class="m">135273</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/TexasGovRickPerryindictedforabuseofpower.jpg 768x512 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">31000</span> --&gt; <span class="m">31000</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.</code></pre></figure>
+
+<p>You can also optimize your PNG files with OptiPNG. <a href="http://optipng.sourceforge.net/">OptiPNG</a> is a PNG optimizer that re-compresses image files to a smaller size, without losing any information. This program also converts external formats (BMP, GIF, PNM and TIFF) to optimized PNG, and performs PNG integrity checks and corrections. If you wish to learn how PNG optimization works, or to know about other similar tools, see the PNG-Tech article <a href="http://optipng.sourceforge.net/pngtech/optipng.html">A guide to PNG optimization</a>.</p>
+
+<p>Again this is included in most distributions but again is a little old. So lets grab a copy and compile it:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>hg clone http://optipng.hg.sourceforge.net/hgweb/optipng/optipngreal
+<span class="nv">$ </span><span class="nb">cd </span>optipng
+<span class="nv">$ </span>./configure
+<span class="nv">$ </span>make
+<span class="nv">$ </span>make install</code></pre></figure>
+
+<p>Lets let it fix up our PNG files now.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>find ./ -name *png <span class="p">|</span> xargs optipng
+OptiPNG 0.6.4: Advanced PNG optimizer.
+Copyright <span class="o">(</span>C<span class="o">)</span> 2001-2010 Cosmin Truta.
+** Processing: ./images/logo_large.png
+768x288 pixels, 4x8 bits/pixel, RGB+alpha
+Input IDAT <span class="nv">size</span> <span class="o">=</span> <span class="m">77472</span> bytes
+Input file <span class="nv">size</span> <span class="o">=</span> <span class="m">77658</span> bytes
+Trying:
+  <span class="nv">zc</span> <span class="o">=</span> <span class="m">9</span>  <span class="nv">zm</span> <span class="o">=</span> <span class="m">8</span>  <span class="nv">zs</span> <span class="o">=</span> <span class="m">0</span>  <span class="nv">f</span> <span class="o">=</span> <span class="m">0</span>         IDAT <span class="nv">size</span> <span class="o">=</span> 70170
+Selecting parameters:
+  <span class="nv">zc</span> <span class="o">=</span> <span class="m">9</span>  <span class="nv">zm</span> <span class="o">=</span> <span class="m">8</span>  <span class="nv">zs</span> <span class="o">=</span> <span class="m">0</span>  <span class="nv">f</span> <span class="o">=</span> <span class="m">0</span>         IDAT <span class="nv">size</span> <span class="o">=</span> 70170
+Output IDAT <span class="nv">size</span> <span class="o">=</span> <span class="m">70170</span> bytes <span class="o">(</span><span class="m">7302</span> bytes decrease<span class="o">)</span>
+Output file <span class="nv">size</span> <span class="o">=</span> <span class="m">70248</span> bytes <span class="o">(</span><span class="m">7410</span> <span class="nv">bytes</span> <span class="o">=</span> 9.54% decrease<span class="o">)</span></code></pre></figure>
+
+<p>Now that we have our source images all optimized it’s time to focus on ensuring that we’re not sending users of small screens large images. To do this we use a very nice little PHP app called <a href="http://adaptive-images.com/">Adaptive Images</a>.</p>
+
+<h3 id="adaptive-images">adaptive images</h3>
+
+<blockquote>
+  <p>Adaptive Images detects your visitor’s screen size and automatically creates, caches, and delivers device appropriate re-scaled versions of your web page’s embeded HTML images. No mark-up changes needed. It is intended for use with Responsive Designs and to be combined with Fluid Image techniques.
+Why? Because your site is being increasingly viewed on smaller, slower, low bandwidth devices. On those devices your desktop-centric images load slowly, cause UI lag, and cost you and your visitors un-necessary bandwidth and money. Adaptive Images fixes that.</p>
+</blockquote>
+
+<p>All we have to do is install the adaptive images php code to our root and then add a rewrite to redirect all image fetches to the php file. Via:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/MattWilcox/Adaptive-Images</code></pre></figure>
+
+<p>Then edit your nginx config file and add the following:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">location assets <span class="o">{</span>
+<span class="o">}</span>
+location ai-cache <span class="o">{</span>
+<span class="o">}</span>
+location ~ ^/images/ <span class="o">{</span>
+    rewrite <span class="se">\.</span><span class="o">(</span>?:jpe?g<span class="p">|</span>gif<span class="p">|</span>png<span class="o">)</span><span class="nv">$ </span>/Adaptive-Images/adaptive-images.php<span class="p">;</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>We also have to ensure that a cookie is set in the users browser that specifies what resolution they are viewing the site with. I modified the authors javascript cookie code to allow for a domain wide cookie (allowing me to separate where I serve images from vs where the rest of the site is generated from).</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">document</span><span class="o">.</span><span class="na">cookie</span><span class="o">=</span><span class="err">&#39;</span><span class="n">resolution</span><span class="o">=</span><span class="err">&#39;</span><span class="o">+</span><span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">screen</span><span class="o">.</span><span class="na">width</span><span class="o">,</span><span class="n">screen</span><span class="o">.</span><span class="na">height</span><span class="o">)+</span><span class="err">&#39;</span><span class="o">;</span><span class="n">domain</span><span class="o">=.</span><span class="na">dodwell</span><span class="o">.</span><span class="na">us</span><span class="o">;</span> <span class="n">path</span><span class="o">=/</span><span class="err">&#39;</span><span class="o">;</span></code></pre></figure>
+
+<p>Make sure the webserver is able to write to the ai-cache and assets directories before testing.</p>
+
+<h2 id="further-reading">further reading</h2>
+<p><a href="http://yui.github.io/yuicompressor/">http://yui.github.io/yuicompressor/</a>
+<a href="http://optipng.sourceforge.net/">http://optipng.sourceforge.net/</a>
+<a href="https://github.com/tjko/jpegoptim">https://github.com/tjko/jpegoptim</a>
+<a href="http://adaptive-images.com/">http://adaptive-images.com/</a></p>
+
+                        <br>
+                    
+                    
+                    </div>
+        </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;Website Minification&quot;%20https://dodwell.us/website-minification%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us/website-minification"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us/website-minification"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us/images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us/resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
+    </div>
+</div>
+
+<footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" >
+
+
+    <div class="inner">
+        <div class="container">
+
+            <ul class="social-icons">
+            <li>
+                <a href="http://twitter.com/MichaelDodwell" data-toggle="tooltip" title="Michael Dodwell on Twitter" target="_blank">
+                    <i class="icon-twitter"></i>
+                </a>
+            </li>
+            
+            
+            
+            <li>
+                <a href="https://au.linkedin.com/in/michaeldodwell" data-toggle="tooltip" title="Michael Dodwell on LinkedIn" target="_blank">
+                    <i class="icon-linkedin"></i>
+                </a>
+            </li>
+            
+            
+            <li>
+                <a href="http://github.com/dodwmd" data-toggle="tooltip" title="Michael Dodwell on Github" target="_blank">
+                    <i class="icon-github"></i>
+                </a>
+            </li>
+        </ul>
+            <div>
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+            </div>
+            <ul class="menu-items">
+            
+            <li>
+                
+                    <a href="https://dodwell.us/"><i class="icon-home"></i></a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/categories">Categories</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/tags">Tags</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+        </ul>
+        </div>
+    </div>
+    
+        <div class="decor-wrapper">
+            <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+                <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+                <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+
+                <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+
+                <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+
+                <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+
+            </svg>
+        </div>
+    
+</footer>
+
+
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://dodwell.us/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="https://dodwell.us/assets/js/scripts.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/waypoints.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl = 
+ '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-60832716-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+ 
+</body>
+</html>

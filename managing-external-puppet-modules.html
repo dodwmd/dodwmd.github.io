@@ -2,23 +2,23 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Tag Index &#8211; dodwell.us</title>
-<meta name="description" content="An archive of posts sorted by tag.">
-
+<title>managing external puppet modules &#8211; dodwell.us</title>
+<meta name="description" content="DevOPS: For fun and profit">
+<meta name="keywords" content="">
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://dodwell.us/images/devops_logo.gif">
-<meta name="twitter:title" content="Tag Index">
-<meta name="twitter:description" content="An archive of posts sorted by tag.">
+<meta name="twitter:title" content="managing external puppet modules">
+<meta name="twitter:description" content="DevOPS: For fun and profit">
 <meta name="twitter:creator" content="@MichaelDodwell">
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tag Index">
-<meta property="og:description" content="An archive of posts sorted by tag.">
-<meta property="og:url" content="https://dodwell.us/tags/index.html">
+<meta property="og:title" content="managing external puppet modules">
+<meta property="og:description" content="DevOPS: For fun and profit">
+<meta property="og:url" content="https://dodwell.us/managing-external-puppet-modules">
 <meta property="og:site_name" content="dodwell.us">
 <meta property="og:image" content="https://dodwell.us/images/default_bg1.jpg">
 
@@ -26,7 +26,7 @@
 
 
 
-<link rel="canonical" href="https://dodwell.us/tags/">
+<link rel="canonical" href="https://dodwell.us/managing-external-puppet-modules">
 <link href="https://dodwell.us/feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
 
 
@@ -59,7 +59,7 @@
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
-<body class="home-template" itemscope itemtype="http://schema.org/WebPage">
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
 <div id="fade"></div>
 <a id="slide" class="animated fade"></a>
 <aside id="sidebar">
@@ -127,24 +127,94 @@
     </div>
     
 </header>
-<div id="main" class="content" role="main" itemprop="mainContentOfPage">
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
     <div class="container">
         <div class="row">
-            <div class="page-body col-md-10 col-md-offset-1" itemprop="description">
-                <ul class="tag-box inline">
-  
-  
-    
-  
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">managing external puppet modules</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published updated"><time datetime="2014-08-02T05:22:51+10:00" class="post-time" itemprop="datePublished">02 Aug 2014</time><span>
+                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;1 minute read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p>I had a co-worker ask me about upgrading puppet modules and I thought I’d share the information I spoke to them about. Writing individual puppet modules for a client can be a time consuming process. Luckily for us puppet modules for common tasks have been written and published. Using these modules enables the Systems Administrator to cut down on the amount of code they need to write and manage. However, things get tricky when you’re managing multiple environments (change controlled puppet deployments!), multiple networks/clients and want to keep the modules updated.</p>
 
-</ul>
+<blockquote>
+  <p>Librarian-puppet is a bundler for your puppet infrastructure. You can use librarian-puppet to manage the puppet modules your infrastructure depends on, whether the modules come from the Puppet Forge, Git repositories or a just a path.</p>
 
+  <ul>
+    <li>Librarian-puppet can reuse the dependencies listed in your Modulefile</li>
+    <li>Forge modules can be installed from Puppetlabs Forge or an internal Forge such as Pulp</li>
+    <li>Git modules can be installed from a branch, tag or specific commit, optionally using a path inside the repository</li>
+    <li>Modules can be installed from GitHub using tarballs, without needing Git installed</li>
+    <li>Module dependencies are resolved transitively without needing to list all the modules explicitly</li>
+  </ul>
 
-            </div>    
+  <p>Librarian-puppet manages your modules/ directory for you based on your Puppetfile. Your Puppetfile becomes the authoritative source for what modules you require and at what version, tag or branch.</p>
+
+  <p>Once using Librarian-puppet you should not modify the contents of your modules directory. The individual modules’ repos should be updated, tagged with a new release and the version bumped in your Puppetfile.</p>
+
+  <p>It is based on Librarian, a framework for writing bundlers, which are tools that resolve, fetch, install, and isolate a project’s dependencies.</p>
+
+  <p>– <a href="http://librarian-puppet.com/" target="_blank">http://librarian-puppet.com/</a></p>
+</blockquote>
+
+<h2 id="further-reading">further reading</h2>
+<p><a href="http://librarian-puppet.com/" target="_blank">http://librarian-puppet.com/</a></p>
+
+                        <br>
+                    
+                    
+                    </div>
         </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;managing external puppet modules&quot;%20https://dodwell.us/managing-external-puppet-modules%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us/managing-external-puppet-modules"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us/managing-external-puppet-modules"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us/images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us/resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
     </div>
 </div>
-    
+
 <footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" >
 
 
@@ -229,6 +299,7 @@
 </footer>
 
 
+    
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="https://dodwell.us/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
 <script src="https://dodwell.us/assets/js/scripts.min.js"></script>
@@ -281,6 +352,6 @@ $("a#click-pages").click(function(){
 </script>
 
 
-  
+ 
 </body>
 </html>

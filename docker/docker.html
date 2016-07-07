@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Docker &#8211; dodwell.us</title>
+<meta name="description" content="How to setup multiple docker containers to host laravel">
+<meta name="keywords" content="">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dodwell.us/images/devops_logo.gif">
+<meta name="twitter:title" content="Docker">
+<meta name="twitter:description" content="How to setup multiple docker containers to host laravel">
+<meta name="twitter:creator" content="@MichaelDodwell">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker">
+<meta property="og:description" content="How to setup multiple docker containers to host laravel">
+<meta property="og:url" content="https://dodwell.us/docker/docker">
+<meta property="og:site_name" content="dodwell.us">
+<meta property="og:image" content="https://dodwell.us/images/default_bg1.jpg">
+
+
+
+
+
+<link rel="canonical" href="https://dodwell.us/docker/docker">
+<link href="https://dodwell.us/feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us/assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us/assets/css/style.css" />
+
+
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="https://dodwell.us/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://dodwell.us/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://dodwell.us/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
+<div id="fade"></div>
+<a id="slide" class="animated fade"></a>
+<aside id="sidebar">
+    <nav id="navigation">
+    <h2>MENU</h2>
+    <hr>
+
+            <li>
+                    <a href="https://dodwell.us/">Home</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/categories">Categories</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/tags">Tags</a>
+                 </li>
+            
+           <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+    </nav>
+    
+    
+</aside>
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom"  style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand light" href="https://dodwell.us" role="banner" itemprop="url">
+
+                <img itemprop="logo" src="https://dodwell.us/images/devops_logo.gif" alt="dodwell.us Logo" />
+
+            <h1 class="blog-title light" itemprop="name">
+                dodwell.us
+            </h1>
+                
+            </a>
+            <h2 class="blog-description light bordered bordered-top" itemprop="description">
+                Setting up multiple docker containers to work together to host a laravel website
+            </h2>
+        </div>
+    </div>
+    
+    
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+
+        </svg>
+    </div>
+    
+</header>
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+    <div class="container">
+        <div class="row">
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Docker</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;">How to setup multiple docker containers to host laravel</div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published updated"><time datetime="2016-05-02T00:00:00+10:00" class="post-time" itemprop="datePublished">02 May 2016</time><span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#docker" data-toggle="tooltip" title="Other posts from the Docker category" rel="tag">Docker</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">10.34</span> minutes read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p>I’ve been playing around with docker for awhile now and thought I’d write a post putting everything I’ve done together. This post should cover off everything you need to know to setup a practical install using multiple containers that are linked together to host a laravel frameworked website. The information should hopefully assist in the development of other full stack environments.</p>
+
+<h3 id="setup-docker">setup docker</h3>
+
+<p>This first section covers off how to setup your host to run the docker daemon on Ubuntu Xenial (16.04 LTS).</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@docker:~<span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;deb https://apt.dockerproject.org/repo ubuntu-xenial main&#39;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/docker.list
+deb https://apt.dockerproject.org/repo ubuntu-xenial main
+dodwmd@puppet:~<span class="nv">$ </span>sudo apt-get install linux-image-extra-<span class="k">$(</span>uname -r<span class="k">)</span> docker-compose docker-engine</code></pre></figure>
+
+<p>This should then install docker and docker-compose. Lets confirm that everything is working.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span>sudo service docker start
+dodwmd@puppet:~<span class="nv">$ </span>sudo docker run hello-world
+Unable to find image <span class="s1">&#39;hello-world:latest&#39;</span> locally
+latest: Pulling from library/hello-world
+4276590986f6: Pull <span class="nb">complete</span>
+a3ed95caeb02: Pull <span class="nb">complete</span>
+Digest: sha256:4f32210e234b4ad5cac92efacc0a3d602b02476c754f13d517e1ada048e5a8ba
+Status: Downloaded newer image <span class="k">for</span> hello-world:latest
+
+Hello from Docker.
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the <span class="s2">&quot;hello-world&quot;</span> image from the Docker Hub.
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ <span class="nv">$ </span>docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker Hub account:
+ https://hub.docker.com
+
+For more examples and ideas, visit:
+ https://docs.docker.com/engine/userguide/
+
+dodwmd@puppet:~<span class="nv">$ </span></code></pre></figure>
+
+<p>The output above shows us starting the docker service and running a docker container that outputs some basic text.</p>
+
+<h4 id="optional">optional</h4>
+
+<p>You can optionally add your username to the docker group and then you don’t have to use sudo to run docker commands. I’ll assume in the rest of this howto that you’ve taken the following steps, otherwise just add ‘sudo ‘ to the front of any of the below commands after this section.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span>sudo adduser <span class="nv">$USER</span> docker
+dodwmd@puppet:~<span class="err">$</span></code></pre></figure>
+
+<p>Make sure you reset your shell to be a member of the docker group.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span><span class="nb">exec </span>su -l <span class="nv">$USER</span></code></pre></figure>
+
+<h4 id="baseimage">baseimage</h4>
+
+<p>All docker containers need to have a seed image that everything is built upon. Personally I’m a fan of Ubuntu, so 
+I was on a look out for a stripped version of ubuntu and found phusion/baseimage.</p>
+
+<p>Unfortunately at the time of this post phusion/baseimage:latest was only on 14.04. I wanted the latest LTS which is 16.04.
+Lets create a 16.04 phusion/baseimage.</p>
+
+<h2 id="section">#</h2>
+
+<p>First lets take a clone of phusion/baseimage git, and then build 16.04 and tag it as our own image:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span>mkdir -p ~/git/
+dodwmd@puppet:~<span class="nv">$ </span><span class="nb">cd</span> ~/git/
+dodwmd@puppet:~/git<span class="nv">$ </span>git clone https://github.com/phusion/baseimage-docker
+Cloning into <span class="s1">&#39;baseimage-docker&#39;</span>...
+remote: Counting objects: 1197, <span class="k">done</span>.
+remote: Total <span class="m">1197</span> <span class="o">(</span>delta 0<span class="o">)</span>, reused <span class="m">0</span> <span class="o">(</span>delta 0<span class="o">)</span>, pack-reused 1197
+Receiving objects: 100% <span class="o">(</span>1197/1197<span class="o">)</span>, 1.48 MiB <span class="p">|</span> <span class="m">0</span> bytes/s, <span class="k">done</span>.
+Resolving deltas: 100% <span class="o">(</span>705/705<span class="o">)</span>, <span class="k">done</span>.
+Checking connectivity... <span class="k">done</span>.
+dodwmd@vps78369:~/git⟫ <span class="nb">cd </span>baseimage-docker/
+dodwmd@vps78369:~/git/baseimage-docker⟫ make build <span class="nv">NAME</span><span class="o">=</span>dodwmd/baseimage <span class="nv">VERSION</span><span class="o">=</span>16.04</code></pre></figure>
+
+<p>This will build a copy of baseimage to 16.04 and tag is to be referenced as ‘dodwmd/baseimage:16.04’.</p>
+
+<h3 id="setup-some-volumes">setup some volumes</h3>
+
+<p>Now that we have a working docker server and baseimage, lets create data volume that we’re going to use across all our containers. This means we’ll have a single location where we can store all our required files for our site. You could seperate each part of the sites data into seperate containers but i like to store my production data all together.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span>mkdir -p docker/website-data docker/mariadb-data docker/redis-data
+dodwmd@puppet:~<span class="nv">$ </span>cat &gt; docker/website-data/Dockerfile <span class="s">&lt;&lt; EOF</span>
+<span class="s">FROM dodwmd/baseimage:16.04</span>
+
+<span class="s">MAINTAINER Michael Dodwell &lt;michael@dodwell.us&gt;</span>
+
+<span class="s">ENV DEBIAN_FRONTEND noninteractive</span>
+
+<span class="s">RUN mkdir -p /var/www</span>
+
+<span class="s"># Add web volume</span>
+<span class="s">VOLUME [&quot;/var/www&quot;]</span>
+
+<span class="s">CMD [&quot;true&quot;]</span>
+<span class="s">EOF</span>
+dodwmd@puppet:~<span class="nv">$ </span>sed <span class="s1">&#39;s%/var/www%/var/lib/mysql%g&#39;</span> &lt; docker/website-data/Dockerfile &gt; docker/mariadb-data/Dockerfile
+dodwmd@puppet:~<span class="nv">$ </span>sed <span class="s1">&#39;s%/var/www%/var/lib/redis%g&#39;</span> &lt; docker/website-data/Dockerfile &gt; docker/redis-data/Dockerfile</code></pre></figure>
+
+<p>For the data containers I want to use a mysql-like data source and something to act as a cache and message broker. The mysql-like data source I’m going to use a MariaDB container, to do this I’ve taken a community mysql dockerfile and modified it to work for MariaDB. But I’m happy to use the ‘redis’ container for the purposes of this blog post. Let’s first prepare the MariaDB container.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span>mkdir -p docker/mariadb/build
+dodwmd@puppet:~<span class="nv">$ </span>cat &gt; docker/mariadb/Dockerfile <span class="s">&lt;&lt; EOF</span>
+<span class="s">FROM dodwmd/baseimage:16.04</span>
+
+<span class="s">MAINTAINER Michael Dodwell &lt;michael@dodwell.us&gt;</span>
+
+<span class="s"># Default baseimage settings</span>
+<span class="s">ENV HOME /root</span>
+<span class="s">RUN /etc/my_init.d/00_regen_ssh_host_keys.sh</span>
+<span class="s">CMD [&quot;/sbin/my_init&quot;]</span>
+
+<span class="s">ENV DEBIAN_FRONTEND noninteractive</span>
+
+<span class="s"># Update software list, install MariaDB</span>
+<span class="s">RUN apt-get update &amp;&amp; \</span>
+<span class="s">    apt-get install -yq mariadb-server pwgen &amp;&amp; \</span>
+<span class="s">    apt-get clean &amp;&amp; \</span>
+<span class="s">    rm -rf /var/lib/apt/lists/* \</span>
+<span class="s">           /tmp/* \</span>
+<span class="s">           /var/tmp/*</span>
+
+<span class="s"># Configure MySQL</span>
+<span class="s">RUN rm -rf /var/lib/mysql/*</span>
+<span class="s">ADD build/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf</span>
+<span class="s">RUN mkdir -p /var/lib/mysql/</span>
+<span class="s">RUN chmod -R 755 /var/lib/mysql/</span>
+<span class="s">ENV MYSQL_USER root</span>
+<span class="s"># Leave this if you want a randomly generated password, or change if you want to set</span>
+<span class="s">ENV MYSQL_PASS **Random**</span>
+
+<span class="s"># Add MySQL service</span>
+<span class="s">RUN mkdir /etc/service/mysql</span>
+<span class="s">ADD build/run.sh /etc/service/mysql/run</span>
+<span class="s">RUN chmod 755 /etc/service/mysql/run</span>
+
+<span class="s"># Add nginx and MySQL volumes</span>
+<span class="s">VOLUME [&quot;/etc/mysql&quot;, &quot;/var/lib/mysql&quot;]</span>
+
+<span class="s">EXPOSE 3306</span>
+<span class="s">EOF</span>
+dodwmd@puppet:~<span class="nv">$ </span>cat &gt; docker/mariadb/build/run.sh <span class="s">&lt;&lt; EOF</span>
+<span class="s">#!/bin/bash</span>
+
+<span class="s">VOLUME</span>_HOME<span class="o">=</span><span class="s2">&quot;/var/lib/mysql&quot;</span>
+<span class="nv">CONF_FILE</span><span class="o">=</span><span class="s2">&quot;/etc/mysql/conf.d/my.cnf&quot;</span>
+<span class="nv">LOG</span><span class="o">=</span><span class="s2">&quot;/var/log/mysql/error.log&quot;</span>
+
+<span class="c"># Set permission of config file</span>
+chmod <span class="m">644</span> <span class="k">${</span><span class="nv">CONF_FILE</span><span class="k">}</span>
+chmod <span class="m">644</span> /etc/mysql/conf.d/mysqld_charset.cnf
+
+<span class="c"># Set permission on db location</span>
+chown -R mysql:mysql /var/lib/mysql
+
+StartMySQL <span class="o">()</span>
+<span class="o">{</span>
+    /usr/bin/mysqld_safe &gt; /dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">&amp;</span>
+
+    <span class="c"># Time out in 1 minute</span>
+    <span class="nv">LOOP_LIMIT</span><span class="o">=</span>13
+    <span class="k">for</span> <span class="o">((</span> <span class="nv">i</span><span class="o">=</span><span class="m">0</span> <span class="p">;</span> <span class="p">;</span> i++ <span class="o">))</span><span class="p">;</span> <span class="k">do</span>
+        <span class="k">if</span> <span class="o">[</span> <span class="k">${</span><span class="nv">i</span><span class="k">}</span> -eq <span class="k">${</span><span class="nv">LOOP_LIMIT</span><span class="k">}</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+            <span class="nb">echo</span> <span class="s2">&quot;Time out. Error log is shown as below:&quot;</span>
+            tail -n <span class="m">100</span> <span class="k">${</span><span class="nv">LOG</span><span class="k">}</span>
+            <span class="nb">exit </span>1
+        <span class="k">fi</span>
+        <span class="nb">echo</span> <span class="s2">&quot;=&gt; Waiting for confirmation of MySQL service startup, trying ${i}/${LOOP_LIMIT} ...&quot;</span>
+        sleep 5
+        mysql -uroot -e <span class="s2">&quot;status&quot;</span> &gt; /dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="o">&amp;&amp;</span> <span class="nb">break</span>
+<span class="nb">    </span><span class="k">done</span>
+<span class="o">}</span>
+
+CreateMySQLUser<span class="o">()</span>
+<span class="o">{</span>
+	StartMySQL
+	<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;$MYSQL_PASS&quot;</span> <span class="o">=</span> <span class="s2">&quot;**Random**&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+	    <span class="nb">unset </span>MYSQL_PASS
+	<span class="k">fi</span>
+
+	<span class="nv">PASS</span><span class="o">=</span><span class="k">${</span><span class="nv">MYSQL_PASS</span><span class="k">:-$(</span>pwgen -s <span class="m">12</span> 1<span class="k">)}</span>
+	<span class="nv">_word</span><span class="o">=</span><span class="k">$(</span> <span class="o">[</span> <span class="k">${</span><span class="nv">MYSQL_PASS</span><span class="k">}</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;preset&quot;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&quot;random&quot;</span> <span class="k">)</span>
+	<span class="nb">echo</span> <span class="s2">&quot;=&gt; Creating MySQL user ${MYSQL_USER} with ${_word} password&quot;</span>
+
+	mysql -uroot -e <span class="s2">&quot;CREATE USER &#39;${MYSQL_USER}&#39;@&#39;%&#39; IDENTIFIED BY &#39;$PASS&#39;&quot;</span>
+	mysql -uroot -e <span class="s2">&quot;GRANT ALL PRIVILEGES ON *.* TO &#39;${MYSQL_USER}&#39;@&#39;%&#39; WITH GRANT OPTION&quot;</span>
+
+
+	<span class="nb">echo</span> <span class="s2">&quot;=&gt; Done!&quot;</span>
+
+	<span class="nb">echo</span> <span class="s2">&quot;========================================================================&quot;</span>
+	<span class="nb">echo</span> <span class="s2">&quot;You can now connect to this MySQL Server using:&quot;</span>
+	<span class="nb">echo</span> <span class="s2">&quot;&quot;</span>
+	<span class="nb">echo</span> <span class="s2">&quot;    mysql -u$MYSQL_USER -p$PASS -h&lt;host&gt; -P&lt;port&gt;&quot;</span>
+	<span class="nb">echo</span> <span class="s2">&quot;&quot;</span>
+	<span class="nb">echo</span> <span class="s2">&quot;Please remember to change the above password as soon as possible!&quot;</span>
+	<span class="nb">echo</span> <span class="s2">&quot;MySQL user &#39;root&#39; has no password but only allows local connections&quot;</span>
+	<span class="nb">echo</span> <span class="s2">&quot;========================================================================&quot;</span>
+
+	mysqladmin -uroot shutdown
+<span class="o">}</span>
+
+ImportSql<span class="o">()</span>
+<span class="o">{</span>
+	StartMySQL
+
+	<span class="k">for</span> FILE in <span class="k">${</span><span class="nv">STARTUP_SQL</span><span class="k">}</span><span class="p">;</span> <span class="k">do</span>
+	   <span class="nb">echo</span> <span class="s2">&quot;=&gt; Importing SQL file ${FILE}&quot;</span>
+	   mysql -uroot &lt; <span class="s2">&quot;${FILE}&quot;</span>
+	<span class="k">done</span>
+
+	mysqladmin -uroot shutdown
+<span class="o">}</span>
+
+<span class="c"># Main</span>
+<span class="k">if</span> <span class="o">[</span> <span class="k">${</span><span class="nv">REPLICATION_MASTER</span><span class="k">}</span> <span class="o">==</span> <span class="s2">&quot;**False**&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">unset </span>REPLICATION_MASTER
+<span class="k">fi</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="k">${</span><span class="nv">REPLICATION_SLAVE</span><span class="k">}</span> <span class="o">==</span> <span class="s2">&quot;**False**&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">unset </span>REPLICATION_SLAVE
+<span class="k">fi</span>
+
+<span class="c"># Initialize empty data volume and create MySQL user</span>
+<span class="k">if</span> <span class="o">[[</span> ! -d <span class="nv">$VOLUME_HOME</span>/mysql <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&quot;=&gt; An empty or uninitialized MySQL volume is detected in $VOLUME_HOME&quot;</span>
+    <span class="nb">echo</span> <span class="s2">&quot;=&gt; Installing MySQL ...&quot;</span>
+    <span class="k">if</span> <span class="o">[</span> ! -f /usr/share/mysql/my-default.cnf <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+        cp /etc/mysql/my.cnf /usr/share/mysql/my-default.cnf
+    <span class="k">fi</span> 
+    mysql_install_db &gt; /dev/null 2&gt;<span class="p">&amp;</span>1
+    <span class="nb">echo</span> <span class="s2">&quot;=&gt; Done!&quot;</span>  
+    <span class="nb">echo</span> <span class="s2">&quot;=&gt; Creating admin user ...&quot;</span>
+    CreateMySQLUser
+<span class="k">else</span>
+    <span class="nb">echo</span> <span class="s2">&quot;=&gt; Using an existing volume of MySQL&quot;</span>
+<span class="k">fi</span>
+
+<span class="c"># Import Startup SQL</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;${STARTUP_SQL}&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">if</span> <span class="o">[</span> ! -f /sql_imported <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&quot;=&gt; Initializing DB with ${STARTUP_SQL}&quot;</span>
+        ImportSql
+        touch /sql_imported
+    <span class="k">fi</span>
+<span class="k">fi</span>
+
+
+<span class="c"># Set MySQL REPLICATION - MASTER</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;${REPLICATION_MASTER}&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span> 
+    <span class="nb">echo</span> <span class="s2">&quot;=&gt; Configuring MySQL replication as master ...&quot;</span>
+    <span class="k">if</span> <span class="o">[</span> ! -f /replication_configured <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nv">RAND</span><span class="o">=</span><span class="s2">&quot;$(date +%s | rev | cut -c 1-2)$(echo ${RANDOM})&quot;</span>
+        <span class="nb">echo</span> <span class="s2">&quot;=&gt; Writting configuration file &#39;${CONF_FILE}&#39; with server-id=${RAND}&quot;</span>
+        sed -i <span class="s2">&quot;s/^#server-id.*/server-id = ${RAND}/&quot;</span> <span class="k">${</span><span class="nv">CONF_FILE</span><span class="k">}</span>
+        sed -i <span class="s2">&quot;s/^#log-bin.*/log-bin = mysql-bin/&quot;</span> <span class="k">${</span><span class="nv">CONF_FILE</span><span class="k">}</span>
+        <span class="nb">echo</span> <span class="s2">&quot;=&gt; Starting MySQL ...&quot;</span>
+        StartMySQL
+        <span class="nb">echo</span> <span class="s2">&quot;=&gt; Creating a log user ${REPLICATION_USER}:${REPLICATION_PASS}&quot;</span>
+        mysql -uroot -e <span class="s2">&quot;CREATE USER &#39;${REPLICATION_USER}&#39;@&#39;%&#39; IDENTIFIED BY &#39;${REPLICATION_PASS}&#39;&quot;</span>
+        mysql -uroot -e <span class="s2">&quot;GRANT REPLICATION SLAVE ON *.* TO &#39;${REPLICATION_USER}&#39;@&#39;%&#39;&quot;</span>
+        <span class="nb">echo</span> <span class="s2">&quot;=&gt; Done!&quot;</span>
+        mysqladmin -uroot shutdown
+        touch /replication_configured
+    <span class="k">else</span>
+        <span class="nb">echo</span> <span class="s2">&quot;=&gt; MySQL replication master already configured, skip&quot;</span>
+    <span class="k">fi</span>
+<span class="k">fi</span>
+
+<span class="c"># Set MySQL REPLICATION - SLAVE</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;${REPLICATION_SLAVE}&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span> 
+    <span class="nb">echo</span> <span class="s2">&quot;=&gt; Configuring MySQL replication as slave ...&quot;</span>
+    <span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;${MYSQL_PORT_3306_TCP_ADDR}&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> -n <span class="s2">&quot;${MYSQL_PORT_3306_TCP_PORT}&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="k">if</span> <span class="o">[</span> ! -f /replication_configured <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+            <span class="nv">RAND</span><span class="o">=</span><span class="s2">&quot;$(date +%s | rev | cut -c 1-2)$(echo ${RANDOM})&quot;</span>
+            <span class="nb">echo</span> <span class="s2">&quot;=&gt; Writting configuration file &#39;${CONF_FILE}&#39; with server-id=${RAND}&quot;</span>
+            sed -i <span class="s2">&quot;s/^#server-id.*/server-id = ${RAND}/&quot;</span> <span class="k">${</span><span class="nv">CONF_FILE</span><span class="k">}</span>
+            sed -i <span class="s2">&quot;s/^#log-bin.*/log-bin = mysql-bin/&quot;</span> <span class="k">${</span><span class="nv">CONF_FILE</span><span class="k">}</span>
+            <span class="nb">echo</span> <span class="s2">&quot;=&gt; Starting MySQL ...&quot;</span>
+            StartMySQL
+            <span class="nb">echo</span> <span class="s2">&quot;=&gt; Setting master connection info on slave&quot;</span>
+            mysql -uroot -e <span class="s2">&quot;CHANGE MASTER TO MASTER_HOST=&#39;${MYSQL_PORT_3306_TCP_ADDR}&#39;,MASTER_USER=&#39;${MYSQL_ENV_REPLICATION_USER}&#39;,MASTER_PASSWORD=&#39;${MYSQL_ENV_REPLICATION_PASS}&#39;,MASTER_PORT=${MYSQL_PORT_3306_TCP_PORT}, MASTER_CONNECT_RETRY=30&quot;</span>
+            <span class="nb">echo</span> <span class="s2">&quot;=&gt; Done!&quot;</span>
+            mysqladmin -uroot shutdown
+            touch /replication_configured
+        <span class="k">else</span>
+            <span class="nb">echo</span> <span class="s2">&quot;=&gt; MySQL replicaiton slave already configured, skip&quot;</span>
+        <span class="k">fi</span>
+    <span class="k">else</span> 
+        <span class="nb">echo</span> <span class="s2">&quot;=&gt; Cannot configure slave, please link it to another MySQL container with alias as &#39;mysql&#39;&quot;</span>
+        <span class="nb">exit </span>1
+    <span class="k">fi</span>
+<span class="k">fi</span>
+
+tail -F <span class="nv">$LOG</span> <span class="p">&amp;</span>
+<span class="nb">exec </span>mysqld_safe</code></pre></figure>
+
+<p>Now that we have our data locations sorted out lets setup nginx and php in seperate containers.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span>mkdir -p docker/nginx docker/phpfpm
+dodwmd@puppet:~<span class="nv">$ </span>cat &gt; docker/nginx/Dockerfile <span class="s">&lt;&lt; EOF</span>
+<span class="s">FROM phusion/baseimage:latest</span>
+<span class="s">MAINTAINER Michael Dodwell &lt;michael@dodwell.us&gt;</span>
+
+<span class="s">ENV DEBIAN_FRONTEND noninteractive</span>
+
+<span class="s"># Install PHP-FPM and popular/laravel required extensions</span>
+<span class="s">RUN apt-get update -y</span>
+<span class="s">RUN apt-get install -y \</span>
+<span class="s">    nginx &amp;&amp; \</span>
+<span class="s">    apt-get clean &amp;&amp; \</span>
+<span class="s">    rm -rf /var/lib/apt/lists/* \</span>
+<span class="s">           /tmp/* \</span>
+<span class="s">           /var/tmp/*</span>
+
+<span class="s"># Configure Nginx</span>
+<span class="s">ADD build/nginx.conf /etc/nginx/nginx.conf</span>
+
+<span class="s">RUN mkdir -p /etc/service/nginx</span>
+<span class="s">ADD build/nginx-start.sh /etc/service/nginx/run</span>
+<span class="s">RUN chmod 755 /etc/service/nginx/run</span>
+<span class="s">RUN rm /etc/init.d/nginx</span>
+
+<span class="s">VOLUME [&quot;/var/www&quot;]</span>
+
+<span class="s">EXPOSE 80</span>
+<span class="s">EXPOSE 443</span>
+
+<span class="s">WORKDIR /tmp</span>
+<span class="s">EOF</span>
+dodwmd@puppet:~<span class="nv">$ </span>cat &gt; docker/phpfpm/Dockerfile <span class="s">&lt;&lt; EOF</span>
+<span class="s">FROM dodwmd/baseimage:16.04</span>
+<span class="s">MAINTAINER Michael Dodwell &lt;michael@dodwell.us&gt;</span>
+
+<span class="s">ENV DEBIAN_FRONTEND noninteractive</span>
+
+<span class="s"># Install PHP-FPM and popular/laravel required extensions</span>
+<span class="s">RUN apt-get update -y</span>
+<span class="s">RUN apt-get install -y \</span>
+<span class="s">    php7.0-fpm \</span>
+<span class="s">    php-xsl \</span>
+<span class="s">    php-curl \</span>
+<span class="s">    php-gd \</span>
+<span class="s">    php-geoip \</span>
+<span class="s">    php-imagick \</span>
+<span class="s">    php-imap \</span>
+<span class="s">    php-json \</span>
+<span class="s">    php-ldap \</span>
+<span class="s">    php-mcrypt \</span>
+<span class="s">    php-memcache \</span>
+<span class="s">    php-memcached \</span>
+<span class="s">    php-mongodb \</span>
+<span class="s">    php-mysql \</span>
+<span class="s">    php-pgsql \</span>
+<span class="s">    php-redis \</span>
+<span class="s">    php-sqlite3 \</span>
+<span class="s">    php-xdebug \</span>
+<span class="s">    php-xmlrpc &amp;&amp; \</span>
+<span class="s">    apt-get clean &amp;&amp; \</span>
+<span class="s">    rm -rf /var/lib/apt/lists/* \</span>
+<span class="s">           /tmp/* \</span>
+<span class="s">           /var/tmp/*</span>
+
+<span class="s"># Configure PHP-FPM</span>
+<span class="s">RUN sed -i &quot;s/;date.timezone =.*/date.timezone = UTC/&quot; /etc/php/7.0/fpm/php.ini &amp;&amp; \</span>
+<span class="s">    sed -i &quot;s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/&quot; /etc/php/7.0/fpm/php.ini &amp;&amp; \</span>
+<span class="s">    sed -i &quot;s/display_errors = Off/display_errors = stderr/&quot; /etc/php/7.0/fpm/php.ini &amp;&amp; \</span>
+<span class="s">    sed -i &quot;s/upload_max_filesize = 2M/upload_max_filesize = 30M/&quot; /etc/php/7.0/fpm/php.ini &amp;&amp; \</span>
+<span class="s">    sed -i &quot;s/;opcache.enable=0/opcache.enable=0/&quot; /etc/php/7.0/fpm/php.ini &amp;&amp; \</span>
+<span class="s">    sed -i -e &quot;s/;daemonize\s*=\s*yes/daemonize = no/g&quot; /etc/php/7.0/fpm/php-fpm.conf &amp;&amp; \</span>
+<span class="s">    sed -i &#39;/^listen = /clisten = 9000&#39; /etc/php/7.0/fpm/pool.d/www.conf &amp;&amp; \</span>
+<span class="s">    sed -i &#39;/^listen.allowed_clients/c;listen.allowed_clients =&#39; /etc/php/7.0/fpm/pool.d/www.conf &amp;&amp; \</span>
+<span class="s">    sed -i &#39;/^;catch_workers_output/ccatch_workers_output = yes&#39; /etc/php/7.0/fpm/pool.d/www.conf</span>
+
+<span class="s">RUN mkdir -p /etc/service/phpfpm /run/php</span>
+<span class="s">ADD build/phpfpm-run.sh /etc/service/phpfpm/run</span>
+<span class="s">RUN chmod 755 /etc/service/phpfpm/run</span>
+
+<span class="s">VOLUME [&quot;/var/www&quot;]</span>
+
+<span class="s">EXPOSE &quot;9000&quot;</span>
+<span class="s">EOF</span></code></pre></figure>
+
+<h3 id="put-it-all-together">Put it all together</h3>
+
+<p>Now that we’ve all the containers prepared lets tie it all together and build them.</p>
+
+<p>To do this lets use docker-compose.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>The version that’s packaged with Ubuntu (even Xenial) is already ‘old’. Lets grab the <a href="https://github.com/docker/compose/releases" target="_blank">latest release</a> and install that.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span>sudo curl -o /usr/local/bin/docker-compose -L https://github.com/docker/compose/releases/download/1.8.0-rc1/docker-compose-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span>
+dodwmd@puppet:~<span class="nv">$ </span>sudo chmod +x /usr/local/bin/docker-compose</code></pre></figure>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>Now lets create a docker-compose.yml file that will tie everything together. Firstly I want to create a whole bunch of directories on my local machine that will hold all my data.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span>mkdir -p logs/nginx www/data mysql redis</code></pre></figure>
+
+<p>And now lets configure a docker-compose.yml file.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span>cat &gt; docker/docker-compose.yml <span class="s">&lt;&lt; EOF</span>
+<span class="s">version: &#39;2&#39;</span>
+<span class="s">services:</span>
+<span class="s">  nginx:</span>
+<span class="s">    build: ./nginx</span>
+<span class="s">    image: dodwmd/nginx:latest</span>
+<span class="s">    depends_on:</span>
+<span class="s">      - websitedata</span>
+<span class="s">    ports:</span>
+<span class="s">      - &quot;8080:80&quot;</span>
+<span class="s">    links:</span>
+<span class="s">      - phpfpm</span>
+<span class="s">    volumes_from:</span>
+<span class="s">      - websitedata</span>
+<span class="s">    volumes:</span>
+<span class="s">      - ../data/logs/nginx:/var/logs/nginx</span>
+<span class="s">    networks:</span>
+<span class="s">      - frontend</span>
+<span class="s">      - backend</span>
+
+<span class="s">  websitedata:</span>
+<span class="s">    build: ./website-data</span>
+<span class="s">    image: dodwmd/website-data:latest</span>
+<span class="s">    volumes:</span>
+<span class="s">      - ../data/www:/var/www</span>
+
+<span class="s">  mariadbdata:</span>
+<span class="s">    build: ./mariadb-data</span>
+<span class="s">    image: dodwmd/mariadb-data:latest</span>
+<span class="s">    volumes:</span>
+<span class="s">      - ../data/mysql:/var/lib/mysql</span>
+
+<span class="s">  mariadb:</span>
+<span class="s">   build: ./mariadb</span>
+<span class="s">   image: dodwmd/mariadb:latest</span>
+<span class="s">   container_name: mariadb</span>
+<span class="s">   depends_on:</span>
+<span class="s">     - mariadbdata</span>
+<span class="s">   environment:</span>
+<span class="s">     MYSQL_USER: &quot;dodwmd&quot;</span>
+<span class="s">     MYSQL_PASS: &quot;blog_demo_pass&quot;</span>
+<span class="s">     STARTUP_SQL: &quot;/var/lib/mysql/setup/create_dbs.sql&quot;</span>
+<span class="s">   volumes_from:</span>
+<span class="s">     - mariadbdata</span>
+<span class="s">   networks:</span>
+<span class="s">      backend:</span>
+<span class="s">        ipv4_address: 172.19.0.3</span>
+
+<span class="s">  phpfpm:</span>
+<span class="s">    build: ./phpfpm</span>
+<span class="s">    image: dodwmd/phpfpm:latest</span>
+<span class="s">    depends_on:</span>
+<span class="s">      - websitedata</span>
+<span class="s">    volumes_from:</span>
+<span class="s">      - websitedata</span>
+<span class="s">    links:</span>
+<span class="s">      - redis</span>
+<span class="s">      - mariadb</span>
+<span class="s">    networks:</span>
+<span class="s">      - backend</span>
+
+<span class="s">  redisdata:</span>
+<span class="s">    build: ./redis-data</span>
+<span class="s">    image: dodwmd/redis-data:latest</span>
+<span class="s">    volumes:</span>
+<span class="s">      - ../data/redis:/var/lib/redis</span>
+
+<span class="s">  redis:</span>
+<span class="s">    image: redis</span>
+<span class="s">    depends_on:</span>
+<span class="s">      - redisdata</span>
+<span class="s">    volumes_from:</span>
+<span class="s">      - redisdata</span>
+<span class="s">    networks:</span>
+<span class="s">      - backend</span>
+
+<span class="s">networks:</span>
+<span class="s">  backend:</span>
+<span class="s">    ipam:</span>
+<span class="s">      driver: default</span>
+<span class="s">      config:</span>
+<span class="s">        - subnet: 172.19.0.0/16</span>
+<span class="s">          gateway: 172.19.0.1</span>
+<span class="s">  frontend:</span>
+<span class="s">    external:</span>
+<span class="s">      name: docker_default</span>
+
+<span class="s">EOF</span></code></pre></figure>
+
+<p>The above docker-compose i tried to highlight some functionality with docker-compose. You can use it to setup a proper network topology, set static ips on containers and a whole lot more. I’d suggest taking a look at the documentation <a href="https://docs.docker.com/compose/compose-file/" target="_blank">here</a>.</p>
+
+<h2 id="easy-setup-of-laravel">Easy setup of laravel</h2>
+
+<p>We can now setup laravel inside www/data.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span>composer global require <span class="s2">&quot;laravel/installer&quot;</span>
+dodwmd@puppet:~<span class="nv">$ </span><span class="nb">cd </span>www <span class="p">;</span> ~/.composer/vendor/bin/laravel new data</code></pre></figure>
+
+<p>The above will create a data directory inside www that will populate with everything you need to run laravel.</p>
+
+<h2 id="build--run">Build &amp; Run</h2>
+
+<p>With the above docker-compose.yml we can simply run docker-compose and it will build all our containers and run them.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~<span class="nv">$ </span><span class="nb">cd </span>docker
+dodwmd@puppet:~/docker<span class="nv">$ </span>docker-compose up</code></pre></figure>
+
+<p>We should have a fully working docker environment able to service a laravel stack.</p>
+
+
+                        <br>
+                    
+                    
+                    </div>
+        </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;Docker&quot;%20https://dodwell.us/docker/docker%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us/docker/docker"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us/docker/docker"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us/images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us/resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
+    </div>
+</div>
+
+<footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" >
+
+
+    <div class="inner">
+        <div class="container">
+
+            <ul class="social-icons">
+            <li>
+                <a href="http://twitter.com/MichaelDodwell" data-toggle="tooltip" title="Michael Dodwell on Twitter" target="_blank">
+                    <i class="icon-twitter"></i>
+                </a>
+            </li>
+            
+            
+            
+            <li>
+                <a href="https://au.linkedin.com/in/michaeldodwell" data-toggle="tooltip" title="Michael Dodwell on LinkedIn" target="_blank">
+                    <i class="icon-linkedin"></i>
+                </a>
+            </li>
+            
+            
+            <li>
+                <a href="http://github.com/dodwmd" data-toggle="tooltip" title="Michael Dodwell on Github" target="_blank">
+                    <i class="icon-github"></i>
+                </a>
+            </li>
+        </ul>
+            <div>
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+            </div>
+            <ul class="menu-items">
+            
+            <li>
+                
+                    <a href="https://dodwell.us/"><i class="icon-home"></i></a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/categories">Categories</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/tags">Tags</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+        </ul>
+        </div>
+    </div>
+    
+        <div class="decor-wrapper">
+            <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+                <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+                <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+
+                <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+
+                <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+
+                <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+
+            </svg>
+        </div>
+    
+</footer>
+
+
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://dodwell.us/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="https://dodwell.us/assets/js/scripts.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/waypoints.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl = 
+ '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-60832716-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+ 
+</body>
+</html>

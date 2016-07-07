@@ -2,23 +2,23 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Tag Index &#8211; dodwell.us</title>
-<meta name="description" content="An archive of posts sorted by tag.">
-
+<title>Free HTML Webhosting &#8211; dodwell.us</title>
+<meta name="description" content="How to host your blog or website for free including SSL certificates.">
+<meta name="keywords" content="">
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://dodwell.us/images/devops_logo.gif">
-<meta name="twitter:title" content="Tag Index">
-<meta name="twitter:description" content="An archive of posts sorted by tag.">
+<meta name="twitter:title" content="Free HTML Webhosting">
+<meta name="twitter:description" content="How to host your blog or website for free including SSL certificates.">
 <meta name="twitter:creator" content="@MichaelDodwell">
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tag Index">
-<meta property="og:description" content="An archive of posts sorted by tag.">
-<meta property="og:url" content="https://dodwell.us/tags/index.html">
+<meta property="og:title" content="Free HTML Webhosting">
+<meta property="og:description" content="How to host your blog or website for free including SSL certificates.">
+<meta property="og:url" content="https://dodwell.us/blog/html-hosting">
 <meta property="og:site_name" content="dodwell.us">
 <meta property="og:image" content="https://dodwell.us/images/default_bg1.jpg">
 
@@ -26,7 +26,7 @@
 
 
 
-<link rel="canonical" href="https://dodwell.us/tags/">
+<link rel="canonical" href="https://dodwell.us/blog/html-hosting">
 <link href="https://dodwell.us/feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
 
 
@@ -59,7 +59,7 @@
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us/images/apple-touch-icon-144x144-precomposed.png">
 
 </head>
-<body class="home-template" itemscope itemtype="http://schema.org/WebPage">
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
 <div id="fade"></div>
 <a id="slide" class="animated fade"></a>
 <aside id="sidebar">
@@ -95,7 +95,7 @@
 
     <div class="inner">
         <div class="container">
-            <a class="brand" href="https://dodwell.us" role="banner" itemprop="url">
+            <a class="brand light" href="https://dodwell.us" role="banner" itemprop="url">
 
                 <img itemprop="logo" src="https://dodwell.us/images/devops_logo.gif" alt="dodwell.us Logo" />
 
@@ -104,6 +104,9 @@
             </h1>
                 
             </a>
+            <h2 class="blog-description light bordered bordered-top" itemprop="description">
+                Free HTML Webhosting
+            </h2>
         </div>
     </div>
     
@@ -127,24 +130,102 @@
     </div>
     
 </header>
-<div id="main" class="content" role="main" itemprop="mainContentOfPage">
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
     <div class="container">
         <div class="row">
-            <div class="page-body col-md-10 col-md-offset-1" itemprop="description">
-                <ul class="tag-box inline">
-  
-  
-    
-  
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Free HTML Webhosting</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;">How to host your blog or website for free including SSL certificates.</div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published"><time datetime="2015-04-16T00:00:00+10:00" class="post-time" itemprop="datePublished">16 Apr 2015</time><span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#blog" data-toggle="tooltip" title="Other posts from the Blog category" rel="tag">Blog</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">1.975</span> minutes read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p>I wanted to cover off how I currently host this blog for free using a number of services being offered by different companies.</p>
 
+<h3 id="what-do-you-need-this-days">what do you need this days?</h3>
+
+<p>This website has a few moving parts:</p>
+
+<ul>
+  <li>Blog software</li>
+  <li>Webhosting</li>
+  <li>SSL Certificates</li>
+  <li>SSL Forwarding</li>
 </ul>
 
+<p>The following post describes how I managed to get all of the above setup for free.</p>
 
-            </div>    
+<h3 id="blog-software">Blog Software</h3>
+
+<p>I’m currently using <a href="http://jekyllrb.com/">jekyll</a> to for my blogging software. This allows me to create a bunch of files and using some Ruby markup the files into a HTML blog. This means that when I need to add a new post all I have to do is add a single text file with human readable text in it and then using some markup convert it into HTML pages for your viewing.</p>
+
+<p>The <a href="http://jekyllrb.com/docs/usage/">jekyll docs</a> has some really good information on how to get started. I had a look at <a href="http://octopress.org/">octopress</a> but preferred to stick with native jekyll. If your a little on the unsure side of things I’d suggest using octopress.</p>
+
+<h3 id="webhosting">Webhosting</h3>
+
+<p><a href="http://github.com/">Github</a> which I already used to host <a href="https://github.com/dodwmd/">code</a> also allows for <a href="https://pages.github.com/">Github Pages</a>. This is a web hosting service that takes a special branch from your repository ‘gh-pages’ and allows you to host a some documentation for your project. You can also setup personal sites naming them in a certain way (username.github.io) and github will checkout the master and automatically setup a subdomain with the contents of ‘master’ being the webroot. This method also allows you to setup a ‘CNAME’ file in that branch file that can use used to host custom domains/hostnames. Take a look at <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages/">this documentation</a> for more information. Unfortunately Github Pages doesn’t allow for SSL termination.</p>
+
+<h3 id="ssl-certificates">SSL Certificates</h3>
+
+<p><a href="https://www.startssl.com/">StartSSL</a> offers free SSL certificate signing. The website is a little clunky and is prone to outages but if you persist you can get a SSL signed certificate from them.</p>
+
+<h3 id="ssl-forwarding">SSL Forwarding</h3>
+
+<p>Now that you have a SSL certificate you can simply go and signup for a free account over at <a href="https://www.cloudflare.com/">CloudFlare</a>. Upload your signed certificate and turn on ‘Flexible SSL’. This means the traffic between cloudflare and github is unencrypted but means that the user (and google!) will be viewing the site via a SSL certificate. This will help you in ranking and enables a caching service so if github should have an issue you have some redundancy. Win, Win!</p>
+
+                        <br>
+                    
+                    
+                    </div>
         </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;Free HTML Webhosting&quot;%20https://dodwell.us/blog/html-hosting%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us/blog/html-hosting"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us/blog/html-hosting"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us/images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us/resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
     </div>
 </div>
-    
+
 <footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" >
 
 
@@ -229,6 +310,7 @@
 </footer>
 
 
+    
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="https://dodwell.us/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
 <script src="https://dodwell.us/assets/js/scripts.min.js"></script>
@@ -281,6 +363,6 @@ $("a#click-pages").click(function(){
 </script>
 
 
-  
+ 
 </body>
 </html>
