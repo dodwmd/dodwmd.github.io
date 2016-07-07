@@ -75,7 +75,7 @@ kramdown:
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..6
-  use_coderay: false
+  enable_coderay: false
 
   coderay:
     coderay_line_numbers: 
@@ -203,3 +203,5 @@ site:
   github:
     is_user_page: false
     is_project_page: false
+
+gems: [jekyll-paginate]

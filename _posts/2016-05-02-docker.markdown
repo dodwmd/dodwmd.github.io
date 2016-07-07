@@ -1,0 +1,559 @@
+---
+layout: post
+title: Docker
+description: How to setup multiple docker containers to host laravel
+headline: Setting up multiple docker containers to work together to host a laravel website
+category: docker
+tags: []
+comments: false
+mathjax:
+---
+
+I've been playing around with docker for awhile now and thought I'd write a post putting everything I've done together. This post should cover off everything you need to know to setup a practical install using multiple containers that are linked together to host a laravel frameworked website. The information should hopefully assist in the development of other full stack environments.
+
+
+### setup docker
+
+This first section covers off how to setup your host to run the docker daemon on Ubuntu Xenial (16.04 LTS). 
+
+{% highlight bash %}
+dodwmd@docker:~$ echo 'deb https://apt.dockerproject.org/repo ubuntu-xenial main' | sudo tee /etc/apt/sources.list.d/docker.list
+deb https://apt.dockerproject.org/repo ubuntu-xenial main
+dodwmd@puppet:~$ sudo apt-get install linux-image-extra-$(uname -r) docker-compose docker-engine
+{% endhighlight %}
+
+This should then install docker and docker-compose. Lets confirm that everything is working.
+ 
+{% highlight bash %}
+dodwmd@puppet:~$ sudo service docker start
+dodwmd@puppet:~$ sudo docker run hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+4276590986f6: Pull complete
+a3ed95caeb02: Pull complete
+Digest: sha256:4f32210e234b4ad5cac92efacc0a3d602b02476c754f13d517e1ada048e5a8ba
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker.
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker Hub account:
+ https://hub.docker.com
+
+For more examples and ideas, visit:
+ https://docs.docker.com/engine/userguide/
+
+dodwmd@puppet:~$ 
+{% endhighlight %}
+
+The output above shows us starting the docker service and running a docker container that outputs some basic text.
+
+#### optional
+
+You can optionally add your username to the docker group and then you don't have to use sudo to run docker commands. I'll assume in the rest of this howto that you've taken the following steps, otherwise just add 'sudo ' to the front of any of the below commands after this section.
+
+{% highlight bash %}
+dodwmd@puppet:~$ sudo adduser $USER docker
+dodwmd@puppet:~$
+{% endhighlight %}
+
+Make sure you reset your shell to be a member of the docker group.
+
+{% highlight bash %}
+dodwmd@puppet:~$ exec su -l $USER
+{% endhighlight %}
+
+#### baseimage
+
+All docker containers need to have a seed image that everything is built upon. Personally I'm a fan of Ubuntu, so 
+I was on a look out for a stripped version of ubuntu and found phusion/baseimage.
+
+Unfortunately at the time of this post phusion/baseimage:latest was only on 14.04. I wanted the latest LTS which is 16.04.
+Lets create a 16.04 phusion/baseimage.
+
+###
+
+First lets take a clone of phusion/baseimage git, and then build 16.04 and tag it as our own image:
+
+{% highlight bash %}
+dodwmd@puppet:~$ mkdir -p ~/git/
+dodwmd@puppet:~$ cd ~/git/
+dodwmd@puppet:~/git$ git clone https://github.com/phusion/baseimage-docker
+Cloning into 'baseimage-docker'...
+remote: Counting objects: 1197, done.
+remote: Total 1197 (delta 0), reused 0 (delta 0), pack-reused 1197
+Receiving objects: 100% (1197/1197), 1.48 MiB | 0 bytes/s, done.
+Resolving deltas: 100% (705/705), done.
+Checking connectivity... done.
+dodwmd@vps78369:~/git⟫ cd baseimage-docker/
+dodwmd@vps78369:~/git/baseimage-docker⟫ make build NAME=dodwmd/baseimage VERSION=16.04
+{% endhighlight %}
+
+This will build a copy of baseimage to 16.04 and tag is to be referenced as 'dodwmd/baseimage:16.04'.
+
+### setup some volumes
+
+Now that we have a working docker server and baseimage, lets create data volume that we're going to use across all our containers. This means we'll have a single location where we can store all our required files for our site. You could seperate each part of the sites data into seperate containers but i like to store my production data all together.
+
+{% highlight bash %}
+dodwmd@puppet:~$ mkdir -p docker/website-data docker/mariadb-data docker/redis-data
+dodwmd@puppet:~$ cat > docker/website-data/Dockerfile << EOF
+FROM dodwmd/baseimage:16.04
+
+MAINTAINER Michael Dodwell <michael@dodwell.us>
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN mkdir -p /var/www
+
+# Add web volume
+VOLUME ["/var/www"]
+
+CMD ["true"]
+EOF
+dodwmd@puppet:~$ sed 's%/var/www%/var/lib/mysql%g' < docker/website-data/Dockerfile > docker/mariadb-data/Dockerfile
+dodwmd@puppet:~$ sed 's%/var/www%/var/lib/redis%g' < docker/website-data/Dockerfile > docker/redis-data/Dockerfile
+{% endhighlight %}
+
+For the data containers I want to use a mysql-like data source and something to act as a cache and message broker. The mysql-like data source I'm going to use a MariaDB container, to do this I've taken a community mysql dockerfile and modified it to work for MariaDB. But I'm happy to use the 'redis' container for the purposes of this blog post. Let's first prepare the MariaDB container.
+
+{% highlight bash %}
+dodwmd@puppet:~$ mkdir -p docker/mariadb/build
+dodwmd@puppet:~$ cat > docker/mariadb/Dockerfile << EOF
+FROM dodwmd/baseimage:16.04
+
+MAINTAINER Michael Dodwell <michael@dodwell.us>
+
+# Default baseimage settings
+ENV HOME /root
+RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
+CMD ["/sbin/my_init"]
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# Update software list, install MariaDB
+RUN apt-get update && \
+    apt-get install -yq mariadb-server pwgen && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* \
+           /tmp/* \
+           /var/tmp/*
+
+# Configure MySQL
+RUN rm -rf /var/lib/mysql/*
+ADD build/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+RUN mkdir -p /var/lib/mysql/
+RUN chmod -R 755 /var/lib/mysql/
+ENV MYSQL_USER root
+# Leave this if you want a randomly generated password, or change if you want to set
+ENV MYSQL_PASS **Random**
+
+# Add MySQL service
+RUN mkdir /etc/service/mysql
+ADD build/run.sh /etc/service/mysql/run
+RUN chmod 755 /etc/service/mysql/run
+
+# Add nginx and MySQL volumes
+VOLUME ["/etc/mysql", "/var/lib/mysql"]
+
+EXPOSE 3306
+EOF
+dodwmd@puppet:~$ cat > docker/mariadb/build/run.sh << EOF
+#!/bin/bash
+
+VOLUME_HOME="/var/lib/mysql"
+CONF_FILE="/etc/mysql/conf.d/my.cnf"
+LOG="/var/log/mysql/error.log"
+
+# Set permission of config file
+chmod 644 ${CONF_FILE}
+chmod 644 /etc/mysql/conf.d/mysqld_charset.cnf
+
+# Set permission on db location
+chown -R mysql:mysql /var/lib/mysql
+
+StartMySQL ()
+{
+    /usr/bin/mysqld_safe > /dev/null 2>&1 &
+
+    # Time out in 1 minute
+    LOOP_LIMIT=13
+    for (( i=0 ; ; i++ )); do
+        if [ ${i} -eq ${LOOP_LIMIT} ]; then
+            echo "Time out. Error log is shown as below:"
+            tail -n 100 ${LOG}
+            exit 1
+        fi
+        echo "=> Waiting for confirmation of MySQL service startup, trying ${i}/${LOOP_LIMIT} ..."
+        sleep 5
+        mysql -uroot -e "status" > /dev/null 2>&1 && break
+    done
+}
+
+CreateMySQLUser()
+{
+	StartMySQL
+	if [ "$MYSQL_PASS" = "**Random**" ]; then
+	    unset MYSQL_PASS
+	fi
+
+	PASS=${MYSQL_PASS:-$(pwgen -s 12 1)}
+	_word=$( [ ${MYSQL_PASS} ] && echo "preset" || echo "random" )
+	echo "=> Creating MySQL user ${MYSQL_USER} with ${_word} password"
+
+	mysql -uroot -e "CREATE USER '${MYSQL_USER}'@'%' IDENTIFIED BY '$PASS'"
+	mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_USER}'@'%' WITH GRANT OPTION"
+
+
+	echo "=> Done!"
+
+	echo "========================================================================"
+	echo "You can now connect to this MySQL Server using:"
+	echo ""
+	echo "    mysql -u$MYSQL_USER -p$PASS -h<host> -P<port>"
+	echo ""
+	echo "Please remember to change the above password as soon as possible!"
+	echo "MySQL user 'root' has no password but only allows local connections"
+	echo "========================================================================"
+
+	mysqladmin -uroot shutdown
+}
+
+ImportSql()
+{
+	StartMySQL
+
+	for FILE in ${STARTUP_SQL}; do
+	   echo "=> Importing SQL file ${FILE}"
+	   mysql -uroot < "${FILE}"
+	done
+
+	mysqladmin -uroot shutdown
+}
+
+# Main
+if [ ${REPLICATION_MASTER} == "**False**" ]; then
+    unset REPLICATION_MASTER
+fi
+
+if [ ${REPLICATION_SLAVE} == "**False**" ]; then
+    unset REPLICATION_SLAVE
+fi
+
+# Initialize empty data volume and create MySQL user
+if [[ ! -d $VOLUME_HOME/mysql ]]; then
+    echo "=> An empty or uninitialized MySQL volume is detected in $VOLUME_HOME"
+    echo "=> Installing MySQL ..."
+    if [ ! -f /usr/share/mysql/my-default.cnf ] ; then
+        cp /etc/mysql/my.cnf /usr/share/mysql/my-default.cnf
+    fi 
+    mysql_install_db > /dev/null 2>&1
+    echo "=> Done!"  
+    echo "=> Creating admin user ..."
+    CreateMySQLUser
+else
+    echo "=> Using an existing volume of MySQL"
+fi
+
+# Import Startup SQL
+if [ -n "${STARTUP_SQL}" ]; then
+    if [ ! -f /sql_imported ]; then
+        echo "=> Initializing DB with ${STARTUP_SQL}"
+        ImportSql
+        touch /sql_imported
+    fi
+fi
+
+
+# Set MySQL REPLICATION - MASTER
+if [ -n "${REPLICATION_MASTER}" ]; then 
+    echo "=> Configuring MySQL replication as master ..."
+    if [ ! -f /replication_configured ]; then
+        RAND="$(date +%s | rev | cut -c 1-2)$(echo ${RANDOM})"
+        echo "=> Writting configuration file '${CONF_FILE}' with server-id=${RAND}"
+        sed -i "s/^#server-id.*/server-id = ${RAND}/" ${CONF_FILE}
+        sed -i "s/^#log-bin.*/log-bin = mysql-bin/" ${CONF_FILE}
+        echo "=> Starting MySQL ..."
+        StartMySQL
+        echo "=> Creating a log user ${REPLICATION_USER}:${REPLICATION_PASS}"
+        mysql -uroot -e "CREATE USER '${REPLICATION_USER}'@'%' IDENTIFIED BY '${REPLICATION_PASS}'"
+        mysql -uroot -e "GRANT REPLICATION SLAVE ON *.* TO '${REPLICATION_USER}'@'%'"
+        echo "=> Done!"
+        mysqladmin -uroot shutdown
+        touch /replication_configured
+    else
+        echo "=> MySQL replication master already configured, skip"
+    fi
+fi
+
+# Set MySQL REPLICATION - SLAVE
+if [ -n "${REPLICATION_SLAVE}" ]; then 
+    echo "=> Configuring MySQL replication as slave ..."
+    if [ -n "${MYSQL_PORT_3306_TCP_ADDR}" ] && [ -n "${MYSQL_PORT_3306_TCP_PORT}" ]; then
+        if [ ! -f /replication_configured ]; then
+            RAND="$(date +%s | rev | cut -c 1-2)$(echo ${RANDOM})"
+            echo "=> Writting configuration file '${CONF_FILE}' with server-id=${RAND}"
+            sed -i "s/^#server-id.*/server-id = ${RAND}/" ${CONF_FILE}
+            sed -i "s/^#log-bin.*/log-bin = mysql-bin/" ${CONF_FILE}
+            echo "=> Starting MySQL ..."
+            StartMySQL
+            echo "=> Setting master connection info on slave"
+            mysql -uroot -e "CHANGE MASTER TO MASTER_HOST='${MYSQL_PORT_3306_TCP_ADDR}',MASTER_USER='${MYSQL_ENV_REPLICATION_USER}',MASTER_PASSWORD='${MYSQL_ENV_REPLICATION_PASS}',MASTER_PORT=${MYSQL_PORT_3306_TCP_PORT}, MASTER_CONNECT_RETRY=30"
+            echo "=> Done!"
+            mysqladmin -uroot shutdown
+            touch /replication_configured
+        else
+            echo "=> MySQL replicaiton slave already configured, skip"
+        fi
+    else 
+        echo "=> Cannot configure slave, please link it to another MySQL container with alias as 'mysql'"
+        exit 1
+    fi
+fi
+
+tail -F $LOG &
+exec mysqld_safe
+
+{% endhighlight %}
+
+Now that we have our data locations sorted out lets setup nginx and php in seperate containers.
+
+{% highlight bash %}
+dodwmd@puppet:~$ mkdir -p docker/nginx docker/phpfpm
+dodwmd@puppet:~$ cat > docker/nginx/Dockerfile << EOF
+FROM phusion/baseimage:latest
+MAINTAINER Michael Dodwell <michael@dodwell.us>
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# Install PHP-FPM and popular/laravel required extensions
+RUN apt-get update -y
+RUN apt-get install -y \
+    nginx && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* \
+           /tmp/* \
+           /var/tmp/*
+
+# Configure Nginx
+ADD build/nginx.conf /etc/nginx/nginx.conf
+
+RUN mkdir -p /etc/service/nginx
+ADD build/nginx-start.sh /etc/service/nginx/run
+RUN chmod 755 /etc/service/nginx/run
+RUN rm /etc/init.d/nginx
+
+VOLUME ["/var/www"]
+
+EXPOSE 80
+EXPOSE 443
+
+WORKDIR /tmp
+EOF
+dodwmd@puppet:~$ cat > docker/phpfpm/Dockerfile << EOF
+FROM dodwmd/baseimage:16.04
+MAINTAINER Michael Dodwell <michael@dodwell.us>
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# Install PHP-FPM and popular/laravel required extensions
+RUN apt-get update -y
+RUN apt-get install -y \
+    php7.0-fpm \
+    php-xsl \
+    php-curl \
+    php-gd \
+    php-geoip \
+    php-imagick \
+    php-imap \
+    php-json \
+    php-ldap \
+    php-mcrypt \
+    php-memcache \
+    php-memcached \
+    php-mongodb \
+    php-mysql \
+    php-pgsql \
+    php-redis \
+    php-sqlite3 \
+    php-xdebug \
+    php-xmlrpc && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* \
+           /tmp/* \
+           /var/tmp/*
+
+# Configure PHP-FPM
+RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php/7.0/fpm/php.ini && \
+    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/7.0/fpm/php.ini && \
+    sed -i "s/display_errors = Off/display_errors = stderr/" /etc/php/7.0/fpm/php.ini && \
+    sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 30M/" /etc/php/7.0/fpm/php.ini && \
+    sed -i "s/;opcache.enable=0/opcache.enable=0/" /etc/php/7.0/fpm/php.ini && \
+    sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/7.0/fpm/php-fpm.conf && \
+    sed -i '/^listen = /clisten = 9000' /etc/php/7.0/fpm/pool.d/www.conf && \
+    sed -i '/^listen.allowed_clients/c;listen.allowed_clients =' /etc/php/7.0/fpm/pool.d/www.conf && \
+    sed -i '/^;catch_workers_output/ccatch_workers_output = yes' /etc/php/7.0/fpm/pool.d/www.conf
+
+RUN mkdir -p /etc/service/phpfpm /run/php
+ADD build/phpfpm-run.sh /etc/service/phpfpm/run
+RUN chmod 755 /etc/service/phpfpm/run
+
+VOLUME ["/var/www"]
+
+EXPOSE "9000"
+EOF
+
+{% endhighlight %}
+
+### Put it all together
+
+Now that we've all the containers prepared lets tie it all together and build them.
+
+To do this lets use docker-compose.
+
+## Installation
+
+The version that's packaged with Ubuntu (even Xenial) is already 'old'. Lets grab the <a href="https://github.com/docker/compose/releases" target="_blank">latest release</a> and install that.
+
+{% highlight bash %}
+dodwmd@puppet:~$ sudo curl -o /usr/local/bin/docker-compose -L https://github.com/docker/compose/releases/download/1.8.0-rc1/docker-compose-`uname -s`-`uname -m`
+dodwmd@puppet:~$ sudo chmod +x /usr/local/bin/docker-compose
+{% endhighlight %}
+
+## Configuration
+
+Now lets create a docker-compose.yml file that will tie everything together. Firstly I want to create a whole bunch of directories on my local machine that will hold all my data.
+
+{% highlight bash %}
+dodwmd@puppet:~$ mkdir -p logs/nginx www/data mysql redis
+{% endhighlight %}
+
+And now lets configure a docker-compose.yml file.
+
+{% highlight bash %}
+dodwmd@puppet:~$ cat > docker/docker-compose.yml << EOF
+version: '2'
+services:
+  nginx:
+    build: ./nginx
+    image: dodwmd/nginx:latest
+    depends_on:
+      - websitedata
+    ports:
+      - "8080:80"
+    links:
+      - phpfpm
+    volumes_from:
+      - websitedata
+    volumes:
+      - ../data/logs/nginx:/var/logs/nginx
+    networks:
+      - frontend
+      - backend
+
+  websitedata:
+    build: ./website-data
+    image: dodwmd/website-data:latest
+    volumes:
+      - ../data/www:/var/www
+
+  mariadbdata:
+    build: ./mariadb-data
+    image: dodwmd/mariadb-data:latest
+    volumes:
+      - ../data/mysql:/var/lib/mysql
+
+  mariadb:
+   build: ./mariadb
+   image: dodwmd/mariadb:latest
+   container_name: mariadb
+   depends_on:
+     - mariadbdata
+   environment:
+     MYSQL_USER: "dodwmd"
+     MYSQL_PASS: "blog_demo_pass"
+     STARTUP_SQL: "/var/lib/mysql/setup/create_dbs.sql"
+   volumes_from:
+     - mariadbdata
+   networks:
+      backend:
+        ipv4_address: 172.19.0.3
+
+  phpfpm:
+    build: ./phpfpm
+    image: dodwmd/phpfpm:latest
+    depends_on:
+      - websitedata
+    volumes_from:
+      - websitedata
+    links:
+      - redis
+      - mariadb
+    networks:
+      - backend
+
+  redisdata:
+    build: ./redis-data
+    image: dodwmd/redis-data:latest
+    volumes:
+      - ../data/redis:/var/lib/redis
+
+  redis:
+    image: redis
+    depends_on:
+      - redisdata
+    volumes_from:
+      - redisdata
+    networks:
+      - backend
+
+networks:
+  backend:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/16
+          gateway: 172.19.0.1
+  frontend:
+    external:
+      name: docker_default
+
+EOF
+{% endhighlight %}
+
+The above docker-compose i tried to highlight some functionality with docker-compose. You can use it to setup a proper network topology, set static ips on containers and a whole lot more. I'd suggest taking a look at the documentation <a href="https://docs.docker.com/compose/compose-file/" target="_blank">here</a>.
+
+
+## Easy setup of laravel
+
+We can now setup laravel inside www/data.
+
+{% highlight bash %}
+dodwmd@puppet:~$ composer global require "laravel/installer"
+dodwmd@puppet:~$ cd www ; ~/.composer/vendor/bin/laravel new data
+{% endhighlight %}
+
+The above will create a data directory inside www that will populate with everything you need to run laravel. 
+
+## Build & Run
+
+With the above docker-compose.yml we can simply run docker-compose and it will build all our containers and run them.
+
+{% highlight bash %}
+dodwmd@puppet:~$ cd docker
+dodwmd@puppet:~/docker$ docker-compose up
+{% endhighlight %}
+
+We should have a fully working docker environment able to service a laravel stack.
+
