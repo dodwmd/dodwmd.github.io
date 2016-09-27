@@ -82,7 +82,7 @@ I was on a look out for a stripped version of ubuntu and found phusion/baseimage
 Unfortunately at the time of this post phusion/baseimage:latest was only on 14.04. I wanted the latest LTS which is 16.04.
 Lets create a 16.04 phusion/baseimage.
 
-###
+### build base image
 
 First lets take a clone of phusion/baseimage git, and then build 16.04 and tag it as our own image:
 
