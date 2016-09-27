@@ -16,7 +16,27 @@
     
     
     <url>
-        <loc>https://dodwell.us/docker/docker</loc>
+        <loc>https://dodwell.us/linux/data-center-fog-machine</loc>
+    </url>
+    
+    <url>
+        <loc>https://dodwell.us/linux/linux-performance-tools-overview</loc>
+    </url>
+    
+    <url>
+        <loc>https://dodwell.us/devops/scrum-cheatsheet</loc>
+    </url>
+    
+    <url>
+        <loc>https://dodwell.us/website/soe-improvements</loc>
+    </url>
+    
+    <url>
+        <loc>https://dodwell.us/security/ufw-fail2ban-portscan</loc>
+    </url>
+    
+    <url>
+        <loc>https://dodwell.us/security/google-authenticator</loc>
     </url>
     
     <url>
@@ -64,7 +84,7 @@
     </url>
     
     <url>
-        <loc>https://dodwell.us/website-minification</loc>
+        <loc>https://dodwell.us/website/website-minification</loc>
     </url>
     
     <url>
