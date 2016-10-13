@@ -136,6 +136,8 @@
             
             
             
+            
+            
                     <header class="post-header entry-header">
                     
                         
@@ -144,7 +146,7 @@
                         <div class="cursive" style="color: #000; font-style:italic;">Using fail2ban and UFW together to block unwanted traffic</div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published"><time datetime="2015-05-28T00:00:00+10:00" class="post-time" itemprop="datePublished">28 May 2015</time><span>
-                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.16</span> minutes read</span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.555</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
@@ -165,34 +167,34 @@
 
 <p>First you need to get UFW all installed and ready to go.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo apt-get -y install ufw fail2ban
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo apt-get -y install ufw fail2ban
 <span class="nv">$ </span>sudo sed -i <span class="s1">&#39;s/IPV6=no/IPV6=yes/g&#39;</span> /etc/default/ufw
 <span class="nv">$ </span>sudo ufw allow ssh
 <span class="nv">$ </span>sudo ufw default deny incoming
 <span class="nv">$ </span>sudo ufw default allow outgoing
 <span class="nv">$ </span>sudo ufw logging low
 <span class="nv">$ </span>sudo ufw disable
-<span class="nv">$ </span>sudo ufw <span class="nb">enable</span></code></pre></figure>
+<span class="nv">$ </span>sudo ufw <span class="nb">enable</span></code></pre></div>
 
 <p>The above should install UFW &amp; fail2ban. In UFW it should enable IPv6 support, allow ssh and setup some default firewall direction rules. We also want to only log denined packets to the kernel logger. The last step gives it a restart (disable/enable).</p>
 
 <p>Now if we generate some port open requests from another server to a port other than ssh we should see this:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo dmesg
-<span class="o">[</span>3071864.995451<span class="o">]</span> <span class="o">[</span>UFW BLOCK<span class="o">]</span> <span class="nv">IN</span><span class="o">=</span>venet0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>192.168.0.1 <span class="nv">DST</span><span class="o">=</span>192.168.0.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">48</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">46</span> <span class="nv">ID</span><span class="o">=</span><span class="m">12308</span> <span class="nv">PROTO</span><span class="o">=</span>UDP <span class="nv">SPT</span><span class="o">=</span><span class="m">40393</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">40104</span> <span class="nv">LEN</span><span class="o">=</span>28</code></pre></figure>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo dmesg
+<span class="o">[</span>3071864.995451<span class="o">]</span> <span class="o">[</span>UFW BLOCK<span class="o">]</span> <span class="nv">IN</span><span class="o">=</span>venet0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>192.168.0.1 <span class="nv">DST</span><span class="o">=</span>192.168.0.2 <span class="nv">LEN</span><span class="o">=</span><span class="m">48</span> <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span><span class="m">46</span> <span class="nv">ID</span><span class="o">=</span><span class="m">12308</span> <span class="nv">PROTO</span><span class="o">=</span>UDP <span class="nv">SPT</span><span class="o">=</span><span class="m">40393</span> <span class="nv">DPT</span><span class="o">=</span><span class="m">40104</span> <span class="nv">LEN</span><span class="o">=</span>28</code></pre></div>
 
 <p>Great! But you need this in a log file so fail2ban can use it. Lets take a look at our rsyslogd config:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@vps:/etc/rsyslog.d# ls -la *ufw*
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@vps:/etc/rsyslog.d# ls -la *ufw*
 -rw-r--r--   <span class="m">1</span> root root    <span class="m">94</span> May <span class="m">28</span> 01:31 20-ufw.conf
 root@vps:/etc/rsyslog.d# cat 20-ufw.conf
 <span class="c"># Log kernel generated UFW log messages to file</span>
 :msg,contains,<span class="s2">&quot;[UFW &quot;</span> /var/log/ufw.log
-root@vps:/etc/rsyslog.d#</code></pre></figure>
+root@vps:/etc/rsyslog.d#</code></pre></div>
 
 <p>Great UFW has already setup a method to log UFW messages. But when I checked /var/log/ufw.log it didn’t exist. Restarting rsyslog didn’t seem to help. But then I noticed /etc/rsyslogd.conf:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#  /etc/rsyslog.conf    Configuration file for rsyslog.</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#  /etc/rsyslog.conf    Configuration file for rsyslog.</span>
 <span class="c">#</span>
 <span class="c">#                       For more information see</span>
 <span class="c">#                       /usr/share/doc/rsyslog-doc/html/rsyslog_conf.html</span>
@@ -206,18 +208,18 @@ root@vps:/etc/rsyslog.d#</code></pre></figure>
 
 <span class="nv">$ModLoad</span> imuxsock <span class="c"># provides support for local system logging</span>
 <span class="c">#$ModLoad imklog   # provides kernel logging support</span>
-<span class="c">#$ModLoad immark  # provides --MARK-- message capability</span></code></pre></figure>
+<span class="c">#$ModLoad immark  # provides --MARK-- message capability</span></code></pre></div>
 
 <p>After enabling ‘$ModLoad imklog’ I get the following in /var/log/kern.log:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">May <span class="m">28</span> 01:38:00 vps rsyslogd: imklog: cannot open kernel log <span class="o">(</span>/proc/kmsg<span class="o">)</span>: Operation not permitted.</code></pre></figure>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">May <span class="m">28</span> 01:38:00 vps rsyslogd: imklog: cannot open kernel log <span class="o">(</span>/proc/kmsg<span class="o">)</span>: Operation not permitted.</code></pre></div>
 
 <p>This appears due to rsyslog not opening /proc/kmsg before it drops it’s privs! This is now where we get into hacky area. Some people suggest using dd to mirror /proc/kmsg and getting rsyslogd to open that. Personally I just stopped rsyslog from dropping it’s privs all together.</p>
 
 <p>Edit /etc/rsyslogd.conf and comment out the following:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$PrivDropToUser</span> syslog
-<span class="nv">$PrivDropToGroup</span> syslog</code></pre></figure>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$PrivDropToUser</span> syslog
+<span class="nv">$PrivDropToGroup</span> syslog</code></pre></div>
 
 <p>Now restart rsyslogd with ‘service rsyslog restart’.</p>
 
@@ -229,40 +231,40 @@ root@vps:/etc/rsyslog.d#</code></pre></figure>
 
 <p>First lets setup a action rule that we can use to deny/allow users from being able to connect in:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">&#39;[Definition]</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">&#39;[Definition]</span>
 <span class="s1">actionstart =</span>
 <span class="s1">actionstop =</span>
 <span class="s1">actioncheck =</span>
 <span class="s1">actionban = ufw deny in from &lt;ip&gt;</span>
-<span class="s1">actionunban = ufw delete deny in from &lt;ip&gt;&#39;</span> <span class="p">|</span> sudo tee /etc/fail2ban/action.d/ufw.conf</code></pre></figure>
+<span class="s1">actionunban = ufw delete deny in from &lt;ip&gt;&#39;</span> <span class="p">|</span> sudo tee /etc/fail2ban/action.d/ufw.conf</code></pre></div>
 
 <p>While here you might want to edit your jail.conf file and update where required the actions of other services you want to monitor.</p>
 
 <p>Now lets setup a filter for our log file to know when to ban a user:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">&#39;[Definition]</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">&#39;[Definition]</span>
 <span class="s1">failregex = UFW BLOCK.* SRC=&lt;HOST&gt;</span>
-<span class="s1">ignoreregex =&#39;</span> <span class="p">|</span> sudo tee /etc/fail2ban/filter.d/portscan.conf</code></pre></figure>
+<span class="s1">ignoreregex =&#39;</span> <span class="p">|</span> sudo tee /etc/fail2ban/filter.d/portscan.conf</code></pre></div>
 
 <p>Now the clever amoung you will realise that UFW will block port ATTEMPTS which means that some nice fellow could craft some packets so that the connection attempt comes from hosts that should be allowed to connect.</p>
 
 <p>Lets setup some whitelist rules to make sure our networks and hosts that should never be firewalled aren’t. In jail.conf you will find a ‘whitelist’ varible. Lets update this with all our friendly networks.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">whilelist</span> <span class="o">=</span> 10.0.0.0/8</code></pre></figure>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">whilelist</span> <span class="o">=</span> 10.0.0.0/8</code></pre></div>
 
 <p>Ok now we just need to add a rule to tie it all together in our jail.conf file:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">&#39;[portscan]</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">&#39;[portscan]</span>
 <span class="s1">enabled  = true</span>
 <span class="s1">filter   = portscan</span>
 <span class="s1">logpath  = /var/log/ufw.log</span>
 <span class="s1">action   = ufw</span>
 <span class="s1">maxretry = 5</span>
-<span class="s1">&#39;</span> <span class="p">|</span> tee -a /etc/fail2ban/jail.conf</code></pre></figure>
+<span class="s1">&#39;</span> <span class="p">|</span> tee -a /etc/fail2ban/jail.conf</code></pre></div>
 
 <p>And lastly don’t forget to reload fail2ban:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo service fail2ban restart</code></pre></figure>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">sudo service fail2ban restart</code></pre></div>
 
 
                         <br>

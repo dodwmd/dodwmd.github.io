@@ -136,6 +136,8 @@
             
             
             
+            
+            
                     <header class="post-header entry-header">
                     
                         
@@ -144,7 +146,7 @@
                         <div class="cursive" style="color: #000; font-style:italic;">Overview of using packer</div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published updated"><time datetime="2014-05-08T00:00:00+10:00" class="post-time" itemprop="datePublished">08 May 2014</time><span>
-                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#configuration management" data-toggle="tooltip" title="Other posts from the Configuration management category" rel="tag">Configuration management</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">3.515</span> minutes read</span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#configuration management" data-toggle="tooltip" title="Other posts from the Configuration management category" rel="tag">Configuration management</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">3.72</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
@@ -161,10 +163,10 @@
 
 <p>Packer is distributed as a binary package for different OS’s. Our OS is Linux based with a 64-bit CPU.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir ~/bin/packer
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir ~/bin/packer
 wget https://dl.bintray.com/mitchellh/packer/0.6.0_linux_amd64.zip
 unzip -d ~/bin/packer 0.6.0_linux_amd64.zip
-<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:~/bin/packer</code></pre></figure>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:~/bin/packer</code></pre></div>
 
 <h4 id="using">using</h4>
 
@@ -172,7 +174,7 @@ unzip -d ~/bin/packer 0.6.0_linux_amd64.zip
 
 <p>example.json:</p>
 
-<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="p-Indicator">{</span>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="p-Indicator">{</span>
   <span class="s">&quot;variables&quot;</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span>
     <span class="s">&quot;aws_access_key&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;&quot;</span><span class="p-Indicator">,</span>
     <span class="s">&quot;aws_secret_key&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;&quot;</span>
@@ -192,13 +194,13 @@ unzip -d ~/bin/packer 0.6.0_linux_amd64.zip
     <span class="s">&quot;script&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;build_example.sh&quot;</span><span class="p-Indicator">,</span>
     <span class="s">&quot;execute_command&quot;</span><span class="p-Indicator">:</span> <span class="s">&quot;chmod</span><span class="nv"> </span><span class="s">+x</span><span class="nv"> </span><span class="s">;</span><span class="nv">  </span><span class="s">sudo</span><span class="nv"> </span><span class="s">&quot;</span>
   <span class="p-Indicator">}]</span>
-<span class="p-Indicator">}</span></code></pre></figure>
+<span class="p-Indicator">}</span></code></pre></div>
 
 <p>And let’s make a shell script that will be executed to customize the AMI:</p>
 
 <p>build_example.sh:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
 <span class="nb">export </span><span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
 <span class="nb">echo</span> <span class="s1">&#39;Package: *</span>
 <span class="s1">Pin: origin &quot;packages.dodwell.us&quot;</span>
@@ -232,11 +234,11 @@ mkdir /tmp/fake
                               --slave /usr/bin/ri ri /usr/bin/ri1.9.1 <span class="se">\</span>
                               --slave /usr/bin/irb irb /usr/bin/irb1.9.1 <span class="se">\</span>
                               --slave /usr/bin/rdoc rdoc /usr/bin/rdoc1.9.1
-/usr/sbin/update-alternatives --set gem /usr/bin/gem1.9.1</code></pre></figure>
+/usr/sbin/update-alternatives --set gem /usr/bin/gem1.9.1</code></pre></div>
 
 <p>Now that we have these 2 files in our current directory lets build the AMI:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# packer build <span class="se">\</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# packer build <span class="se">\</span>
                 -var <span class="s1">&#39;aws_access_key=YOUR ACCESS KEY&#39;</span> <span class="se">\</span>
                 -var <span class="s1">&#39;aws_secret_key=YOUR SECRET KEY&#39;</span> <span class="se">\</span>
                 web.json
@@ -267,7 +269,7 @@ Build <span class="s1">&#39;amazon-ebs&#39;</span> finished.
 <span class="o">==</span>&gt; Builds finished. The artifacts of successful builds are:
 --&gt; amazon-ebs: AMIs were created:
 ap-southeast-2: ami-XXXXXXXX
-root@earth:~#</code></pre></figure>
+root@earth:~#</code></pre></div>
 
 <h3 id="conclusion">conclusion</h3>
 

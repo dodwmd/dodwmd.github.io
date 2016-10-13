@@ -136,6 +136,8 @@
             
             
             
+            
+            
                     <header class="post-header entry-header">
                     
                         
@@ -144,7 +146,7 @@
                         <div class="cursive" style="color: #000; font-style:italic;">Overview of using Auto scaling groups at AWS</div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published updated"><time datetime="2014-05-07T00:00:00+10:00" class="post-time" itemprop="datePublished">07 May 2014</time><span>
-                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#configuration management" data-toggle="tooltip" title="Other posts from the Configuration management category" rel="tag">Configuration management</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">8.025</span> minutes read</span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#configuration management" data-toggle="tooltip" title="Other posts from the Configuration management category" rel="tag">Configuration management</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">8.42</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
@@ -159,7 +161,7 @@
 
 <p>The following script was used to create the RabbitMQ ASG:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
 <span class="nv">ASG_GROUP</span><span class="o">=</span><span class="s2">&quot;web-asg&quot;</span>
 <span class="nv">LAUNCH_GROUP</span><span class="o">=</span><span class="s2">&quot;web-l&quot;</span>
 <span class="nv">EC2_AMI</span><span class="o">=</span><span class="s2">&quot;ami-09f26b33&quot;</span>
@@ -222,11 +224,11 @@ mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><
   --period <span class="m">60</span> <span class="se">\</span>
   --statistic Average <span class="se">\</span>
   --threshold <span class="m">30</span> <span class="se">\</span>
-  --unit Percent <span class="se">\</span></code></pre></figure>
+  --unit Percent <span class="se">\</span></code></pre></div>
 
 <p>A copy of the user-data-file.txt file is as follows:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
 <span class="nv">INSTANCE_TYPE</span><span class="o">=</span>something
 <span class="nv">DOMAIN</span><span class="o">=</span>dodwell.us
 <span class="nv">INSTANCE_ID</span><span class="o">=</span><span class="sb">`</span>/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id <span class="p">|</span> cut -d- -f2<span class="sb">`</span>
@@ -248,7 +250,7 @@ sleep 10
 sleep 10
 /usr/bin/puppet agent -t --pluginsync <span class="nb">true</span>
 sleep 10
-reboot</code></pre></figure>
+reboot</code></pre></div>
 
 <h4 id="overview">overview</h4>
 
@@ -266,8 +268,8 @@ reboot</code></pre></figure>
   <li>a security group to deploy the instances into</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-create-launch-config <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> --image-id <span class="k">${</span><span class="nv">EC2_AMI</span><span class="k">}</span> --instance-type <span class="k">${</span><span class="nv">EC2_TYPE</span><span class="k">}</span> --monitoring-enabled --key root --group <span class="k">${</span><span class="nv">EC2_SECURITYGROUPS</span><span class="k">}</span> --user-data-file <span class="k">${</span><span class="nv">EC2_USERDATA</span><span class="k">}</span>
-OK-Created launch config.</code></pre></figure>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-create-launch-config <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> --image-id <span class="k">${</span><span class="nv">EC2_AMI</span><span class="k">}</span> --instance-type <span class="k">${</span><span class="nv">EC2_TYPE</span><span class="k">}</span> --monitoring-enabled --key root --group <span class="k">${</span><span class="nv">EC2_SECURITYGROUPS</span><span class="k">}</span> --user-data-file <span class="k">${</span><span class="nv">EC2_USERDATA</span><span class="k">}</span>
+OK-Created launch config.</code></pre></div>
 
 <p>The API replies with: “OK-Created launch config.” Please refer to the below ‘Puppet’ section for more detail on the user-data-file.</p>
 
@@ -275,9 +277,9 @@ OK-Created launch config.</code></pre></figure>
 
 <p>Use the as-create-auto-scaling-group command to define the properties for your group of servers. Auto scaling groups are the core component of an auto-scaling configuration. This command takes the launch_config_name you defined from the step before as a parameter, the name of the ELB you want to use, and most importantly, lets you define the minimum and maximum number of servers you want to have in your cluster. In the example below, we define a group with a minimum of 2 servers and a maximum of 10.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-create-auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span> --availability-zones <span class="k">${</span><span class="nv">REGION</span><span class="k">}</span>b,<span class="k">${</span><span class="nv">REGION</span><span class="k">}</span>a --launch-configuration <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> <span class="se">\</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-create-auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span> --availability-zones <span class="k">${</span><span class="nv">REGION</span><span class="k">}</span>b,<span class="k">${</span><span class="nv">REGION</span><span class="k">}</span>a --launch-configuration <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> <span class="se">\</span>
 --min-size <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span> --max-size <span class="k">${</span><span class="nv">EC2_MAX</span><span class="k">}</span> --load-balancers <span class="k">${</span><span class="nv">EC2_LB</span><span class="k">}</span> --desired-capacity <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span>
-OK-Created ASG.</code></pre></figure>
+OK-Created ASG.</code></pre></div>
 
 <h3 id="auto-scaling-policies">auto scaling policies</h3>
 
@@ -287,13 +289,13 @@ OK-Created ASG.</code></pre></figure>
 
 <p>The as-put-scaling-policy command takes the auto scaling group name we defined in step 1, a name for the policy, such a “scale-up” or “scale-down,” the type of scaling change the policy defines, and a cool down period. Again, the cool down period is used to prevent AWS from executing multiple policies within a very short time.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-add --type ChangeInCapacity --adjustment <span class="m">1</span> --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
-arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-add</code></pre></figure>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-add --type ChangeInCapacity --adjustment <span class="m">1</span> --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
+arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-add</code></pre></div>
 
 <p>Above you can see the basic upscale policy we defined, named “rabbitmq-asg-add,” a ChangeInCapacity policy to add 1 server and wait 3 minutes before another policy can be triggered. Below is the reverse operation, or a “rabbitmq-asg-del” policy to remove 1 server from our group.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-del --type ChangeInCapacity --adjustment<span class="o">=</span><span class="s1">&#39;-1&#39;</span> --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
-arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-del</code></pre></figure>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-del --type ChangeInCapacity --adjustment<span class="o">=</span><span class="s1">&#39;-1&#39;</span> --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
+arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-del</code></pre></div>
 
 <p>In both cases, AWS replies with a return message including the unique auto-generated name of our two new auto scaling policies. We’ll use those unique policy identifiers to connect to our CloudWatch events in the final step.</p>
 
@@ -318,7 +320,7 @@ arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff
 
 <p>As you can see, there’s a lot to this command, but once we look at every parameter, you can see that without each of them, you wouldn’t have the ability to control auto scaling changes with enough granularity. The name and description are shown back to you later when using the mon-describe-alarmscommand. The statistics you’re watching, and the thresholds and time intervals, are important to test for your particular application. For example, we chose to monitor average CPU utilization for a period of 60 seconds, and an evaluation period of 3 intervals (or 3 minutes), for an event of 80% or greater level. Here’s the command to achieve this.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-add <span class="se">\</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-add <span class="se">\</span>
   --alarm-actions <span class="s2">&quot;arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-add&quot;</span> <span class="se">\</span>
   --comparison-operator GreaterThanThreshold <span class="se">\</span>
   --dimensions <span class="s2">&quot;AutoScalingGroupName=${ASG_GROUP}&quot;</span> <span class="se">\</span>
@@ -329,13 +331,13 @@ arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff
   --statistic Average <span class="se">\</span>
   --threshold <span class="m">90</span> <span class="se">\</span>
   --unit Percent <span class="se">\</span>
-OK-Created Alarm</code></pre></figure>
+OK-Created Alarm</code></pre></div>
 
 <p>In English, the above command says, “If the average CPU utilization of instances in the ASG group ‘rabbitmq-asg’ is measured at 80% or greater 3 times over 3 minutes, then trigger our scale-up policy.</p>
 
 <p>Here is the reverse mon-put-metric-alarm command we used to terminate one of the servers if the CPU utilization drops below an average of 20% over 3 minutes.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-del <span class="se">\</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-del <span class="se">\</span>
   --alarm-actions <span class="s2">&quot;arn:aws:autoscaling:ap-southeast-2:947682202348:scalingPolicy:1a31d3d1-b180-4fcb-b288-bb43e651056d:autoScalingGroupName/rabbitmq-asg:policyName/rabbitmq-asg-del&quot;</span> <span class="se">\</span>
   --comparison-operator LessThanThreshold <span class="se">\</span>
   --dimensions <span class="s2">&quot;AutoScalingGroupName=${ASG_GROUP}&quot;</span> <span class="se">\</span>
@@ -346,7 +348,7 @@ OK-Created Alarm</code></pre></figure>
   --statistic Average <span class="se">\</span>
   --threshold <span class="m">30</span> <span class="se">\</span>
   --unit Percent
-OK-Created Alarm</code></pre></figure>
+OK-Created Alarm</code></pre></div>
 
 <p>In the above script example we nest the ‘mon-put-metric-alarm’ and ‘as-put-scaling-policy’ commands to simplify running the scripts. However this is pulled apart in this documentation to explain better.</p>
 

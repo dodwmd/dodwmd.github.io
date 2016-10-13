@@ -133,6 +133,8 @@
             
             
             
+            
+            
                     <header class="post-header entry-header">
                     
                         
@@ -141,7 +143,7 @@
                         <div class="cursive" style="color: #000; font-style:italic;"></div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published updated"><time datetime="2014-06-21T05:41:21+10:00" class="post-time" itemprop="datePublished">21 Jun 2014</time><span>
-                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;Less than 1 minute read</span>
+                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;1 minute read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
@@ -152,13 +154,13 @@
 
 <h3 id="perl-method">perl method</h3>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">location ~ <span class="o">[</span>A-Z<span class="o">]</span> <span class="o">{</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">location ~ <span class="o">[</span>A-Z<span class="o">]</span> <span class="o">{</span>
   perl <span class="s1">&#39;sub { my $r = shift; $r-&gt;internal_redirect(lc($r-&gt;uri)); }&#39;</span><span class="p">;</span>
-<span class="o">}</span></code></pre></figure>
+<span class="o">}</span></code></pre></div>
 
 <p>OR</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  http <span class="o">{</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">http <span class="o">{</span>
   ...
     <span class="c"># Include the perl module</span>
     perl_modules perl/lib<span class="p">;</span>
@@ -178,11 +180,11 @@
       location ~ <span class="o">[</span>A-Z<span class="o">]</span> <span class="o">{</span>
         rewrite ^<span class="o">(</span>.*<span class="o">)</span><span class="nv">$ $scheme</span>://<span class="nv">$host$uri_lowercase</span><span class="p">;</span>
       <span class="o">}</span>
-    ...</code></pre></figure>
+    ...</code></pre></div>
 
 <h3 id="lua-method">lua method</h3>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  http <span class="o">{</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">http <span class="o">{</span>
   ...
     server <span class="o">{</span>
     ...
@@ -190,25 +192,25 @@
       location ~ <span class="o">[</span>A-Z<span class="o">]</span> <span class="o">{</span>
         try_files <span class="nv">$uri</span> <span class="nv">$uri</span>/ <span class="nv">$uri_lowercase</span> <span class="nv">$uri_lowercase</span>/ <span class="o">=</span>404<span class="p">;</span>
       <span class="o">}</span>
-    ...</code></pre></figure>
+    ...</code></pre></div>
 
 <p>OR</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  http <span class="o">{</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">http <span class="o">{</span>
   ...
     server <span class="o">{</span>
     ...
       location ~ <span class="o">[</span>A-Z<span class="o">]</span> <span class="o">{</span>
         rewrite_by_lua <span class="s1">&#39;ngx.exec(string.lower(ngx.var.uri))&#39;</span><span class="p">;</span>
       <span class="o">}</span>
-    ...</code></pre></figure>
+    ...</code></pre></div>
 
 <h3 id="apache-method">apache method</h3>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">RewriteEngine On
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">RewriteEngine On
 RewriteMap  lc int:tolower
 RewriteCond %<span class="o">{</span>REQUEST_URI<span class="o">}</span> <span class="o">[</span>A-Z<span class="o">]</span>
-RewriteRule <span class="o">(</span>.*<span class="o">)</span> <span class="k">${</span><span class="nv">lc</span><span class="p">:</span><span class="nv">$1</span><span class="k">}</span> <span class="o">[</span><span class="nv">R</span><span class="o">=</span>301,L<span class="o">]</span></code></pre></figure>
+RewriteRule <span class="o">(</span>.*<span class="o">)</span> <span class="k">${</span><span class="nv">lc</span><span class="p">:</span><span class="nv">$1</span><span class="k">}</span> <span class="o">[</span><span class="nv">R</span><span class="o">=</span>301,L<span class="o">]</span></code></pre></div>
 
 
                         <br>
