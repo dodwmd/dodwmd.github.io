@@ -7,6 +7,19 @@
 		<atom:link href="https://dodwell.us/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Setting up Systemd to spawn ssh-agent and adding your keys</title>
+				        
+				
+					<description>&lt;p&gt;I’m using bastion hosts for my cloud infra and found this little hack to systemd to setup ssh-agent for my auth forwarding.&lt;/p&gt;
+
+</description>
+				
+				<pubDate>Sun, 18 Dec 2016 00:00:00 +1100</pubDate>
+				<link>https://dodwell.us/security/ssh-agent-systemd.html</link>
+				<guid isPermaLink="true">https://dodwell.us/security/ssh-agent-systemd.html</guid>
+			</item>
+		
+			<item>
 				<title>Fog Machine for the Datacenter</title>
 				        
 				
@@ -116,18 +129,6 @@
 				<pubDate>Tue, 03 Mar 2015 00:00:00 +1100</pubDate>
 				<link>https://dodwell.us/funny/boomers.html</link>
 				<guid isPermaLink="true">https://dodwell.us/funny/boomers.html</guid>
-			</item>
-		
-			<item>
-				<title>Brain Hack</title>
-				        
-				
-					<description>&lt;center&gt;&lt;iframe width=&quot;560&quot; height=&quot;420&quot; src=&quot;https://player.vimeo.com/video/118342272 &quot; frameborder=&quot;0&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/center&gt;
-</description>
-				
-				<pubDate>Sat, 21 Feb 2015 00:00:00 +1100</pubDate>
-				<link>https://dodwell.us/videos/brain-hack.html</link>
-				<guid isPermaLink="true">https://dodwell.us/videos/brain-hack.html</guid>
 			</item>
 		
 	</channel>
