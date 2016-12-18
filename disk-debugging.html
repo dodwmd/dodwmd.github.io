@@ -133,8 +133,6 @@
             
             
             
-            
-            
                     <header class="post-header entry-header">
                     
                         
@@ -143,113 +141,113 @@
                         <div class="cursive" style="color: #000; font-style:italic;"></div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published updated"><time datetime="2014-07-09T02:05:01+10:00" class="post-time" itemprop="datePublished">09 Jul 2014</time><span>
-                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">5.035</span> minutes read</span>
+                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.89</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
                         
                         <p><a href="https://dodwell.us/linux-cpu/" title="Linux CPU">sar</a> gives us an overview of what the system is doing. If you had a high %iowait you might want to figure out what drive is currently being used. To do this we use ‘iostat’. ‘iostat’ will by default give you all the reads and writes that the server has performed since start up.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# iostat
-Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span><span class="m">8</span> CPU<span class="o">)</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@earth:~# </span>iostat
+Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span>8 CPU<span class="o">)</span>
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
            4.71    0.08    1.76    2.70    0.00   90.75
 Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
-sda              43.18       444.49       377.38 <span class="m">4868027082</span> 4133006543
-sdb              43.21       390.18       437.79 <span class="m">4273169451</span> 4794601370
-sdc              43.37       372.14       455.47 <span class="m">4075619576</span> 4988231906
-sdd              43.12       303.40       520.57 <span class="m">3322820691</span> 5701198578
-md0             112.68       196.71       987.63 <span class="m">2154354407</span> 10816361389
-dm-0              0.02         0.00         0.02       <span class="m">3710</span>     191813
-dm-1              0.07         0.13         0.15    <span class="m">1415036</span>    1608712
-dm-2            105.45       196.58       987.46 <span class="m">2152916405</span> 10814560864
-root@earth:~#</code></pre></div>
+sda              43.18       444.49       377.38 4868027082 4133006543
+sdb              43.21       390.18       437.79 4273169451 4794601370
+sdc              43.37       372.14       455.47 4075619576 4988231906
+sdd              43.12       303.40       520.57 3322820691 5701198578
+md0             112.68       196.71       987.63 2154354407 10816361389
+dm-0              0.02         0.00         0.02       3710     191813
+dm-1              0.07         0.13         0.15    1415036    1608712
+dm-2            105.45       196.58       987.46 2152916405 10814560864
+root@earth:~#</code></pre></figure>
 
 <p>You can specify the following command to tell you where data is currently being written to disk.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# iostat <span class="m">5</span> 2
-Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span><span class="m">8</span> CPU<span class="o">)</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@earth:~# </span>iostat 5 2
+Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span>8 CPU<span class="o">)</span>
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
            4.71    0.08    1.75   32.70    0.00   70.75
 Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
-sda              43.19       444.48       377.40 <span class="m">4870534754</span> 4135461454
-sdb              43.22       390.15       437.81 <span class="m">4275250131</span> 4797504917
-sdc              43.37       372.11       455.50 <span class="m">4077567336</span> 4991286137
-sdd              43.12       303.37       520.60 <span class="m">3324288487</span> 5704684509
-md0             112.70       196.63       987.67 <span class="m">2154614063</span> 10822740329
-dm-0              0.02         0.00         0.02       <span class="m">3710</span>     191813
-dm-1              0.07         0.13         0.15    <span class="m">1415124</span>    1608712
-dm-2            105.46       196.50       987.50 <span class="m">2153175973</span> 10820939804
-dm-3            123.51       420.50      9537.33 <span class="m">93284825825</span> 394839274299
+sda              43.19       444.48       377.40 4870534754 4135461454
+sdb              43.22       390.15       437.81 4275250131 4797504917
+sdc              43.37       372.11       455.50 4077567336 4991286137
+sdd              43.12       303.37       520.60 3324288487 5704684509
+md0             112.70       196.63       987.67 2154614063 10822740329
+dm-0              0.02         0.00         0.02       3710     191813
+dm-1              0.07         0.13         0.15    1415124    1608712
+dm-2            105.46       196.50       987.50 2153175973 10820939804
+dm-3            123.51       420.50      9537.33 93284825825 394839274299
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
           13.69    0.00    0.35   22.20    0.00   63.76
 Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
-sda              27.40         3.20       283.40         <span class="m">16</span>       1417
-sdb              23.40         7.20       227.40         <span class="m">36</span>       1137
-sdc              17.40       158.40        57.80        <span class="m">792</span>        289
-sdd              14.20       165.60         1.80        <span class="m">828</span>          9
-md0              77.80         3.20       281.60         <span class="m">16</span>       1408
-dm-0              0.00         0.00         0.00          <span class="m">0</span>          0
-dm-1              0.00         0.00         0.00          <span class="m">0</span>          0
-dm-2             70.60         3.20       281.60         <span class="m">16</span>       1408
-dm-3           1392.60      1209.40      9012.49       <span class="m">4931</span>       5912
-root@earth:~#</code></pre></div>
+sda              27.40         3.20       283.40         16       1417
+sdb              23.40         7.20       227.40         36       1137
+sdc              17.40       158.40        57.80        792        289
+sdd              14.20       165.60         1.80        828          9
+md0              77.80         3.20       281.60         16       1408
+dm-0              0.00         0.00         0.00          0          0
+dm-1              0.00         0.00         0.00          0          0
+dm-2             70.60         3.20       281.60         16       1408
+dm-3           1392.60      1209.40      9012.49       4931       5912
+root@earth:~#</code></pre></figure>
 
 <p>It should be noted that the first block of text is indeed the total summary since startup. The second block is an average from the last 5 seconds.</p>
 
 <p>On a heavily used system, sometimes, it’s not that apparent what process is causing a high amount of load to a certain drive. Once we have identified what drive is under load with iostat we can find the drives mount point (dmsetup ls) and then use a program called ‘lsof’ to find what processes have files open on that mount.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# dmsetup ls
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@earth:~# </span>dmsetup ls
 vg_earth-boot  <span class="o">(</span>252:0<span class="o">)</span>
 vg_earth-swap  <span class="o">(</span>252:1<span class="o">)</span>
 vg_earth-root  <span class="o">(</span>252:2<span class="o">)</span>
 vg_earth-usr   <span class="o">(</span>252:2<span class="o">)</span>
-root@earth:~# mount <span class="p">|</span> grep vg_earth-usr
+<span class="gp">root@earth:~# </span>mount | grep vg_earth-usr
 /dev/mapper/vg_earth-app on /app <span class="nb">type </span>ext4 <span class="o">(</span>rw,errors<span class="o">=</span>remount-ro<span class="o">)</span>
-root@earth:~# lsof +D /usr/
+<span class="gp">root@earth:~# </span>lsof +D /usr/
 COMMAND     PID     USER   FD   TYPE DEVICE SIZE/OFF     NODE NAME
-irqbalanc  <span class="m">1421</span>     root  txt    REG  252,2    <span class="m">44136</span> <span class="m">13896668</span> /usr/sbin/irqbalance
-sshd       <span class="m">8424</span>     root  mem    REG  252,2    <span class="m">14536</span> <span class="m">13894192</span> /usr/lib/x86_64-linux-gnu/libck-connector.so.0.0.0
-sshd       <span class="m">8518</span>   dodwmd  mem    REG  252,2    <span class="m">14536</span> <span class="m">13894192</span> /usr/lib/x86_64-linux-gnu/libck-connector.so.0.0.0
-php-cgi    <span class="m">9346</span> www-data  cwd    DIR  252,2    <span class="m">49152</span> <span class="m">13893777</span> /usr/bin
-php-cgi    <span class="m">9346</span> www-data  txt    REG  252,2  <span class="m">9022832</span> <span class="m">13894634</span> /usr/bin/php5-cgi
-php-cgi    <span class="m">9346</span> www-data  mem    REG  252,2   <span class="m">162032</span>  <span class="m">4333607</span> /usr/lib/php5/20121212/xcache.so
-php-cgi    <span class="m">9346</span> www-data  mem    REG  252,2   <span class="m">179184</span> <span class="m">13894891</span> /usr/lib/x86_64-linux-gnu/libedit.so.2.0.47
-php-cgi    <span class="m">9346</span> www-data  mem    REG  252,2    <span class="m">31472</span>  <span class="m">4332415</span> /usr/lib/php5/20121212/readline.so
+irqbalanc  1421     root  txt    REG  252,2    44136 13896668 /usr/sbin/irqbalance
+sshd       8424     root  mem    REG  252,2    14536 13894192 /usr/lib/x86_64-linux-gnu/libck-connector.so.0.0.0
+sshd       8518   dodwmd  mem    REG  252,2    14536 13894192 /usr/lib/x86_64-linux-gnu/libck-connector.so.0.0.0
+php-cgi    9346 www-data  cwd    DIR  252,2    49152 13893777 /usr/bin
+php-cgi    9346 www-data  txt    REG  252,2  9022832 13894634 /usr/bin/php5-cgi
+php-cgi    9346 www-data  mem    REG  252,2   162032  4333607 /usr/lib/php5/20121212/xcache.so
+php-cgi    9346 www-data  mem    REG  252,2   179184 13894891 /usr/lib/x86_64-linux-gnu/libedit.so.2.0.47
+php-cgi    9346 www-data  mem    REG  252,2    31472  4332415 /usr/lib/php5/20121212/readline.so
 ...
-...</code></pre></div>
+...</code></pre></figure>
 
 <h3 id="iotop">iotop</h3>
 
 <p>If we still don’t know what file(s) are being written to the most, you can use a program called ‘iotop’ to figure out what files on a certain mount are being written to more than anything else.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:/# iotop -o -a -P -b -d <span class="m">5</span> -n <span class="m">5</span> <span class="sb">`</span>lsof +D /usr -t <span class="p">|</span> sed <span class="s1">&#39;s/^/-p /g&#39;</span><span class="sb">`</span>
-Total DISK READ :       0.00 B/s <span class="p">|</span> Total DISK WRITE :       0.00 B/s
-Actual DISK READ:       0.00 B/s <span class="p">|</span> Actual DISK WRITE:       0.00 B/s
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@earth:/# </span>iotop -o -a -P -b -d 5 -n 5 <span class="sb">`</span>lsof +D /usr -t | sed <span class="s1">'s/^/-p /g'</span><span class="sb">`</span>
+Total DISK READ :       0.00 B/s | Total DISK WRITE :       0.00 B/s
+Actual DISK READ:       0.00 B/s | Actual DISK WRITE:       0.00 B/s
   PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
-Total DISK READ :       0.00 B/s <span class="p">|</span> Total DISK WRITE :      27.94 K/s
-Actual DISK READ:       0.00 B/s <span class="p">|</span> Actual DISK WRITE:     107.77 K/s
+Total DISK READ :       0.00 B/s | Total DISK WRITE :      27.94 K/s
+Actual DISK READ:       0.00 B/s | Actual DISK WRITE:     107.77 K/s
   PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
-<span class="m">20396</span> be/4 www-data      0.00 B     24.00 K  0.00 %  2.24 % php-cgi
-<span class="m">32108</span> be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
-Total DISK READ :      59.67 K/s <span class="p">|</span> Total DISK WRITE :       3.98 K/s
-Actual DISK READ:      59.67 K/s <span class="p">|</span> Actual DISK WRITE:       3.98 K/s
+20396 be/4 www-data      0.00 B     24.00 K  0.00 %  2.24 % php-cgi
+32108 be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
+Total DISK READ :      59.67 K/s | Total DISK WRITE :       3.98 K/s
+Actual DISK READ:      59.67 K/s | Actual DISK WRITE:       3.98 K/s
   PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
-<span class="m">20396</span> be/4 www-data      0.00 B     24.00 K  0.00 %  1.12 % php-cgi
-<span class="m">32108</span> be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
-Total DISK READ :       0.00 B/s <span class="p">|</span> Total DISK WRITE :       0.00 B/s
-Actual DISK READ:       0.00 B/s <span class="p">|</span> Actual DISK WRITE:       0.00 B/s
+20396 be/4 www-data      0.00 B     24.00 K  0.00 %  1.12 % php-cgi
+32108 be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
+Total DISK READ :       0.00 B/s | Total DISK WRITE :       0.00 B/s
+Actual DISK READ:       0.00 B/s | Actual DISK WRITE:       0.00 B/s
   PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
-<span class="m">20396</span> be/4 www-data      0.00 B     24.00 K  0.00 %  0.75 % php-cgi
-<span class="m">32108</span> be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
-Total DISK READ :       0.00 B/s <span class="p">|</span> Total DISK WRITE :       3.98 K/s
-Actual DISK READ:       0.00 B/s <span class="p">|</span> Actual DISK WRITE:     286.66 K/s
+20396 be/4 www-data      0.00 B     24.00 K  0.00 %  0.75 % php-cgi
+32108 be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
+Total DISK READ :       0.00 B/s | Total DISK WRITE :       3.98 K/s
+Actual DISK READ:       0.00 B/s | Actual DISK WRITE:     286.66 K/s
   PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
-<span class="m">20396</span> be/4 www-data      0.00 B     24.00 K  0.00 %  0.56 % php-cgi
-<span class="m">32108</span> be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
-root@earth:/#</code></pre></div>
+20396 be/4 www-data      0.00 B     24.00 K  0.00 %  0.56 % php-cgi
+32108 be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
+root@earth:/#</code></pre></figure>
 
-<p>In the above command we ask iotop: (-o) Only show processes or threads actually doing I/O, (-a) Show accumulated I/O instead of bandwidth, (-P) only show processes - not threads, (-b) turn on non-interactive mode, (-d 5) set the delay between iterations in seconds, (-n 5) set the number of iterations before quitting. Then we call lsof +D /usr -t to output only the PID’s that are currently using /usr and use sed to put -p in front of the PID so that it can be called with iotop. In the output you now have a list of PID’s that are currently using disk I/O on the drive in question.  </p>
+<p>In the above command we ask iotop: (-o) Only show processes or threads actually doing I/O, (-a) Show accumulated I/O instead of bandwidth, (-P) only show processes - not threads, (-b) turn on non-interactive mode, (-d 5) set the delay between iterations in seconds, (-n 5) set the number of iterations before quitting. Then we call lsof +D /usr -t to output only the PID’s that are currently using /usr and use sed to put -p in front of the PID so that it can be called with iotop. In the output you now have a list of PID’s that are currently using disk I/O on the drive in question.</p>
 
 <p>Using some really great tools we’re able to figure out exactly what is causing heavy load of a file system so that we can deliver a better experience to users while ensuring we don’t over deliver and increase the costs of hosting.</p>
 

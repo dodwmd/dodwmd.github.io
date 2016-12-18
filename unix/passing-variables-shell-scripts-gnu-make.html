@@ -136,8 +136,6 @@
             
             
             
-            
-            
                     <header class="post-header entry-header">
                     
                         
@@ -153,15 +151,15 @@
                         
                         <p>Make is a really useful tool when you want to be able to write simple jobs. You don’t just need to use it for compiling source code. One thing you may wish to do is be able to pass variables to make commands. Lets take a look at a pretty simple Makefile that will delete all the indexes in Elastic Search.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">endpoint :<span class="o">=</span> localhost:9200
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">endpoint :<span class="o">=</span> localhost:9200
 all:
-        curl -XDELETE <span class="k">${</span><span class="nv">endpoint</span><span class="k">}</span>/_all</code></pre></div>
+        curl -XDELETE <span class="k">${</span><span class="nv">endpoint</span><span class="k">}</span>/_all</code></pre></figure>
 
 <p>Running ‘make’ will spawn curl and delete the localhost:9200/_all</p>
 
 <p>If we want to override the variable $endpoint with say ‘es.remote.dodwell.us:9200’ we can do that with the following:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@earth:~/Makefiles<span class="nv">$ </span>make <span class="nv">endpoint</span><span class="o">=</span><span class="s2">&quot;es.remote.dodwell.us:9200&quot;</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">dodwmd@earth:~/Makefiles$ </span>make <span class="nv">endpoint</span><span class="o">=</span><span class="s2">"es.remote.dodwell.us:9200"</span></code></pre></figure>
 
 
                         <br>

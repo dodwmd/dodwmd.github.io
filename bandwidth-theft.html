@@ -133,8 +133,6 @@
             
             
             
-            
-            
                     <header class="post-header entry-header">
                     
                         
@@ -143,16 +141,16 @@
                         <div class="cursive" style="color: #000; font-style:italic;"></div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published updated"><time datetime="2014-08-28T06:03:46+10:00" class="post-time" itemprop="datePublished">28 Aug 2014</time><span>
-                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">2.56</span> minutes read</span>
+                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">2.755</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
                         
-                        <p>Bandwidth theft or “hotlinking” is direct linking to a web site’s files (images, video, etc.). An example would be using an <img /> tag to display a JPEG image you found on someone else’s web page so it will appear on your own site, eBay auction listing, weblog, forum message post, etc. </p>
+                        <p>Bandwidth theft or “hotlinking” is direct linking to a web site’s files (images, video, etc.). An example would be using an <img /> tag to display a JPEG image you found on someone else’s web page so it will appear on your own site, eBay auction listing, weblog, forum message post, etc.</p>
 
 <p>Bandwidth refers to the amount of data transferred from a web site to a user’s computer. When you view a web page, you are using that site’s bandwidth to display the files. Since web hosts charge based on the amount of data transferred, bandwidth is an issue. If a site is over its monthly bandwidth, it’s billed for the extra data or taken offline.</p>
 
-<p>A simple analogy for bandwidth theft: Imagine a random stranger plugging into your electrical outlets, using your electricity without your consent, and you paying for it. </p>
+<p>A simple analogy for bandwidth theft: Imagine a random stranger plugging into your electrical outlets, using your electricity without your consent, and you paying for it.</p>
 
 <p>A few years ago hotlinking was usually only carried out by people on forums and blogs. These days companies like bing and yahoo have forgotten to be good netizens and are also hotlinking directly to content.</p>
 
@@ -162,41 +160,41 @@
 
 <h3 id="php-wimagick">php w/imagick</h3>
 
-<p>I have a preference to use Imagick. I’ve found it’s less prone to causing PHP to core than GD. I also think it’s easier to work with. YMMV. </p>
+<p>I have a preference to use Imagick. I’ve found it’s less prone to causing PHP to core than GD. I also think it’s easier to work with. YMMV.</p>
 
 <p>First we need some code that will overlay our ‘watermark’ to the image and output the result. Lets create a ‘hotlink.php’ file in the root directory of our site.</p>
 
-<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">]))</span> <span class="p">{</span>
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'filename'</span><span class="p">]))</span> <span class="p">{</span>
         <span class="cm">/* Create Imagick object */</span>
-        <span class="nv">$image</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Imagick</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">]);</span>
+        <span class="nv">$image</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Imagick</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'filename'</span><span class="p">]);</span>
         <span class="cm">/* pull in overlay image */</span>
-        <span class="nv">$watermark</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Imagick</span><span class="p">(</span> <span class="s1">&#39;misc/hotlink-overlay.png&#39;</span><span class="p">);</span>
-        <span class="c1">// Check if the watermark is bigger than the image</span>
-        <span class="nv">$image_width</span>            <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getImageWidth</span><span class="p">();</span>
+        <span class="nv">$watermark</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Imagick</span><span class="p">(</span> <span class="s1">'misc/hotlink-overlay.png'</span><span class="p">);</span>
+        <span class="c1">// Check if the watermark is bigger than the image
+</span>        <span class="nv">$image_width</span>            <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getImageWidth</span><span class="p">();</span>
         <span class="nv">$image_height</span>           <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getImageHeight</span><span class="p">();</span>
         <span class="nv">$watermark_width</span>        <span class="o">=</span> <span class="nv">$watermark</span><span class="o">-&gt;</span><span class="na">getImageWidth</span><span class="p">();</span>
         <span class="nv">$watermark_height</span>       <span class="o">=</span> <span class="nv">$watermark</span><span class="o">-&gt;</span><span class="na">getImageHeight</span><span class="p">();</span>
         <span class="nv">$padding</span>                <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nv">$image_width</span> <span class="o">&lt;</span> <span class="nv">$watermark_width</span> <span class="o">+</span> <span class="nv">$padding</span> <span class="o">||</span> <span class="nv">$image_height</span> <span class="o">&lt;</span> <span class="nv">$watermark_height</span> <span class="o">+</span> <span class="nv">$padding</span> <span class="p">)</span> <span class="p">{</span>
-                <span class="c1">//small image just output image</span>
-                <span class="nv">$output</span> <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getImageBlob</span><span class="p">();</span>
-                <span class="nb">header</span><span class="p">(</span> <span class="s2">&quot;Content-Type: &quot;</span><span class="o">.</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getFormat</span><span class="p">()</span> <span class="p">);</span>
+                <span class="c1">//small image just output image
+</span>                <span class="nv">$output</span> <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getImageBlob</span><span class="p">();</span>
+                <span class="nb">header</span><span class="p">(</span> <span class="s2">"Content-Type: "</span><span class="o">.</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getFormat</span><span class="p">()</span> <span class="p">);</span>
                 <span class="k">echo</span> <span class="nv">$output</span><span class="p">;</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="c1">// center the overlay on the orignal image</span>
-                <span class="nv">$dest_x</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$image_width</span> <span class="o">-</span> <span class="nv">$watermark_width</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+                <span class="c1">// center the overlay on the orignal image
+</span>                <span class="nv">$dest_x</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$image_width</span> <span class="o">-</span> <span class="nv">$watermark_width</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
                 <span class="nv">$dest_y</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$image_height</span> <span class="o">-</span> <span class="nv">$watermark_height</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
-                <span class="c1">// Draw the watermark</span>
-                <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">compositeImage</span><span class="p">(</span><span class="nv">$watermark</span><span class="p">,</span><span class="nx">Imagick</span><span class="o">::</span><span class="na">COMPOSITE_OVER</span><span class="p">,</span><span class="nv">$dest_x</span><span class="p">,</span><span class="nv">$dest_y</span><span class="p">);</span>
+                <span class="c1">// Draw the watermark
+</span>                <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">compositeImage</span><span class="p">(</span><span class="nv">$watermark</span><span class="p">,</span><span class="nx">Imagick</span><span class="o">::</span><span class="na">COMPOSITE_OVER</span><span class="p">,</span><span class="nv">$dest_x</span><span class="p">,</span><span class="nv">$dest_y</span><span class="p">);</span>
                 <span class="nv">$output</span> <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getImageBlob</span><span class="p">();</span>
-                <span class="nb">header</span><span class="p">(</span> <span class="s2">&quot;Content-Type: &quot;</span><span class="o">.</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getFormat</span><span class="p">()</span> <span class="p">);</span>
+                <span class="nb">header</span><span class="p">(</span> <span class="s2">"Content-Type: "</span><span class="o">.</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getFormat</span><span class="p">()</span> <span class="p">);</span>
                 <span class="k">echo</span> <span class="nv">$output</span><span class="p">;</span>
         <span class="p">}</span>
 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nb">header</span><span class="p">(</span> <span class="s2">&quot;Location: /&quot;</span><span class="p">);</span>
+        <span class="nb">header</span><span class="p">(</span> <span class="s2">"Location: /"</span><span class="p">);</span>
 <span class="p">}</span>
-<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+<span class="cp">?&gt;</span></code></pre></figure>
 
 <p>You will also need a image to overlay.</p>
 
@@ -204,12 +202,12 @@
 
 <p>You now need nginx to redirect hot linked images to the PHP script:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">location ~ ^/images/ <span class="o">{</span>
-    valid_referers none blocked dodwell.us www.dodwell.us<span class="p">;</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">  location ~ ^/images/ <span class="o">{</span>
+    valid_referers none blocked dodwell.us www.dodwell.us;
     <span class="k">if</span> <span class="o">(</span><span class="nv">$invalid_referer</span><span class="o">)</span> <span class="o">{</span>
-      rewrite  ^/images/<span class="o">(</span>.*<span class="o">)</span><span class="nv">$ </span>http://dodwell.us/hotlink.php?filename<span class="o">=</span><span class="nv">$1</span> last<span class="p">;</span>
+      rewrite  ^/images/<span class="o">(</span>.<span class="k">*</span><span class="o">)</span><span class="nv">$ </span>http://dodwell.us/hotlink.php?filename<span class="o">=</span><span class="nv">$1</span> last;
     <span class="o">}</span>
-  <span class="o">}</span></code></pre></div>
+  <span class="o">}</span></code></pre></figure>
 
 <p>Enjoy!</p>
 

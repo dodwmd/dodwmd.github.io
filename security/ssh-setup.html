@@ -136,8 +136,6 @@
             
             
             
-            
-            
                     <header class="post-header entry-header">
                     
                         
@@ -146,7 +144,7 @@
                         <div class="cursive" style="color: #000; font-style:italic;">What is SSH and how can we secure it.</div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published"><time datetime="2015-01-21T00:00:00+11:00" class="post-time" itemprop="datePublished">21 Jan 2015</time><span>
-                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.075</span> minutes read</span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">3.625</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
@@ -183,7 +181,7 @@ The best-known application of the protocol is for access to shell accounts on Un
   <li>curve25519-sha256: ECDH over Curve25519 with SHA2</li>
 </ul>
 
-<p>The first 3 options are out due to failures with NIST curves. They leak secrets through timing side channels and off-curve inputs. </p>
+<p>The first 3 options are out due to failures with NIST curves. They leak secrets through timing side channels and off-curve inputs.</p>
 
 <p>We should also elimate anything that uses SHA1.</p>
 
@@ -191,17 +189,17 @@ The best-known application of the protocol is for access to shell accounts on Un
 
 <p>Recommended /etc/ssh/sshd_config snippet:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256</code></pre></figure>
 
 <p>Recommended /etc/ssh/ssh_config snippet:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">Host *
-    KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Host <span class="k">*</span>
+    KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256</code></pre></figure>
 
 <p>We should also regenerate our moduli file via:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">ssh-keygen -G <span class="s2">&quot;${HOME}/moduli&quot;</span> -b 4096
-ssh-keygen -T /etc/ssh/moduli -f <span class="s2">&quot;${HOME}/moduli&quot;</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ssh-keygen -G <span class="s2">"</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span><span class="s2">/moduli"</span> -b 4096
+ssh-keygen -T /etc/ssh/moduli -f <span class="s2">"</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span><span class="s2">/moduli"</span></code></pre></figure>
 
 <h3 id="authentication">authentication</h3>
 
@@ -218,16 +216,16 @@ ssh-keygen -T /etc/ssh/moduli -f <span class="s2">&quot;${HOME}/moduli&quot;</sp
 
 <p>Recommended /etc/ssh/sshd_config snippet:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">Protocol 2
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Protocol 2
 HostKey /etc/ssh/ssh_host_ed25519_key
-HostKey /etc/ssh/ssh_host_rsa_key</code></pre></div>
+HostKey /etc/ssh/ssh_host_rsa_key</code></pre></figure>
 
 <p>You should also now take this oppitunity to regenerate your SSH server keys.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /etc/ssh
-rm ssh_host_*key*
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /etc/ssh
+rm ssh_host_<span class="k">*</span>key<span class="k">*</span>
 ssh-keygen -t ed25519 -f ssh_host_ed25519_key &lt; /dev/null
-ssh-keygen -t rsa -b <span class="m">4096</span> -f ssh_host_rsa_key &lt; /dev/null</code></pre></div>
+ssh-keygen -t rsa -b 4096 -f ssh_host_rsa_key &lt; /dev/null</code></pre></figure>
 
 <p>The client must prove its identity to the server as well. There are various methods to do that.</p>
 
@@ -235,31 +233,31 @@ ssh-keygen -t rsa -b <span class="m">4096</span> -f ssh_host_rsa_key &lt; /dev/n
 
 <p>Recommended /etc/ssh/sshd_config snippet:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">PasswordAuthentication no
-ChallengeResponseAuthentication no</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">PasswordAuthentication no
+ChallengeResponseAuthentication no</code></pre></figure>
 
 <p>Recommended /etc/ssh/ssh_config snippet:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">Host *
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Host <span class="k">*</span>
     PasswordAuthentication no
-    ChallengeResponseAuthentication no</code></pre></div>
+    ChallengeResponseAuthentication no</code></pre></figure>
 
 <p>The most common and secure method is public key authentication, basically the same process as the server authentication.</p>
 
 <p>Recommended /etc/ssh/sshd_config snippet:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">PubkeyAuthentication yes</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">PubkeyAuthentication yes</code></pre></figure>
 
 <p>Recommended /etc/ssh/ssh_config snippet:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">Host *
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Host <span class="k">*</span>
     PubkeyAuthentication yes
-    HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-rsa-cert-v00@openssh.com,ssh-ed25519,ssh-rsa</code></pre></div>
+    HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-rsa-cert-v00@openssh.com,ssh-ed25519,ssh-rsa</code></pre></figure>
 
 <p>Generate client keys using the following commands:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">ssh-keygen -t ed25519 -o -a 100
-ssh-keygen -t rsa -b <span class="m">4096</span> -o -a 100</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ssh-keygen -t ed25519 -o -a 100
+ssh-keygen -t rsa -b 4096 -o -a 100</code></pre></figure>
 
 
                         <br>

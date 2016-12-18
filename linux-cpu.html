@@ -133,8 +133,6 @@
             
             
             
-            
-            
                     <header class="post-header entry-header">
                     
                         
@@ -143,7 +141,7 @@
                         <div class="cursive" style="color: #000; font-style:italic;"></div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published updated"><time datetime="2014-07-08T04:36:46+10:00" class="post-time" itemprop="datePublished">08 Jul 2014</time><span>
-                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">6.435</span> minutes read</span>
+                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">6.3</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
@@ -168,7 +166,7 @@
 
 <p>As a note in versions of Linux kernel 2.6 prior to 2.6.23, the scheduler used is an O(1) scheduler by Ingo Molnár. The scheduler used thereafter is the Completely Fair Scheduler, also by Ingo Molnár, which runs in O(log N) time.</p>
 
-<p>Because you can have multiple processes all running at the same time but we usually have a smaller number of core processors on the host, it’s important to realise that the kernel will switch (known as context switching) what process is running on the CPU at any time to another process that is in the queue waiting for CPU cycles. We end up with 2 different types of content switches, involuntary context switches and voluntary context switches. A voluntary context switch can occur whenever a thread/process makes a system call that blocks. An involuntary context switch occurs when a thread has been running too long (usually something like 10 ms) without making a system call that blocks and there are processes waiting for the CPU. </p>
+<p>Because you can have multiple processes all running at the same time but we usually have a smaller number of core processors on the host, it’s important to realise that the kernel will switch (known as context switching) what process is running on the CPU at any time to another process that is in the queue waiting for CPU cycles. We end up with 2 different types of content switches, involuntary context switches and voluntary context switches. A voluntary context switch can occur whenever a thread/process makes a system call that blocks. An involuntary context switch occurs when a thread has been running too long (usually something like 10 ms) without making a system call that blocks and there are processes waiting for the CPU.</p>
 
 <p>I don’t want to go into detail on how the scheduler works we just need to understand that context switching can be an important metric that we’ll talk about later.</p>
 
@@ -178,22 +176,22 @@
 
 <p>If the server your investigating has multiple cores it’s useful to see the breakdown of each CPU. You can use a command called ‘mpstat’ to do this.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# mpstat -P ALL
-Linux 3.11.0-15-generic <span class="o">(</span>ultima<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span><span class="m">4</span> CPU<span class="o">)</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@earth:~# </span>mpstat -P ALL
+Linux 3.11.0-15-generic <span class="o">(</span>ultima<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span>4 CPU<span class="o">)</span>
 09:14:01 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
 09:14:01 PM  all    2.03    0.00    2.41    0.24    0.00    0.18    0.00    0.00    0.00   95.14
-09:14:01 PM    <span class="m">0</span>    2.76    0.00    2.20    0.38    0.00    0.28    0.00    0.00    0.00   94.38
-09:14:01 PM    <span class="m">1</span>    2.93    0.01    2.55    0.50    0.00    0.43    0.00    0.00    0.00   93.58
-09:14:01 PM    <span class="m">2</span>    1.24    0.01    2.52    0.04    0.00    0.00    0.00    0.00    0.00   96.20
-09:14:01 PM    <span class="m">3</span>    1.21    0.00    2.36    0.04    0.00    0.00    0.00    0.00    0.00   96.38
-root@earth:~#</code></pre></div>
+09:14:01 PM    0    2.76    0.00    2.20    0.38    0.00    0.28    0.00    0.00    0.00   94.38
+09:14:01 PM    1    2.93    0.01    2.55    0.50    0.00    0.43    0.00    0.00    0.00   93.58
+09:14:01 PM    2    1.24    0.01    2.52    0.04    0.00    0.00    0.00    0.00    0.00   96.20
+09:14:01 PM    3    1.21    0.00    2.36    0.04    0.00    0.00    0.00    0.00    0.00   96.38
+root@earth:~#</code></pre></figure>
 
-<p>The mpstat command display activities for each available processor, processor 0 being the first one. Global average activities among all processors are also reported. </p>
+<p>The mpstat command display activities for each available processor, processor 0 being the first one. Global average activities among all processors are also reported.</p>
 
 <p>Sometimes you may wish to see how the CPU has been running over the day and a tool called ‘sar’ takes care of this. sar by default will grab archived information that has been written to via a cron job.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# sar
-Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span><span class="m">8</span> CPU<span class="o">)</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@earth:~# </span>sar
+Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span>8 CPU<span class="o">)</span>
 07:35:01 PM     CPU     %user     %nice   %system   %iowait    %steal     %idle
 07:45:01 PM     all      0.31      0.00      0.38      0.06      0.00     99.25
 07:55:01 PM     all      0.39      0.00      0.50      0.07      0.00     99.05
@@ -207,12 +205,12 @@ Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>   
 09:05:01 PM     all      2.20      0.00      1.01      3.95      0.00     92.84
 09:15:01 PM     all      3.31      0.00      1.15      3.71      0.00     91.83
 Average:        all      1.36      0.00      0.73      2.04      0.00     95.87
-root@earth:~#</code></pre></div>
+root@earth:~#</code></pre></figure>
 
 <p>The sar command can also be ran so that you can see a live summary over time.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# sar -u <span class="m">2</span> 5
-Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span><span class="m">8</span> CPU<span class="o">)</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@earth:~# </span>sar -u 2 5
+Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span>8 CPU<span class="o">)</span>
 09:22:16 PM     CPU     %user     %nice   %system   %iowait    %steal     %idle
 09:22:18 PM     all      3.13      0.00      1.63      1.56      0.00     93.68
 09:22:20 PM     all      6.25      0.00      6.50      1.06      0.00     86.18
@@ -220,16 +218,16 @@ Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>   
 09:22:24 PM     all      1.07      0.00      0.50      3.07      0.00     95.36
 09:22:26 PM     all      0.88      0.00      0.31      1.50      0.00     97.31
 Average:        all      2.53      0.00      2.13      2.54      0.00     92.80
-root@earth:~#</code></pre></div>
+root@earth:~#</code></pre></figure>
 
 <p>I think it’s important to break down what we’re actually reading with these outputs. %user is the percentage of CPU utilization that occurred while executing at the user level (application). %nice is the percentage of CPU utilization that occurred while executing at the user level with nice priority. %system is the percentage of CPU utilization that occurred while executing at the system level (kernel). %iowait is the percentage of time that the CPU or CPUs were idle during which the system had an outstanding disk I/O request. %steal is the percentage of time a virtual CPU waits for a real CPU while the hyper visor is servicing another virtual processor. %idle is the percentage of time that the CPU or CPUs were idle and the system did not have an outstanding disk I/O request.</p>
 
 <h3 id="munin">munin</h3>
 
-<p><a href="/images/cpu-day.png"><img src="/images/cpu-day.png" alt="cpu-day" width="378" height="286" style="float:left;" /></a>Using programs like Munin also are helpful in determining how CPU usage is performing over time. In the graph to the side we can quickly tell that the CPU on this host is fairly idle. It saves us considerable time if we have to review lots of servers on a periodic basis for this kind of information to be graphed in a easily read fashion. It is also helpful to look at trending over long periods of time that might not be that evident when looking at hourly/daily trends. </p>
+<p><a href="/images/cpu-day.png"><img src="/images/cpu-day.png" alt="cpu-day" width="378" height="286" style="float:left;" /></a>Using programs like Munin also are helpful in determining how CPU usage is performing over time. In the graph to the side we can quickly tell that the CPU on this host is fairly idle. It saves us considerable time if we have to review lots of servers on a periodic basis for this kind of information to be graphed in a easily read fashion. It is also helpful to look at trending over long periods of time that might not be that evident when looking at hourly/daily trends.</p>
 
 <blockquote>
-  <p>UPDATE (17/07/14): I just wanted to add a update to state something that I don’t think is that clear about steal time. A guest’s allocated CPU type will match the physical CPU of the host. If a service provider wishes to offer a ‘slower CPU’ but only host virtual machines on faster processors they will restrict the CPU resource on the host for the guest and when you run the guest you will see this reflected in the CPU steal time. </p>
+  <p>UPDATE (17/07/14): I just wanted to add a update to state something that I don’t think is that clear about steal time. A guest’s allocated CPU type will match the physical CPU of the host. If a service provider wishes to offer a ‘slower CPU’ but only host virtual machines on faster processors they will restrict the CPU resource on the host for the guest and when you run the guest you will see this reflected in the CPU steal time.</p>
 </blockquote>
 
                         <br>

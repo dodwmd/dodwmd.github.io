@@ -133,8 +133,6 @@
             
             
             
-            
-            
                     <header class="post-header entry-header">
                     
                         
@@ -143,7 +141,7 @@
                         <div class="cursive" style="color: #000; font-style:italic;"></div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published updated"><time datetime="2014-08-19T02:19:07+10:00" class="post-time" itemprop="datePublished">19 Aug 2014</time><span>
-                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#website" data-toggle="tooltip" title="Other posts from the Website category" rel="tag">Website</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">6.0</span> minutes read</span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#website" data-toggle="tooltip" title="Other posts from the Website category" rel="tag">Website</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">5.65</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
@@ -156,17 +154,17 @@
 
 <p>The first section I wanted to cover is HTML minification. As a developer it’s important to set out code in a readable way. This means adding indentation and new lines to making reading and editing your code much easier. However, all this setting out uses valuable space. Most of the sites I administrate currently are written in PHP. I use templating engines to seperate the PHP code from the HTML code. However I don’t want to maintain multiple copies of templates (minified and non-minified). Using a bunch of code from <a href="http://code.google.com/p/minify/">here</a>. You can include the following at the start of your PHP script to minify the HTML that’s being sent to users.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">function</span> sanitize_output<span class="o">(</span><span class="nv">$buffer</span><span class="o">)</span> <span class="o">{</span>
-    require_once<span class="o">(</span><span class="s1">&#39;min/lib/Minify/HTML.php&#39;</span><span class="o">)</span><span class="p">;</span>
-    require_once<span class="o">(</span><span class="s1">&#39;min/lib/Minify/CSS.php&#39;</span><span class="o">)</span><span class="p">;</span>
-    require_once<span class="o">(</span><span class="s1">&#39;min/lib/JSMin.php&#39;</span><span class="o">)</span><span class="p">;</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">function </span>sanitize_output<span class="o">(</span><span class="nv">$buffer</span><span class="o">)</span> <span class="o">{</span>
+    require_once<span class="o">(</span><span class="s1">'min/lib/Minify/HTML.php'</span><span class="o">)</span>;
+    require_once<span class="o">(</span><span class="s1">'min/lib/Minify/CSS.php'</span><span class="o">)</span>;
+    require_once<span class="o">(</span><span class="s1">'min/lib/JSMin.php'</span><span class="o">)</span>;
     <span class="nv">$buffer</span> <span class="o">=</span> Minify_HTML::minify<span class="o">(</span><span class="nv">$buffer</span>, array<span class="o">(</span>
-        <span class="s1">&#39;cssMinifier&#39;</span> <span class="o">=</span>&gt; array<span class="o">(</span><span class="s1">&#39;Minify_CSS&#39;</span>, <span class="s1">&#39;minify&#39;</span><span class="o">)</span>,
-        <span class="s1">&#39;jsMinifier&#39;</span> <span class="o">=</span>&gt; array<span class="o">(</span><span class="s1">&#39;JSMin&#39;</span>, <span class="s1">&#39;minify&#39;</span><span class="o">)</span>
-    <span class="o">))</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nv">$buffer</span><span class="p">;</span>
+        <span class="s1">'cssMinifier'</span> <span class="o">=</span>&gt; array<span class="o">(</span><span class="s1">'Minify_CSS'</span>, <span class="s1">'minify'</span><span class="o">)</span>,
+        <span class="s1">'jsMinifier'</span> <span class="o">=</span>&gt; array<span class="o">(</span><span class="s1">'JSMin'</span>, <span class="s1">'minify'</span><span class="o">)</span>
+    <span class="o">))</span>;
+    <span class="k">return</span> <span class="nv">$buffer</span>;
 <span class="o">}</span>
-ob_start<span class="o">(</span><span class="s1">&#39;sanitize_output&#39;</span><span class="o">)</span><span class="p">;</span></code></pre></div>
+ob_start<span class="o">(</span><span class="s1">'sanitize_output'</span><span class="o">)</span>;</code></pre></figure>
 
 <h3 id="cssjs">css/js</h3>
 
@@ -174,7 +172,7 @@ ob_start<span class="o">(</span><span class="s1">&#39;sanitize_output&#39;</span
 
 <p>Simply run the tool on your CSS/JS files and then output them into new files adding something like ‘min’ to the filename.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>yui-compressor --type css file.css &gt; file.min.css</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>yui-compressor --type css file.css &gt; file.min.css</code></pre></figure>
 
 <p>Then just include the minified version in your templates.</p>
 
@@ -190,50 +188,50 @@ ob_start<span class="o">(</span><span class="s1">&#39;sanitize_output&#39;</span
 
 <p>Once it’s installed:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/tjko/jpegoptim
-<span class="nv">$ </span><span class="nb">cd </span>jpegoptim
-<span class="nv">$ </span>./configure
-<span class="nv">$ </span>make
-<span class="nv">$ </span>make strip
-<span class="nv">$ </span>make install</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>git clone https://github.com/tjko/jpegoptim
+<span class="gp">$ </span><span class="nb">cd </span>jpegoptim
+<span class="gp">$ </span>./configure
+<span class="gp">$ </span>make
+<span class="gp">$ </span>make strip
+<span class="gp">$ </span>make install</code></pre></figure>
 
 <p>You can let it run rampant on your source images to ensure they are optimized:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>find ./ -name *jpg <span class="p">|</span> xargs jpegoptim
-./images/ck1.jpg 768x433 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">32411</span> --&gt; <span class="m">32411</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/ZZ379.jpg 768x461 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">55101</span> --&gt; <span class="m">55101</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/RZdaU99.jpg 768x649 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">71753</span> --&gt; <span class="m">71753</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/tmpUltimateselfie.jpg 768x511 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">66329</span> --&gt; <span class="m">66329</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/Robinwilliams46602a.jpg 768x933 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">72161</span> --&gt; <span class="m">72161</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/Elephantsarehuge.jpg 768x615 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">36062</span> --&gt; <span class="m">36062</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/1408196499535.jpg 768x1152 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">135273</span> --&gt; <span class="m">135273</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/TexasGovRickPerryindictedforabuseofpower.jpg 768x512 24bit P JFIF  <span class="o">[</span>OK<span class="o">]</span> <span class="m">31000</span> --&gt; <span class="m">31000</span> bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>find ./ -name <span class="k">*</span>jpg | xargs jpegoptim
+./images/ck1.jpg 768x433 24bit P JFIF  <span class="o">[</span>OK] 32411 --&gt; 32411 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/ZZ379.jpg 768x461 24bit P JFIF  <span class="o">[</span>OK] 55101 --&gt; 55101 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/RZdaU99.jpg 768x649 24bit P JFIF  <span class="o">[</span>OK] 71753 --&gt; 71753 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/tmpUltimateselfie.jpg 768x511 24bit P JFIF  <span class="o">[</span>OK] 66329 --&gt; 66329 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/Robinwilliams46602a.jpg 768x933 24bit P JFIF  <span class="o">[</span>OK] 72161 --&gt; 72161 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/Elephantsarehuge.jpg 768x615 24bit P JFIF  <span class="o">[</span>OK] 36062 --&gt; 36062 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/1408196499535.jpg 768x1152 24bit P JFIF  <span class="o">[</span>OK] 135273 --&gt; 135273 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/TexasGovRickPerryindictedforabuseofpower.jpg 768x512 24bit P JFIF  <span class="o">[</span>OK] 31000 --&gt; 31000 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.</code></pre></figure>
 
 <p>You can also optimize your PNG files with OptiPNG. <a href="http://optipng.sourceforge.net/">OptiPNG</a> is a PNG optimizer that re-compresses image files to a smaller size, without losing any information. This program also converts external formats (BMP, GIF, PNM and TIFF) to optimized PNG, and performs PNG integrity checks and corrections. If you wish to learn how PNG optimization works, or to know about other similar tools, see the PNG-Tech article <a href="http://optipng.sourceforge.net/pngtech/optipng.html">A guide to PNG optimization</a>.</p>
 
 <p>Again this is included in most distributions but again is a little old. So lets grab a copy and compile it:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>hg clone http://optipng.hg.sourceforge.net/hgweb/optipng/optipngreal
-<span class="nv">$ </span><span class="nb">cd </span>optipng
-<span class="nv">$ </span>./configure
-<span class="nv">$ </span>make
-<span class="nv">$ </span>make install</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>hg clone http://optipng.hg.sourceforge.net/hgweb/optipng/optipngreal
+<span class="gp">$ </span><span class="nb">cd </span>optipng
+<span class="gp">$ </span>./configure
+<span class="gp">$ </span>make
+<span class="gp">$ </span>make install</code></pre></figure>
 
 <p>Lets let it fix up our PNG files now.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>find ./ -name *png <span class="p">|</span> xargs optipng
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>find ./ -name <span class="k">*</span>png | xargs optipng
 OptiPNG 0.6.4: Advanced PNG optimizer.
 Copyright <span class="o">(</span>C<span class="o">)</span> 2001-2010 Cosmin Truta.
-** Processing: ./images/logo_large.png
+<span class="k">**</span> Processing: ./images/logo_large.png
 768x288 pixels, 4x8 bits/pixel, RGB+alpha
-Input IDAT <span class="nv">size</span> <span class="o">=</span> <span class="m">77472</span> bytes
-Input file <span class="nv">size</span> <span class="o">=</span> <span class="m">77658</span> bytes
+Input IDAT size <span class="o">=</span> 77472 bytes
+Input file size <span class="o">=</span> 77658 bytes
 Trying:
-  <span class="nv">zc</span> <span class="o">=</span> <span class="m">9</span>  <span class="nv">zm</span> <span class="o">=</span> <span class="m">8</span>  <span class="nv">zs</span> <span class="o">=</span> <span class="m">0</span>  <span class="nv">f</span> <span class="o">=</span> <span class="m">0</span>         IDAT <span class="nv">size</span> <span class="o">=</span> 70170
+  zc <span class="o">=</span> 9  zm <span class="o">=</span> 8  zs <span class="o">=</span> 0  f <span class="o">=</span> 0         IDAT size <span class="o">=</span> 70170
 Selecting parameters:
-  <span class="nv">zc</span> <span class="o">=</span> <span class="m">9</span>  <span class="nv">zm</span> <span class="o">=</span> <span class="m">8</span>  <span class="nv">zs</span> <span class="o">=</span> <span class="m">0</span>  <span class="nv">f</span> <span class="o">=</span> <span class="m">0</span>         IDAT <span class="nv">size</span> <span class="o">=</span> 70170
-Output IDAT <span class="nv">size</span> <span class="o">=</span> <span class="m">70170</span> bytes <span class="o">(</span><span class="m">7302</span> bytes decrease<span class="o">)</span>
-Output file <span class="nv">size</span> <span class="o">=</span> <span class="m">70248</span> bytes <span class="o">(</span><span class="m">7410</span> <span class="nv">bytes</span> <span class="o">=</span> 9.54% decrease<span class="o">)</span></code></pre></div>
+  zc <span class="o">=</span> 9  zm <span class="o">=</span> 8  zs <span class="o">=</span> 0  f <span class="o">=</span> 0         IDAT size <span class="o">=</span> 70170
+Output IDAT size <span class="o">=</span> 70170 bytes <span class="o">(</span>7302 bytes decrease<span class="o">)</span>
+Output file size <span class="o">=</span> 70248 bytes <span class="o">(</span>7410 bytes <span class="o">=</span> 9.54% decrease<span class="o">)</span></code></pre></figure>
 
 <p>Now that we have our source images all optimized it’s time to focus on ensuring that we’re not sending users of small screens large images. To do this we use a very nice little PHP app called <a href="http://adaptive-images.com/">Adaptive Images</a>.</p>
 
@@ -246,21 +244,21 @@ Why? Because your site is being increasingly viewed on smaller, slower, low band
 
 <p>All we have to do is install the adaptive images php code to our root and then add a rewrite to redirect all image fetches to the php file. Via:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/MattWilcox/Adaptive-Images</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>git clone https://github.com/MattWilcox/Adaptive-Images</code></pre></figure>
 
 <p>Then edit your nginx config file and add the following:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">location assets <span class="o">{</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">location assets <span class="o">{</span>
 <span class="o">}</span>
 location ai-cache <span class="o">{</span>
 <span class="o">}</span>
 location ~ ^/images/ <span class="o">{</span>
-    rewrite <span class="se">\.</span><span class="o">(</span>?:jpe?g<span class="p">|</span>gif<span class="p">|</span>png<span class="o">)</span><span class="nv">$ </span>/Adaptive-Images/adaptive-images.php<span class="p">;</span>
-<span class="o">}</span></code></pre></div>
+    rewrite <span class="se">\.</span><span class="o">(</span>?:jpe?g|gif|png<span class="o">)</span><span class="nv">$ </span>/Adaptive-Images/adaptive-images.php;
+<span class="o">}</span></code></pre></figure>
 
 <p>We also have to ensure that a cookie is set in the users browser that specifies what resolution they are viewing the site with. I modified the authors javascript cookie code to allow for a domain wide cookie (allowing me to separate where I serve images from vs where the rest of the site is generated from).</p>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">document</span><span class="o">.</span><span class="na">cookie</span><span class="o">=</span><span class="err">&#39;</span><span class="n">resolution</span><span class="o">=</span><span class="err">&#39;</span><span class="o">+</span><span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">screen</span><span class="o">.</span><span class="na">width</span><span class="o">,</span><span class="n">screen</span><span class="o">.</span><span class="na">height</span><span class="o">)+</span><span class="err">&#39;</span><span class="o">;</span><span class="n">domain</span><span class="o">=.</span><span class="na">dodwell</span><span class="o">.</span><span class="na">us</span><span class="o">;</span> <span class="n">path</span><span class="o">=/</span><span class="err">&#39;</span><span class="o">;</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">document</span><span class="o">.</span><span class="na">cookie</span><span class="o">=</span><span class="err">'</span><span class="n">resolution</span><span class="o">=</span><span class="err">'</span><span class="o">+</span><span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">screen</span><span class="o">.</span><span class="na">width</span><span class="o">,</span><span class="n">screen</span><span class="o">.</span><span class="na">height</span><span class="o">)+</span><span class="err">'</span><span class="o">;</span><span class="n">domain</span><span class="o">=.</span><span class="na">dodwell</span><span class="o">.</span><span class="na">us</span><span class="o">;</span> <span class="n">path</span><span class="o">=/</span><span class="err">'</span><span class="o">;</span></code></pre></figure>
 
 <p>Make sure the webserver is able to write to the ai-cache and assets directories before testing.</p>
 

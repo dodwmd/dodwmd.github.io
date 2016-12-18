@@ -133,8 +133,6 @@
             
             
             
-            
-            
                     <header class="post-header entry-header">
                     
                         
@@ -143,7 +141,7 @@
                         <div class="cursive" style="color: #000; font-style:italic;"></div>
                         <div class="post-info text-center small">
                             <span class="entry-date date published updated"><time datetime="2014-09-02T01:45:30+10:00" class="post-time" itemprop="datePublished">02 Sep 2014</time><span>
-                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">7.48</span> minutes read</span>
+                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">7.265</span> minutes read</span>
                         </div>
                     </header>
                     <div class="post-body bordered-bottom" itemprop="description">
@@ -156,7 +154,7 @@
 
 <h3 id="myisam">myisam</h3>
 
-<p>MyISAM was the default storage engine for the MySQL relational database management system versions prior to 5.5. It is based on the older ISAM code but has many useful extensions. </p>
+<p>MyISAM was the default storage engine for the MySQL relational database management system versions prior to 5.5. It is based on the older ISAM code but has many useful extensions.</p>
 
 <p>MyISAM is optimized for environments with heavy read operations, and few writes, or none at all. A typical area in which one could prefer MyISAM is data warehouse, because it involves queries on very big tables, and the update of such tables is done when the database is not in use (usually by night).</p>
 
@@ -174,11 +172,11 @@
 
 <h4 id="innodb-buffer-pools">innodb buffer pools</h4>
 
-<p>If using just InnoDB, set innodb_buffer_pool_size to 70% of <em>available</em> RAM. (Plus key_buffer_size = 10M, small, but not zero.) If you have lots of RAM and are using 5.5 (or later), then consider having multiple pools. Recommend 1-16 innodb_buffer_pool_instances, such that each one is no smaller than 1GB. (Sorry, no metric on how much this will help; probably not a lot.) </p>
+<p>If using just InnoDB, set innodb_buffer_pool_size to 70% of <em>available</em> RAM. (Plus key_buffer_size = 10M, small, but not zero.) If you have lots of RAM and are using 5.5 (or later), then consider having multiple pools. Recommend 1-16 innodb_buffer_pool_instances, such that each one is no smaller than 1GB. (Sorry, no metric on how much this will help; probably not a lot.)</p>
 
-<p>Meanwhile, set key_buffer_size = 20M (tiny, but non-zero) </p>
+<p>Meanwhile, set key_buffer_size = 20M (tiny, but non-zero)</p>
 
-<p>InnoDB does all its caching in a the “buffer pool”, whose size is controlled by innodb_buffer_pool_size. It contains 16KB data and index blocks from the open tables, plus some maintenance overhead. </p>
+<p>InnoDB does all its caching in a the “buffer pool”, whose size is controlled by innodb_buffer_pool_size. It contains 16KB data and index blocks from the open tables, plus some maintenance overhead.</p>
 
 <p>MySQL 5.5 (and 5.1 with the “Plugin”) lets you declare the block size to be 8KB or 4KB. MySQL 5.5 allows multiple buffer pools; this can help because there is one mutex per pool, thereby relieving some of the Mutex bottleneck.</p>
 
@@ -186,35 +184,35 @@
 
 <p>You can run the following SQL to get the sizes of the data used by your engines:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">SELECT  ENGINE,
-    ROUND<span class="o">(</span>SUM<span class="o">(</span>data_length<span class="o">)</span> /1024/1024, 1<span class="o">)</span> AS <span class="s2">&quot;Data MB&quot;</span>,
-    ROUND<span class="o">(</span>SUM<span class="o">(</span>index_length<span class="o">)</span>/1024/1024, 1<span class="o">)</span> AS <span class="s2">&quot;Index MB&quot;</span>,
-    ROUND<span class="o">(</span>SUM<span class="o">(</span>data_length + index_length<span class="o">)</span>/1024/1024, 1<span class="o">)</span> AS <span class="s2">&quot;Total MB&quot;</span>,
-    COUNT<span class="o">(</span>*<span class="o">)</span> <span class="s2">&quot;Num Tables&quot;</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">SELECT  ENGINE,
+    ROUND<span class="o">(</span>SUM<span class="o">(</span>data_length<span class="o">)</span> /1024/1024, 1<span class="o">)</span> AS <span class="s2">"Data MB"</span>,
+    ROUND<span class="o">(</span>SUM<span class="o">(</span>index_length<span class="o">)</span>/1024/1024, 1<span class="o">)</span> AS <span class="s2">"Index MB"</span>,
+    ROUND<span class="o">(</span>SUM<span class="o">(</span>data_length + index_length<span class="o">)</span>/1024/1024, 1<span class="o">)</span> AS <span class="s2">"Total MB"</span>,
+    COUNT<span class="o">(</span><span class="k">*</span><span class="o">)</span> <span class="s2">"Num Tables"</span>
 FROM  INFORMATION_SCHEMA.TABLES
-WHERE  table_schema not in <span class="o">(</span><span class="s2">&quot;information_schema&quot;</span>, <span class="s2">&quot;performance_schema&quot;</span><span class="o">)</span>
-GROUP BY  ENGINE<span class="p">;</span></code></pre></div>
+WHERE  table_schema not <span class="k">in</span> <span class="o">(</span><span class="s2">"information_schema"</span>, <span class="s2">"performance_schema"</span><span class="o">)</span>
+GROUP BY  ENGINE;</code></pre></figure>
 
 <h4 id="myisam-keybuffers">myisam key_buffers</h4>
 
-<p>If using just MyISAM, set key_buffer_size to 20% of <em>available</em> RAM. (Plus innodb_buffer_pool_size=0) </p>
+<p>If using just MyISAM, set key_buffer_size to 20% of <em>available</em> RAM. (Plus innodb_buffer_pool_size=0)</p>
 
-<p>MyISAM does two different things for caching. </p>
+<p>MyISAM does two different things for caching.</p>
 
 <ul>
   <li>Index blocks (1KB each, BTree structured, from .MYI file) live in the “key buffer”.</li>
   <li>Data block caching (from .MYD file) is left to the OS, so be sure to leave a bunch of free space for this.</li>
 </ul>
 
-<p>To check the health of your key_buffers run the following: </p>
+<p>To check the health of your key_buffers run the following:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">SHOW GLOBAL STATUS LIKE <span class="s1">&#39;Key%&#39;</span><span class="p">;</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">SHOW GLOBAL STATUS LIKE <span class="s1">'Key%'</span>;</code></pre></figure>
 
 <p>Now, calculate Key_read_requests / Key_reads If it is high (say, over 10), then the key_buffer is big enough. You can also add up Index_length for all the MyISAM tables. Set key_buffer_size no larger than that size. Use the SQL in the InnoDB section above to select the index_length for your MyISAM tables.</p>
 
 <h4 id="mutex-bottleneck">mutex bottleneck</h4>
 
-<p>MySQL was designed in the days of single-CPU machines, and designed to be easily ported to many different architectures. Unfortunately, that lead to some sloppiness in how to interlock actions. There are small number (too small) of “mutexes” to gain access to several critical processes. Of note: </p>
+<p>MySQL was designed in the days of single-CPU machines, and designed to be easily ported to many different architectures. Unfortunately, that lead to some sloppiness in how to interlock actions. There are small number (too small) of “mutexes” to gain access to several critical processes. Of note:</p>
 
 <ul>
   <li>MyISAM’s key_buffer</li>
@@ -222,21 +220,21 @@ GROUP BY  ENGINE<span class="p">;</span></code></pre></div>
   <li>InnoDB’s buffer_pool</li>
 </ul>
 
-<p>With multi-core boxes, the mutex problem is causing performance problems. In general, past 4-8 cores, MySQL gets slower, not faster. MySQL 5.5 and Percona’s XtraDB are making that somewhat better in InnoDB; the practical limit for cores is more like 32, and performance tends plateaus after that rather than declining. 5.6 claims to scale up to about 48 cores. </p>
+<p>With multi-core boxes, the mutex problem is causing performance problems. In general, past 4-8 cores, MySQL gets slower, not faster. MySQL 5.5 and Percona’s XtraDB are making that somewhat better in InnoDB; the practical limit for cores is more like 32, and performance tends plateaus after that rather than declining. 5.6 claims to scale up to about 48 cores.</p>
 
 <h4 id="hyperthreading-and-multiple-cores">hyperthreading and multiple cores</h4>
 
-<p>HyperThreading is great for marketing, lousy for performance. It involves having two processing units sharing a single hardware cache. If both units are doing the same thing, the cache will be reasonably useful. If the units are doing different things, they will be clobbering each other’s cache entries. </p>
+<p>HyperThreading is great for marketing, lousy for performance. It involves having two processing units sharing a single hardware cache. If both units are doing the same thing, the cache will be reasonably useful. If the units are doing different things, they will be clobbering each other’s cache entries.</p>
 
-<p>Furthermore MySQL is not great on using multiple cores. So, if you turn off HT, the remaining cores run a little faster. </p>
+<p>Furthermore MySQL is not great on using multiple cores. So, if you turn off HT, the remaining cores run a little faster.</p>
 
 <h4 id="open-files">open files</h4>
 
-<p>The OS has some limit on the number of open files it will let a process have. Each table needs 1 to 3 open files. Each PARTITION is effectively a table. Most operations on a partitioned table open <em>all</em> partitions. </p>
+<p>The OS has some limit on the number of open files it will let a process have. Each table needs 1 to 3 open files. Each PARTITION is effectively a table. Most operations on a partitioned table open <em>all</em> partitions.</p>
 
-<p>In *nix, ulimit tells you what the file limit is. The maximum value is in the tens of thousands, but sometimes it is set to only 1024. This limits you to about 300 tables. </p>
+<p>In *nix, ulimit tells you what the file limit is. The maximum value is in the tens of thousands, but sometimes it is set to only 1024. This limits you to about 300 tables.</p>
 
-<p>You can see how well your system is performing via SHOW GLOBAL STATUS; and computing the opens/second via Opened_files / Uptime If this is more than, say, 5, table_cache should be increased. If it is less than, say, 1, you might get improvement by decreasing table_cache. </p>
+<p>You can see how well your system is performing via SHOW GLOBAL STATUS; and computing the opens/second via Opened_files / Uptime If this is more than, say, 5, table_cache should be increased. If it is less than, say, 1, you might get improvement by decreasing table_cache.</p>
 
 <h4 id="query-cache">query cache</h4>
 
@@ -244,11 +242,11 @@ GROUP BY  ENGINE<span class="p">;</span></code></pre></div>
 
 <p>To turn off query_cache you can set the following in your mysql.conf file.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">query_cache_type</span> <span class="o">=</span> OFF
-<span class="nv">query_cache_size</span> <span class="o">=</span> 0</code></pre></div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">query_cache_type <span class="o">=</span> OFF
+query_cache_size <span class="o">=</span> 0</code></pre></figure>
 
 <p>To see how well your QC is performing, SHOW GLOBAL STATUS LIKE ‘Qc%’; then compute the read hit rate: Qcache_hits / Qcache_inserts If it is over, say, 5, the QC might be worth keeping. 
-If you decide the QC is right for you, then I recommend </p>
+If you decide the QC is right for you, then I recommend</p>
 
 <ul>
   <li>query_cache_size = no more than 50M</li>
@@ -258,9 +256,9 @@ If you decide the QC is right for you, then I recommend </p>
 
 <h4 id="threadcachesize">thread_cache_size</h4>
 
-<p>This is a minor tunable. Zero will slow down thread (connection) creation. A small (say, 10), non-zero number is good. The setting has essentially no impact on RAM usage. </p>
+<p>This is a minor tunable. Zero will slow down thread (connection) creation. A small (say, 10), non-zero number is good. The setting has essentially no impact on RAM usage.</p>
 
-<p>It is the number of extra processes to hang onto. It does not restrict the number of threads; max_connections does. </p>
+<p>It is the number of extra processes to hang onto. It does not restrict the number of threads; max_connections does.</p>
 
 <h4 id="binary-logs">binary Logs</h4>
 
@@ -268,13 +266,13 @@ If you decide the QC is right for you, then I recommend </p>
 
 <h4 id="swappiness">swappiness</h4>
 
-<p>MySQL would love for RAM allocations to be reasonably stable – the caches are (mostly) pre-allocated; the threads, etc, are (mostly) of limited scope. <strong>ANY</strong> swapping is likely to severely hurt performance of MySQL. </p>
+<p>MySQL would love for RAM allocations to be reasonably stable – the caches are (mostly) pre-allocated; the threads, etc, are (mostly) of limited scope. <strong>ANY</strong> swapping is likely to severely hurt performance of MySQL.</p>
 
-<p>With a high value for swappiness, you lose some RAM because the OS is trying to keep a lot of space free for future allocations (that MySQL is not likely to need). </p>
+<p>With a high value for swappiness, you lose some RAM because the OS is trying to keep a lot of space free for future allocations (that MySQL is not likely to need).</p>
 
-<p>With swappiness = 0, the OS will probably crash rather than swap. I would rather have MySQL limping than die. </p>
+<p>With swappiness = 0, the OS will probably crash rather than swap. I would rather have MySQL limping than die.</p>
 
-<p>Somewhere in between, 5, is a good value for a MySQL-only server. </p>
+<p>Somewhere in between, 5, is a good value for a MySQL-only server.</p>
 
 <h4 id="tools">tools</h4>
 
