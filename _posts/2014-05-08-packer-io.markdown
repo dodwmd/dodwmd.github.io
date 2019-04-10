@@ -144,7 +144,7 @@ root@earth:~#
  
 ### conclusion
 
-Packer gives us a method to consistently create base AMI's that can be further configured with tools like Puppet. Packer ensures that these AMI's are documented with code so that at later dates we can upgrade instances and know exactly how they were created. By using custom-built AMI's your able to speed up the time it takes ASG to boot new instances.
+Packer gives us a method to consistently create base AMI's that can be further configured with tools like Puppet. Packer ensures that these AMI's are documented with code so that at later dates we can upgrade instances and know exactly how they were created. By using custom-built AMI's you're able to speed up the time it takes ASG to boot new instances.
 
 ## further reading
 <a href="http://www.packer.io/docs" title="packer.io docs" target="_blank">http://www.packer.io/docs</a>
