@@ -169,14 +169,14 @@
 <span class="nv">EC2_MIN</span><span class="o">=</span><span class="s2">"2"</span>
 <span class="nv">EC2_MAX</span><span class="o">=</span><span class="s2">"10"</span>
 <span class="nv">EC2_TYPE</span><span class="o">=</span><span class="s2">"t1.micro"</span>
-<span class="nb">echo</span> -n <span class="s2">"Checking if group already exists.."</span>
-<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="sb">`</span>as-describe-auto-scaling-groups | grep <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="o">]</span>; <span class="k">then
+<span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">"Checking if group already exists.."</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="sb">`</span>as-describe-auto-scaling-groups | <span class="nb">grep</span> <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
   </span><span class="nb">echo</span> <span class="s2">"exists"</span>
-  as-delete-auto-scaling-group --force-delete --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
+  as-delete-auto-scaling-group <span class="nt">--force-delete</span> <span class="nt">--auto-scaling-group</span> <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
   <span class="nb">echo</span> <span class="s2">""</span>
   <span class="nb">printf</span> <span class="s2">"Waiting until Amazon actually removes group |"</span>
   <span class="nv">rotate</span><span class="o">=</span><span class="s1">'|/-\'</span>
-  <span class="k">while</span> <span class="o">[</span> <span class="s2">"</span><span class="sb">`</span>as-describe-auto-scaling-groups | grep <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="o">]</span>; <span class="k">do
+  <span class="k">while</span> <span class="o">[</span> <span class="s2">"</span><span class="sb">`</span>as-describe-auto-scaling-groups | <span class="nb">grep</span> <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">do
     </span><span class="nv">rotate</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">rotate</span><span class="p">#?</span><span class="k">}${</span><span class="nv">rotate</span><span class="p">%???</span><span class="k">}</span><span class="s2">"</span>
     <span class="nb">printf</span> <span class="s1">'\b%.1s'</span> <span class="s2">"</span><span class="nv">$rotate</span><span class="s2">"</span>
   <span class="k">done
@@ -184,14 +184,14 @@
 </span><span class="k">else
   </span><span class="nb">echo</span> <span class="s2">"none"</span>
 <span class="k">fi
-</span><span class="nb">echo</span> -n <span class="s2">"Checking if launch config already exists.."</span>
-<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="sb">`</span>as-describe-launch-configs | grep <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="o">]</span>; <span class="k">then
+</span><span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">"Checking if launch config already exists.."</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="sb">`</span>as-describe-launch-configs | <span class="nb">grep</span> <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
   </span><span class="nb">echo</span> <span class="s2">"yes"</span>
-  as-delete-launch-config --force --launch-config <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span>
+  as-delete-launch-config <span class="nt">--force</span> <span class="nt">--launch-config</span> <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span>
   <span class="nb">echo</span> <span class="s2">""</span>
   <span class="nb">printf</span> <span class="s2">"Waiting until Amazon actually removes config |"</span>
   <span class="nv">rotate</span><span class="o">=</span><span class="s1">'|/-\'</span>
-  <span class="k">while</span> <span class="o">[</span> <span class="s2">"</span><span class="sb">`</span>as-describe-launch-configs | grep <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="o">]</span>; <span class="k">do
+  <span class="k">while</span> <span class="o">[</span> <span class="s2">"</span><span class="sb">`</span>as-describe-launch-configs | <span class="nb">grep</span> <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">do
     </span><span class="nv">rotate</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">rotate</span><span class="p">#?</span><span class="k">}${</span><span class="nv">rotate</span><span class="p">%???</span><span class="k">}</span><span class="s2">"</span>
     <span class="nb">printf</span> <span class="s1">'\b%.1s'</span> <span class="s2">"</span><span class="nv">$rotate</span><span class="s2">"</span>
   <span class="k">done
@@ -199,55 +199,55 @@
 </span><span class="k">else
   </span><span class="nb">echo</span> <span class="s2">"nope"</span>
 <span class="k">fi
-</span>as-create-launch-config <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> --image-id <span class="k">${</span><span class="nv">EC2_AMI</span><span class="k">}</span> --instance-type <span class="k">${</span><span class="nv">EC2_TYPE</span><span class="k">}</span> --monitoring-enabled --key root --group <span class="k">${</span><span class="nv">EC2_SECURITYGROUPS</span><span class="k">}</span> --user-data-file <span class="k">${</span><span class="nv">EC2_USERDATA</span><span class="k">}</span>
-as-create-auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span> --launch-configuration <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> --min-size <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span> --max-size <span class="k">${</span><span class="nv">EC2_MAX</span><span class="k">}</span> --load-balancers <span class="k">${</span><span class="nv">EC2_LB</span><span class="k">}</span> --desired-capacity <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span>
-mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-add <span class="se">\</span>
-  --alarm-actions <span class="s2">"</span><span class="sb">`</span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-add --type ChangeInCapacity --adjustment 1 --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="se">\</span>
-  --comparison-operator GreaterThanThreshold <span class="se">\</span>
-  --dimensions <span class="s2">"AutoScalingGroupName=</span><span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="s2">"</span> <span class="se">\</span>
-  --evaluation-periods 3 <span class="se">\</span>
-  --metric-name CPUUtilization <span class="se">\</span>
-  --namespace <span class="s2">"AWS/EC2"</span> <span class="se">\</span>
-  --period 60 <span class="se">\</span>
-  --statistic Average <span class="se">\</span>
-  --threshold 90 <span class="se">\</span>
-  --unit Percent
-mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-del <span class="se">\</span>
-  --alarm-actions <span class="s2">"</span><span class="sb">`</span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-del --type ChangeInCapacity --adjustment<span class="o">=</span><span class="s1">'-1'</span> --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="se">\</span>
-  --comparison-operator LessThanThreshold <span class="se">\</span>
-  --dimensions <span class="s2">"AutoScalingGroupName=</span><span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="s2">"</span> <span class="se">\</span>
-  --evaluation-periods 10 <span class="se">\</span>
-  --metric-name CPUUtilization <span class="se">\</span>
-  --namespace <span class="s2">"AWS/EC2"</span> <span class="se">\</span>
-  --period 60 <span class="se">\</span>
-  --statistic Average <span class="se">\</span>
-  --threshold 30 <span class="se">\</span>
-  --unit Percent <span class="se">\</span></code></pre></figure>
+</span>as-create-launch-config <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> <span class="nt">--image-id</span> <span class="k">${</span><span class="nv">EC2_AMI</span><span class="k">}</span> <span class="nt">--instance-type</span> <span class="k">${</span><span class="nv">EC2_TYPE</span><span class="k">}</span> <span class="nt">--monitoring-enabled</span> <span class="nt">--key</span> root <span class="nt">--group</span> <span class="k">${</span><span class="nv">EC2_SECURITYGROUPS</span><span class="k">}</span> <span class="nt">--user-data-file</span> <span class="k">${</span><span class="nv">EC2_USERDATA</span><span class="k">}</span>
+as-create-auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span> <span class="nt">--launch-configuration</span> <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> <span class="nt">--min-size</span> <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span> <span class="nt">--max-size</span> <span class="k">${</span><span class="nv">EC2_MAX</span><span class="k">}</span> <span class="nt">--load-balancers</span> <span class="k">${</span><span class="nv">EC2_LB</span><span class="k">}</span> <span class="nt">--desired-capacity</span> <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span>
+mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="nt">-add</span> <span class="se">\</span>
+  <span class="nt">--alarm-actions</span> <span class="s2">"</span><span class="sb">`</span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="nt">-add</span> <span class="nt">--type</span> ChangeInCapacity <span class="nt">--adjustment</span> 1 <span class="nt">--auto-scaling-group</span> <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="se">\</span>
+  <span class="nt">--comparison-operator</span> GreaterThanThreshold <span class="se">\</span>
+  <span class="nt">--dimensions</span> <span class="s2">"AutoScalingGroupName=</span><span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="s2">"</span> <span class="se">\</span>
+  <span class="nt">--evaluation-periods</span> 3 <span class="se">\</span>
+  <span class="nt">--metric-name</span> CPUUtilization <span class="se">\</span>
+  <span class="nt">--namespace</span> <span class="s2">"AWS/EC2"</span> <span class="se">\</span>
+  <span class="nt">--period</span> 60 <span class="se">\</span>
+  <span class="nt">--statistic</span> Average <span class="se">\</span>
+  <span class="nt">--threshold</span> 90 <span class="se">\</span>
+  <span class="nt">--unit</span> Percent
+mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="nt">-del</span> <span class="se">\</span>
+  <span class="nt">--alarm-actions</span> <span class="s2">"</span><span class="sb">`</span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="nt">-del</span> <span class="nt">--type</span> ChangeInCapacity <span class="nt">--adjustment</span><span class="o">=</span><span class="s1">'-1'</span> <span class="nt">--auto-scaling-group</span> <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="sb">`</span><span class="s2">"</span> <span class="se">\</span>
+  <span class="nt">--comparison-operator</span> LessThanThreshold <span class="se">\</span>
+  <span class="nt">--dimensions</span> <span class="s2">"AutoScalingGroupName=</span><span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="s2">"</span> <span class="se">\</span>
+  <span class="nt">--evaluation-periods</span> 10 <span class="se">\</span>
+  <span class="nt">--metric-name</span> CPUUtilization <span class="se">\</span>
+  <span class="nt">--namespace</span> <span class="s2">"AWS/EC2"</span> <span class="se">\</span>
+  <span class="nt">--period</span> 60 <span class="se">\</span>
+  <span class="nt">--statistic</span> Average <span class="se">\</span>
+  <span class="nt">--threshold</span> 30 <span class="se">\</span>
+  <span class="nt">--unit</span> Percent <span class="se">\</span></code></pre></figure>
 
 <p>A copy of the user-data-file.txt file is as follows:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
 <span class="nv">INSTANCE_TYPE</span><span class="o">=</span>something
 <span class="nv">DOMAIN</span><span class="o">=</span>dodwell.us
-<span class="nv">INSTANCE_ID</span><span class="o">=</span><span class="sb">`</span>/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id | cut -d- -f2<span class="sb">`</span>
+<span class="nv">INSTANCE_ID</span><span class="o">=</span><span class="sb">`</span>/usr/bin/curl <span class="nt">-s</span> http://169.254.169.254/latest/meta-data/instance-id | <span class="nb">cut</span> <span class="nt">-d-</span> <span class="nt">-f2</span><span class="sb">`</span>
 <span class="nv">HOSTNAME</span><span class="o">=</span><span class="nv">$INSTANCE_TYPE</span>-<span class="nv">$INSTANCE_ID</span>
 <span class="c">#set also the hostname to the running instance</span>
-hostname <span class="nv">$HOSTNAME</span>.ec2-int.<span class="nv">$DOMAIN</span>
+<span class="nb">hostname</span> <span class="nv">$HOSTNAME</span>.ec2-int.<span class="nv">$DOMAIN</span>
 <span class="nb">export </span><span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
 <span class="c"># Set APT to fetch packages from a apt-cacher-np install</span>
-<span class="nb">echo</span> <span class="s1">'Acquire::http::Proxy "http://puppet.ec2-int.dodwell.us:3142";'</span> &gt; /etc/apt/apt.conf
-aptitude -y install puppet
+<span class="nb">echo</span> <span class="s1">'Acquire::http::Proxy "http://puppet.ec2-int.dodwell.us:3142";'</span> <span class="o">&gt;</span> /etc/apt/apt.conf
+aptitude <span class="nt">-y</span> <span class="nb">install </span>puppet
 <span class="nb">echo</span> <span class="s2">"
 [agent]
 server = puppet.dodwell.us
 certname = puppet.ec2-int.dodwell.us
-"</span> &gt;&gt; /etc/puppet/puppet.conf
-/usr/bin/puppet agent -t --pluginsync <span class="nb">true
-</span>sleep 10
-/usr/bin/puppet agent -t --pluginsync <span class="nb">true
-</span>sleep 10
-/usr/bin/puppet agent -t --pluginsync <span class="nb">true
-</span>sleep 10
+"</span> <span class="o">&gt;&gt;</span> /etc/puppet/puppet.conf
+/usr/bin/puppet agent <span class="nt">-t</span> <span class="nt">--pluginsync</span> <span class="nb">true
+sleep </span>10
+/usr/bin/puppet agent <span class="nt">-t</span> <span class="nt">--pluginsync</span> <span class="nb">true
+sleep </span>10
+/usr/bin/puppet agent <span class="nt">-t</span> <span class="nt">--pluginsync</span> <span class="nb">true
+sleep </span>10
 reboot</code></pre></figure>
 
 <h4 id="overview">overview</h4>
@@ -266,7 +266,7 @@ reboot</code></pre></figure>
   <li>a security group to deploy the instances into</li>
 </ul>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>as-create-launch-config <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> --image-id <span class="k">${</span><span class="nv">EC2_AMI</span><span class="k">}</span> --instance-type <span class="k">${</span><span class="nv">EC2_TYPE</span><span class="k">}</span> --monitoring-enabled --key root --group <span class="k">${</span><span class="nv">EC2_SECURITYGROUPS</span><span class="k">}</span> --user-data-file <span class="k">${</span><span class="nv">EC2_USERDATA</span><span class="k">}</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-create-launch-config <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> <span class="nt">--image-id</span> <span class="k">${</span><span class="nv">EC2_AMI</span><span class="k">}</span> <span class="nt">--instance-type</span> <span class="k">${</span><span class="nv">EC2_TYPE</span><span class="k">}</span> <span class="nt">--monitoring-enabled</span> <span class="nt">--key</span> root <span class="nt">--group</span> <span class="k">${</span><span class="nv">EC2_SECURITYGROUPS</span><span class="k">}</span> <span class="nt">--user-data-file</span> <span class="k">${</span><span class="nv">EC2_USERDATA</span><span class="k">}</span>
 OK-Created launch config.</code></pre></figure>
 
 <p>The API replies with: “OK-Created launch config.” Please refer to the below ‘Puppet’ section for more detail on the user-data-file.</p>
@@ -275,8 +275,8 @@ OK-Created launch config.</code></pre></figure>
 
 <p>Use the as-create-auto-scaling-group command to define the properties for your group of servers. Auto scaling groups are the core component of an auto-scaling configuration. This command takes the launch_config_name you defined from the step before as a parameter, the name of the ELB you want to use, and most importantly, lets you define the minimum and maximum number of servers you want to have in your cluster. In the example below, we define a group with a minimum of 2 servers and a maximum of 10.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>as-create-auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span> --availability-zones <span class="k">${</span><span class="nv">REGION</span><span class="k">}</span>b,<span class="k">${</span><span class="nv">REGION</span><span class="k">}</span>a --launch-configuration <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> <span class="se">\</span>
---min-size <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span> --max-size <span class="k">${</span><span class="nv">EC2_MAX</span><span class="k">}</span> --load-balancers <span class="k">${</span><span class="nv">EC2_LB</span><span class="k">}</span> --desired-capacity <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-create-auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span> <span class="nt">--availability-zones</span> <span class="k">${</span><span class="nv">REGION</span><span class="k">}</span>b,<span class="k">${</span><span class="nv">REGION</span><span class="k">}</span>a <span class="nt">--launch-configuration</span> <span class="k">${</span><span class="nv">LAUNCH_GROUP</span><span class="k">}</span> <span class="se">\</span>
+<span class="nt">--min-size</span> <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span> <span class="nt">--max-size</span> <span class="k">${</span><span class="nv">EC2_MAX</span><span class="k">}</span> <span class="nt">--load-balancers</span> <span class="k">${</span><span class="nv">EC2_LB</span><span class="k">}</span> <span class="nt">--desired-capacity</span> <span class="k">${</span><span class="nv">EC2_MIN</span><span class="k">}</span>
 OK-Created ASG.</code></pre></figure>
 
 <h3 id="auto-scaling-policies">auto scaling policies</h3>
@@ -287,12 +287,12 @@ OK-Created ASG.</code></pre></figure>
 
 <p>The as-put-scaling-policy command takes the auto scaling group name we defined in step 1, a name for the policy, such a “scale-up” or “scale-down,” the type of scaling change the policy defines, and a cool down period. Again, the cool down period is used to prevent AWS from executing multiple policies within a very short time.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-add --type ChangeInCapacity --adjustment 1 --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="nt">-add</span> <span class="nt">--type</span> ChangeInCapacity <span class="nt">--adjustment</span> 1 <span class="nt">--auto-scaling-group</span> <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
 arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-add</code></pre></figure>
 
 <p>Above you can see the basic upscale policy we defined, named “rabbitmq-asg-add,” a ChangeInCapacity policy to add 1 server and wait 3 minutes before another policy can be triggered. Below is the reverse operation, or a “rabbitmq-asg-del” policy to remove 1 server from our group.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-del --type ChangeInCapacity --adjustment<span class="o">=</span><span class="s1">'-1'</span> --auto-scaling-group <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>as-put-scaling-policy <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="nt">-del</span> <span class="nt">--type</span> ChangeInCapacity <span class="nt">--adjustment</span><span class="o">=</span><span class="s1">'-1'</span> <span class="nt">--auto-scaling-group</span> <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>
 arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-del</code></pre></figure>
 
 <p>In both cases, AWS replies with a return message including the unique auto-generated name of our two new auto scaling policies. We’ll use those unique policy identifiers to connect to our CloudWatch events in the final step.</p>
@@ -318,34 +318,34 @@ arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff
 
 <p>As you can see, there’s a lot to this command, but once we look at every parameter, you can see that without each of them, you wouldn’t have the ability to control auto scaling changes with enough granularity. The name and description are shown back to you later when using the mon-describe-alarmscommand. The statistics you’re watching, and the thresholds and time intervals, are important to test for your particular application. For example, we chose to monitor average CPU utilization for a period of 60 seconds, and an evaluation period of 3 intervals (or 3 minutes), for an event of 80% or greater level. Here’s the command to achieve this.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-add <span class="se">\</span>
-  --alarm-actions <span class="s2">"arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-add"</span> <span class="se">\</span>
-  --comparison-operator GreaterThanThreshold <span class="se">\</span>
-  --dimensions <span class="s2">"AutoScalingGroupName=</span><span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="s2">"</span> <span class="se">\</span>
-  --evaluation-periods 3 <span class="se">\</span>
-  --metric-name CPUUtilization <span class="se">\</span>
-  --namespace <span class="s2">"AWS/EC2"</span> <span class="se">\</span>
-  --period 60 <span class="se">\</span>
-  --statistic Average <span class="se">\</span>
-  --threshold 90 <span class="se">\</span>
-  --unit Percent <span class="se">\</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="nt">-add</span> <span class="se">\</span>
+  <span class="nt">--alarm-actions</span> <span class="s2">"arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-add"</span> <span class="se">\</span>
+  <span class="nt">--comparison-operator</span> GreaterThanThreshold <span class="se">\</span>
+  <span class="nt">--dimensions</span> <span class="s2">"AutoScalingGroupName=</span><span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="s2">"</span> <span class="se">\</span>
+  <span class="nt">--evaluation-periods</span> 3 <span class="se">\</span>
+  <span class="nt">--metric-name</span> CPUUtilization <span class="se">\</span>
+  <span class="nt">--namespace</span> <span class="s2">"AWS/EC2"</span> <span class="se">\</span>
+  <span class="nt">--period</span> 60 <span class="se">\</span>
+  <span class="nt">--statistic</span> Average <span class="se">\</span>
+  <span class="nt">--threshold</span> 90 <span class="se">\</span>
+  <span class="nt">--unit</span> Percent <span class="se">\</span>
 OK-Created Alarm</code></pre></figure>
 
 <p>In English, the above command says, “If the average CPU utilization of instances in the ASG group ‘rabbitmq-asg’ is measured at 80% or greater 3 times over 3 minutes, then trigger our scale-up policy.</p>
 
 <p>Here is the reverse mon-put-metric-alarm command we used to terminate one of the servers if the CPU utilization drops below an average of 20% over 3 minutes.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span>-del <span class="se">\</span>
-  --alarm-actions <span class="s2">"arn:aws:autoscaling:ap-southeast-2:947682202348:scalingPolicy:1a31d3d1-b180-4fcb-b288-bb43e651056d:autoScalingGroupName/rabbitmq-asg:policyName/rabbitmq-asg-del"</span> <span class="se">\</span>
-  --comparison-operator LessThanThreshold <span class="se">\</span>
-  --dimensions <span class="s2">"AutoScalingGroupName=</span><span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="s2">"</span> <span class="se">\</span>
-  --evaluation-periods 3 <span class="se">\</span>
-  --metric-name CPUUtilization <span class="se">\</span>
-  --namespace <span class="s2">"AWS/EC2"</span> <span class="se">\</span>
-  --period 60 <span class="se">\</span>
-  --statistic Average <span class="se">\</span>
-  --threshold 30 <span class="se">\</span>
-  --unit Percent
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>mon-put-metric-alarm <span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="nt">-del</span> <span class="se">\</span>
+  <span class="nt">--alarm-actions</span> <span class="s2">"arn:aws:autoscaling:ap-southeast-2:947682202348:scalingPolicy:1a31d3d1-b180-4fcb-b288-bb43e651056d:autoScalingGroupName/rabbitmq-asg:policyName/rabbitmq-asg-del"</span> <span class="se">\</span>
+  <span class="nt">--comparison-operator</span> LessThanThreshold <span class="se">\</span>
+  <span class="nt">--dimensions</span> <span class="s2">"AutoScalingGroupName=</span><span class="k">${</span><span class="nv">ASG_GROUP</span><span class="k">}</span><span class="s2">"</span> <span class="se">\</span>
+  <span class="nt">--evaluation-periods</span> 3 <span class="se">\</span>
+  <span class="nt">--metric-name</span> CPUUtilization <span class="se">\</span>
+  <span class="nt">--namespace</span> <span class="s2">"AWS/EC2"</span> <span class="se">\</span>
+  <span class="nt">--period</span> 60 <span class="se">\</span>
+  <span class="nt">--statistic</span> Average <span class="se">\</span>
+  <span class="nt">--threshold</span> 30 <span class="se">\</span>
+  <span class="nt">--unit</span> Percent
 OK-Created Alarm</code></pre></figure>
 
 <p>In the above script example we nest the ‘mon-put-metric-alarm’ and ‘as-put-scaling-policy’ commands to simplify running the scripts. However this is pulled apart in this documentation to explain better.</p>
@@ -432,7 +432,7 @@ OK-Created Alarm</code></pre></figure>
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

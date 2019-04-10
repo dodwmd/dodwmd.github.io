@@ -198,8 +198,8 @@ The best-known application of the protocol is for access to shell accounts on Un
 
 <p>We should also regenerate our moduli file via:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ssh-keygen -G <span class="s2">"</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span><span class="s2">/moduli"</span> -b 4096
-ssh-keygen -T /etc/ssh/moduli -f <span class="s2">"</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span><span class="s2">/moduli"</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ssh-keygen <span class="nt">-G</span> <span class="s2">"</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span><span class="s2">/moduli"</span> <span class="nt">-b</span> 4096
+ssh-keygen <span class="nt">-T</span> /etc/ssh/moduli <span class="nt">-f</span> <span class="s2">"</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span><span class="s2">/moduli"</span></code></pre></figure>
 
 <h3 id="authentication">authentication</h3>
 
@@ -223,9 +223,9 @@ HostKey /etc/ssh/ssh_host_rsa_key</code></pre></figure>
 <p>You should also now take this oppitunity to regenerate your SSH server keys.</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /etc/ssh
-rm ssh_host_<span class="k">*</span>key<span class="k">*</span>
-ssh-keygen -t ed25519 -f ssh_host_ed25519_key &lt; /dev/null
-ssh-keygen -t rsa -b 4096 -f ssh_host_rsa_key &lt; /dev/null</code></pre></figure>
+<span class="nb">rm </span>ssh_host_<span class="k">*</span>key<span class="k">*</span>
+ssh-keygen <span class="nt">-t</span> ed25519 <span class="nt">-f</span> ssh_host_ed25519_key &lt; /dev/null
+ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-b</span> 4096 <span class="nt">-f</span> ssh_host_rsa_key &lt; /dev/null</code></pre></figure>
 
 <p>The client must prove its identity to the server as well. There are various methods to do that.</p>
 
@@ -246,18 +246,18 @@ ChallengeResponseAuthentication no</code></pre></figure>
 
 <p>Recommended /etc/ssh/sshd_config snippet:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">PubkeyAuthentication yes</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">PubkeyAuthentication <span class="nb">yes</span></code></pre></figure>
 
 <p>Recommended /etc/ssh/ssh_config snippet:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">Host <span class="k">*</span>
-    PubkeyAuthentication yes
-    HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-rsa-cert-v00@openssh.com,ssh-ed25519,ssh-rsa</code></pre></figure>
+    PubkeyAuthentication <span class="nb">yes
+    </span>HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-rsa-cert-v00@openssh.com,ssh-ed25519,ssh-rsa</code></pre></figure>
 
 <p>Generate client keys using the following commands:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ssh-keygen -t ed25519 -o -a 100
-ssh-keygen -t rsa -b 4096 -o -a 100</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ssh-keygen <span class="nt">-t</span> ed25519 <span class="nt">-o</span> <span class="nt">-a</span> 100
+ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-b</span> 4096 <span class="nt">-o</span> <span class="nt">-a</span> 100</code></pre></figure>
 
 
                         <br>
@@ -332,7 +332,7 @@ ssh-keygen -t rsa -b 4096 -o -a 100</code></pre></figure>
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

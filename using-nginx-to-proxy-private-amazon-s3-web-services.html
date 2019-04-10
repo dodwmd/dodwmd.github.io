@@ -153,20 +153,20 @@
 <p>A simple configuration can be used if you want to serve objects that are public:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">location ~<span class="k">*</span> ^/s3/<span class="o">(</span>.<span class="k">*</span><span class="o">)</span> <span class="o">{</span>
-  resolver               172.31.0.2 <span class="nv">valid</span><span class="o">=</span>300s;
-  resolver_timeout       10s;
-  <span class="nb">set</span> <span class="nv">$s3_bucket</span>        <span class="s1">'your_bucket.s3.amazonaws.com'</span>;
-  <span class="nb">set</span> <span class="nv">$url_full</span>         <span class="s1">'$1'</span>;
-  proxy_http_version     1.1;
-  proxy_set_header       Host <span class="nv">$s3_bucket</span>;
-  proxy_set_header       Authorization <span class="s1">''</span>;
-  proxy_hide_header      x-amz-id-2;
-  proxy_hide_header      x-amz-request-id;
-  proxy_hide_header      Set-Cookie;
-  proxy_ignore_headers   <span class="s2">"Set-Cookie"</span>;
-  proxy_buffering        off;
-  proxy_intercept_errors on;
-  proxy_pass             http://<span class="nv">$s3_bucket</span>/<span class="nv">$url_full</span>;
+  resolver               172.31.0.2 <span class="nv">valid</span><span class="o">=</span>300s<span class="p">;</span>
+  resolver_timeout       10s<span class="p">;</span>
+  <span class="nb">set</span> <span class="nv">$s3_bucket</span>        <span class="s1">'your_bucket.s3.amazonaws.com'</span><span class="p">;</span>
+  <span class="nb">set</span> <span class="nv">$url_full</span>         <span class="s1">'$1'</span><span class="p">;</span>
+  proxy_http_version     1.1<span class="p">;</span>
+  proxy_set_header       Host <span class="nv">$s3_bucket</span><span class="p">;</span>
+  proxy_set_header       Authorization <span class="s1">''</span><span class="p">;</span>
+  proxy_hide_header      x-amz-id-2<span class="p">;</span>
+  proxy_hide_header      x-amz-request-id<span class="p">;</span>
+  proxy_hide_header      Set-Cookie<span class="p">;</span>
+  proxy_ignore_headers   <span class="s2">"Set-Cookie"</span><span class="p">;</span>
+  proxy_buffering        off<span class="p">;</span>
+  proxy_intercept_errors on<span class="p">;</span>
+  proxy_pass             http://<span class="nv">$s3_bucket</span>/<span class="nv">$url_full</span><span class="p">;</span>
 <span class="o">}</span></code></pre></figure>
 
 <p>To setup nginx to use a private bucket is a little more work.</p>
@@ -200,67 +200,67 @@ Under the ‘extras_configure_flags’ lets ensure ‘–add-module=$(MODULESDIR
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">....
 extras_configure_flags :<span class="o">=</span> <span class="se">\</span>
                         <span class="k">$(</span>common_configure_flags<span class="k">)</span> <span class="se">\</span>
-                        --with-http_addition_module <span class="se">\</span>
-                        --with-http_dav_module <span class="se">\</span>
-                        --with-http_flv_module <span class="se">\</span>
-                        --with-http_geoip_module <span class="se">\</span>
-                        --with-http_gzip_static_module <span class="se">\</span>
-                        --with-http_image_filter_module <span class="se">\</span>
-                        --with-http_mp4_module <span class="se">\</span>
-                        --with-http_perl_module <span class="se">\</span>
-                        --with-http_random_index_module <span class="se">\</span>
-                        --with-http_secure_link_module <span class="se">\</span>
-                        --with-http_spdy_module <span class="se">\</span>
-                        --with-http_sub_module <span class="se">\</span>
-                        --with-http_xslt_module <span class="se">\</span>
-                        --with-mail <span class="se">\</span>
-                        --with-mail_ssl_module <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-auth-pam <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-cache-purge <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-dav-ext-module <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-echo <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/ngx-fancyindex <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-http-push <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-lua <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-upload-progress <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-upstream-fair <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/ngx_http_substitutions_filter_module <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-development-kit <span class="se">\</span>
-                        --add-module<span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/set-misc-nginx-module
+                        <span class="nt">--with-http_addition_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_dav_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_flv_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_geoip_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_gzip_static_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_image_filter_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_mp4_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_perl_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_random_index_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_secure_link_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_spdy_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_sub_module</span> <span class="se">\</span>
+                        <span class="nt">--with-http_xslt_module</span> <span class="se">\</span>
+                        <span class="nt">--with-mail</span> <span class="se">\</span>
+                        <span class="nt">--with-mail_ssl_module</span> <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-auth-pam <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-cache-purge <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-dav-ext-module <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-echo <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/ngx-fancyindex <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-http-push <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-lua <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-upload-progress <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-upstream-fair <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/ngx_http_substitutions_filter_module <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-development-kit <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/set-misc-nginx-module
 ....</code></pre></figure>
 
 <p>Now lets save this and update the changelog making a local package.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dch --local dodwmd</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dch <span class="nt">--local</span> dodwmd</code></pre></figure>
 
 <p>Edit the changelog in vi and include what has been changed and by whom.
 Now lets repackage.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dpkg-buildpackage -us -uc</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dpkg-buildpackage <span class="nt">-us</span> <span class="nt">-uc</span></code></pre></figure>
 
 <p>We now have .deb packages we can place on our apt repo for our webservers to use.
 Once you’ve copied the packages to your repo and installed the ‘nginx-extras’ package on the webservers you can use the following configuration code snippet in nginx:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">...
   location ~<span class="k">*</span> ^/s3/<span class="o">(</span>.<span class="k">*</span><span class="o">)</span> <span class="o">{</span>
-    <span class="nb">set</span> <span class="nv">$bucket</span>           <span class="s1">'&lt;REPLACE WITH YOUR S3 BUCKET NAME&gt;'</span>;
-    <span class="nb">set</span> <span class="nv">$aws_access</span>       <span class="s1">'&lt;REPLACE WITH YOUR AWS ACCESS KEY&gt;'</span>;
-    <span class="nb">set</span> <span class="nv">$aws_secret</span>       <span class="s1">'&lt;REPLACE WITH YOUR AWS SECRET KEY&gt;'</span>;
-    <span class="nb">set</span> <span class="nv">$url_full</span>         <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>;
-    set_by_lua <span class="nv">$now</span>       <span class="s2">"return ngx.cookie_time(ngx.time())"</span>;
-    <span class="nb">set</span> <span class="nv">$string_to_sign</span>   <span class="s2">"</span><span class="nv">$request_method</span><span class="se">\n\n\n\n</span><span class="s2">x-amz-date:</span><span class="k">${</span><span class="nv">now</span><span class="k">}</span><span class="se">\n</span><span class="s2">/</span><span class="nv">$bucket</span><span class="s2">/</span><span class="nv">$url_full</span><span class="s2">"</span>;
-    set_hmac_sha1          <span class="nv">$aws_signature</span> <span class="nv">$aws_secret</span> <span class="nv">$string_to_sign</span>;
-    set_encode_base64      <span class="nv">$aws_signature</span> <span class="nv">$aws_signature</span>;
-    resolver               172.31.0.2 <span class="nv">valid</span><span class="o">=</span>300s;
-    resolver_timeout       10s;
-    proxy_http_version     1.1;
-    proxy_set_header       Host <span class="nv">$bucket</span>.s3.amazonaws.com;
-    proxy_set_header       x-amz-date <span class="nv">$now</span>;
-    proxy_set_header       Authorization <span class="s2">"AWS </span><span class="nv">$aws_access</span><span class="s2">:</span><span class="nv">$aws_signature</span><span class="s2">"</span>;
-    proxy_buffering        off;
-    proxy_intercept_errors on;
-    rewrite .<span class="k">*</span> /<span class="nv">$url_full</span> <span class="nb">break</span>;
-    proxy_pass             http://s3.amazonaws.com;
+    <span class="nb">set</span> <span class="nv">$bucket</span>           <span class="s1">'&lt;REPLACE WITH YOUR S3 BUCKET NAME&gt;'</span><span class="p">;</span>
+    <span class="nb">set</span> <span class="nv">$aws_access</span>       <span class="s1">'&lt;REPLACE WITH YOUR AWS ACCESS KEY&gt;'</span><span class="p">;</span>
+    <span class="nb">set</span> <span class="nv">$aws_secret</span>       <span class="s1">'&lt;REPLACE WITH YOUR AWS SECRET KEY&gt;'</span><span class="p">;</span>
+    <span class="nb">set</span> <span class="nv">$url_full</span>         <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+    set_by_lua <span class="nv">$now</span>       <span class="s2">"return ngx.cookie_time(ngx.time())"</span><span class="p">;</span>
+    <span class="nb">set</span> <span class="nv">$string_to_sign</span>   <span class="s2">"</span><span class="nv">$request_method</span><span class="se">\n\n\n\n</span><span class="s2">x-amz-date:</span><span class="k">${</span><span class="nv">now</span><span class="k">}</span><span class="se">\n</span><span class="s2">/</span><span class="nv">$bucket</span><span class="s2">/</span><span class="nv">$url_full</span><span class="s2">"</span><span class="p">;</span>
+    set_hmac_sha1          <span class="nv">$aws_signature</span> <span class="nv">$aws_secret</span> <span class="nv">$string_to_sign</span><span class="p">;</span>
+    set_encode_base64      <span class="nv">$aws_signature</span> <span class="nv">$aws_signature</span><span class="p">;</span>
+    resolver               172.31.0.2 <span class="nv">valid</span><span class="o">=</span>300s<span class="p">;</span>
+    resolver_timeout       10s<span class="p">;</span>
+    proxy_http_version     1.1<span class="p">;</span>
+    proxy_set_header       Host <span class="nv">$bucket</span>.s3.amazonaws.com<span class="p">;</span>
+    proxy_set_header       x-amz-date <span class="nv">$now</span><span class="p">;</span>
+    proxy_set_header       Authorization <span class="s2">"AWS </span><span class="nv">$aws_access</span><span class="s2">:</span><span class="nv">$aws_signature</span><span class="s2">"</span><span class="p">;</span>
+    proxy_buffering        off<span class="p">;</span>
+    proxy_intercept_errors on<span class="p">;</span>
+    rewrite .<span class="k">*</span> /<span class="nv">$url_full</span> <span class="nb">break</span><span class="p">;</span>
+    proxy_pass             http://s3.amazonaws.com<span class="p">;</span>
   <span class="o">}</span></code></pre></figure>
 
 <h2 id="further-reading">further reading</h2>
@@ -339,7 +339,7 @@ Once you’ve copied the packages to your repo and installed the ‘nginx-extras
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

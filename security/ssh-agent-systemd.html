@@ -171,23 +171,23 @@
 <span class="o">[</span>Service]
 <span class="nv">Type</span><span class="o">=</span>forking
 <span class="nv">Environment</span><span class="o">=</span><span class="nv">SSH_AUTH_SOCK</span><span class="o">=</span>%t/ssh-agent.socket
-<span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/ssh-agent -a <span class="nv">$SSH_AUTH_SOCK</span>
+<span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/ssh-agent <span class="nt">-a</span> <span class="nv">$SSH_AUTH_SOCK</span>
 
 <span class="o">[</span>Install]
 <span class="nv">WantedBy</span><span class="o">=</span>default.target</code></pre></figure>
 
 <p>Setup shell to have an environment variable for the socket (.bash_profile, .zshrc, …):</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">'export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"'</span> &gt;&gt; ~/.bash_profile</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">'export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"'</span> <span class="o">&gt;&gt;</span> ~/.bash_profile</code></pre></figure>
 
 <p>Enable the service, so it’ll be started automatically on login, and start it:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">systemctl --user <span class="nb">enable </span>ssh-agent
-systemctl --user start ssh-agent</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">systemctl <span class="nt">--user</span> <span class="nb">enable </span>ssh-agent
+systemctl <span class="nt">--user</span> start ssh-agent</code></pre></figure>
 
 <p>Add the following configuration setting to your ssh config file ~/.ssh/config (this works since SSH 7.2):</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">'AddKeysToAgent  yes'</span> &gt;&gt; ~/.ssh/config</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">'AddKeysToAgent  yes'</span> <span class="o">&gt;&gt;</span> ~/.ssh/config</code></pre></figure>
 
 <p>This will instruct the ssh client to always add the key to a running agent, so there’s no need to ssh-add it beforehand.</p>
 
@@ -263,7 +263,7 @@ systemctl --user start ssh-agent</code></pre></figure>
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

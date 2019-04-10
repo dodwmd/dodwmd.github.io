@@ -161,9 +161,9 @@
 
 <p>Packer is distributed as a binary package for different OS’s. Our OS is Linux based with a 64-bit CPU.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir ~/bin/packer
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">mkdir</span> ~/bin/packer
 wget https://dl.bintray.com/mitchellh/packer/0.6.0_linux_amd64.zip
-unzip -d ~/bin/packer 0.6.0_linux_amd64.zip
+unzip <span class="nt">-d</span> ~/bin/packer 0.6.0_linux_amd64.zip
 <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:~/bin/packer</code></pre></figure>
 
 <h4 id="using">using</h4>
@@ -202,76 +202,76 @@ unzip -d ~/bin/packer 0.6.0_linux_amd64.zip
 <span class="nb">export </span><span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
 <span class="nb">echo</span> <span class="s1">'Package: *
 Pin: origin "packages.dodwell.us"
-Pin-Priority: 1001'</span> &gt; /etc/apt/preferences.d/dodwell-precise-pin-1001
-<span class="nb">echo</span> <span class="s1">'deb http://apt.puppetlabs.com precise main'</span> &gt; /etc/apt/sources.list.d/puppetlabs.list
-<span class="nb">echo</span> <span class="s1">'deb http://apt.puppetlabs.com precise dependencies'</span> &gt; /etc/apt/sources.list.d/puppetlabs-dependencies.list
-<span class="nb">echo</span> <span class="s1">'deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main'</span> &gt; /etc/apt/sources.list.d/pgdg.list
-<span class="nb">echo</span> <span class="s1">'deb http://apt.dodwell.us precise main'</span> &gt; /etc/apt/sources.list.d/dodwell.list
+Pin-Priority: 1001'</span> <span class="o">&gt;</span> /etc/apt/preferences.d/dodwell-precise-pin-1001
+<span class="nb">echo</span> <span class="s1">'deb http://apt.puppetlabs.com precise main'</span> <span class="o">&gt;</span> /etc/apt/sources.list.d/puppetlabs.list
+<span class="nb">echo</span> <span class="s1">'deb http://apt.puppetlabs.com precise dependencies'</span> <span class="o">&gt;</span> /etc/apt/sources.list.d/puppetlabs-dependencies.list
+<span class="nb">echo</span> <span class="s1">'deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main'</span> <span class="o">&gt;</span> /etc/apt/sources.list.d/pgdg.list
+<span class="nb">echo</span> <span class="s1">'deb http://apt.dodwell.us precise main'</span> <span class="o">&gt;</span> /etc/apt/sources.list.d/dodwell.list
 <span class="c"># puppetlabs</span>
-apt-key adv --keyserver keyserver.ubuntu.com --recv 4BD6EC30
+apt-key adv <span class="nt">--keyserver</span> keyserver.ubuntu.com <span class="nt">--recv</span> 4BD6EC30
 <span class="c"># pgdg</span>
 curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 <span class="c"># dodwell repo</span>
 curl https://packages.dodwell.us/keys/keyfile.asc | apt-key add -
 <span class="c"># Lets not allow services to be started on install</span>
-mkdir /tmp/fake
+<span class="nb">mkdir</span> /tmp/fake
 <span class="k">for </span>COMMANDS <span class="k">in </span>initctl invoke-rc.d restart start stop start-stop-daemon service
 <span class="k">do
-  </span>ln -s /bin/true /tmp/fake/<span class="k">${</span><span class="nv">COMMANDS</span><span class="k">}</span>
+  </span><span class="nb">ln</span> <span class="nt">-s</span> /bin/true /tmp/fake/<span class="k">${</span><span class="nv">COMMANDS</span><span class="k">}</span>
 <span class="k">done
-</span><span class="nv">PATH</span><span class="o">=</span>/tmp/fake:<span class="nv">$PATH</span> aptitude -y update
-<span class="nv">PATH</span><span class="o">=</span>/tmp/fake:<span class="nv">$PATH</span> aptitude -y upgrade
-<span class="nv">PATH</span><span class="o">=</span>/tmp/fake:<span class="nv">$PATH</span> aptitude -y install puppet lsb-release ruby ruby1.9.1 ruby1.9.1-dev ri1.9.1 build-essential libssl-dev zlib1g-dev rubygems fail2ban openjdk-7-jre-headless postgresql-client-9.3 proftpd-basic unzip nginx php5-fpm php5-suhosin
+</span><span class="nv">PATH</span><span class="o">=</span>/tmp/fake:<span class="nv">$PATH</span> aptitude <span class="nt">-y</span> update
+<span class="nv">PATH</span><span class="o">=</span>/tmp/fake:<span class="nv">$PATH</span> aptitude <span class="nt">-y</span> upgrade
+<span class="nv">PATH</span><span class="o">=</span>/tmp/fake:<span class="nv">$PATH</span> aptitude <span class="nt">-y</span> <span class="nb">install </span>puppet lsb-release ruby ruby1.9.1 ruby1.9.1-dev ri1.9.1 build-essential libssl-dev zlib1g-dev rubygems fail2ban openjdk-7-jre-headless postgresql-client-9.3 proftpd-basic unzip nginx php5-fpm php5-suhosin
 <span class="nb">echo</span> <span class="s2">"
 [agent]
 server=puppet.ec2-int.dodwell.us
-"</span> &gt;&gt; /etc/puppet/puppet.conf
-<span class="nb">echo</span> <span class="s2">"/usr/bin/puppet agent -o"</span> &gt;&gt; /etc/rc.local
-/usr/sbin/update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby1.9.1 400 <span class="se">\</span>
-                              --slave /usr/share/man/man1/ruby.1.gz ruby.1.gz /usr/share/man/man1/ruby1.9.1.1.gz <span class="se">\</span>
-                              --slave /usr/bin/ri ri /usr/bin/ri1.9.1 <span class="se">\</span>
-                              --slave /usr/bin/irb irb /usr/bin/irb1.9.1 <span class="se">\</span>
-                              --slave /usr/bin/rdoc rdoc /usr/bin/rdoc1.9.1
-/usr/sbin/update-alternatives --set gem /usr/bin/gem1.9.1</code></pre></figure>
+"</span> <span class="o">&gt;&gt;</span> /etc/puppet/puppet.conf
+<span class="nb">echo</span> <span class="s2">"/usr/bin/puppet agent -o"</span> <span class="o">&gt;&gt;</span> /etc/rc.local
+/usr/sbin/update-alternatives <span class="nt">--install</span> /usr/bin/ruby ruby /usr/bin/ruby1.9.1 400 <span class="se">\</span>
+                              <span class="nt">--slave</span> /usr/share/man/man1/ruby.1.gz ruby.1.gz /usr/share/man/man1/ruby1.9.1.1.gz <span class="se">\</span>
+                              <span class="nt">--slave</span> /usr/bin/ri ri /usr/bin/ri1.9.1 <span class="se">\</span>
+                              <span class="nt">--slave</span> /usr/bin/irb irb /usr/bin/irb1.9.1 <span class="se">\</span>
+                              <span class="nt">--slave</span> /usr/bin/rdoc rdoc /usr/bin/rdoc1.9.1
+/usr/sbin/update-alternatives <span class="nt">--set</span> gem /usr/bin/gem1.9.1</code></pre></figure>
 
 <p>Now that we have these 2 files in our current directory lets build the AMI:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@earth:~# </span>packer build <span class="se">\</span>
-                -var <span class="s1">'aws_access_key=YOUR ACCESS KEY'</span> <span class="se">\</span>
-                -var <span class="s1">'aws_secret_key=YOUR SECRET KEY'</span> <span class="se">\</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# packer build <span class="se">\</span>
+                <span class="nt">-var</span> <span class="s1">'aws_access_key=YOUR ACCESS KEY'</span> <span class="se">\</span>
+                <span class="nt">-var</span> <span class="s1">'aws_secret_key=YOUR SECRET KEY'</span> <span class="se">\</span>
                 web.json
 amazon-ebs output will be <span class="k">in </span>this color.
-<span class="gp">==&gt; </span>amazon-ebs: Creating temporary keypair: packer 536acd17-6080-23b8-5a0e-884d4a05035d
-<span class="gp">==&gt; </span>amazon-ebs: Creating temporary security group <span class="k">for </span>this instance...
-<span class="gp">==&gt; </span>amazon-ebs: Authorizing SSH access on the temporary security group...
-<span class="gp">==&gt; </span>amazon-ebs: Launching a <span class="nb">source </span>AWS instance...
+<span class="o">==&gt;</span> amazon-ebs: Creating temporary keypair: packer 536acd17-6080-23b8-5a0e-884d4a05035d
+<span class="o">==&gt;</span> amazon-ebs: Creating temporary security group <span class="k">for </span>this instance...
+<span class="o">==&gt;</span> amazon-ebs: Authorizing SSH access on the temporary security group...
+<span class="o">==&gt;</span> amazon-ebs: Launching a <span class="nb">source </span>AWS instance...
 amazon-ebs: Instance ID: i-ffffffff
-<span class="gp">==&gt; </span>amazon-ebs: Waiting <span class="k">for </span>instance <span class="o">(</span>i-ffffffff<span class="o">)</span> to become ready...
-<span class="gp">==&gt; </span>amazon-ebs: Waiting <span class="k">for </span>SSH to become available...
-<span class="gp">==&gt; </span>amazon-ebs: Connected to SSH!
-<span class="gp">==&gt; </span>amazon-ebs: Provisioning with shell script: build_web.sh
-amazon-ebs: Executing: gpg --ignore-time-conflict --no-options --no-default-keyring --secret-keyring /tmp/tmp.4SGucrYWX8 --trustdb-name /etc/apt/trustdb.gpg --keyring /etc/apt/trusted.gpg --primary-keyring /etc/apt/trusted.gpg --keyserver keyserver.ubuntu.com --recv 4BD6EC30
+<span class="o">==&gt;</span> amazon-ebs: Waiting <span class="k">for </span>instance <span class="o">(</span>i-ffffffff<span class="o">)</span> to become ready...
+<span class="o">==&gt;</span> amazon-ebs: Waiting <span class="k">for </span>SSH to become available...
+<span class="o">==&gt;</span> amazon-ebs: Connected to SSH!
+<span class="o">==&gt;</span> amazon-ebs: Provisioning with shell script: build_web.sh
+amazon-ebs: Executing: gpg <span class="nt">--ignore-time-conflict</span> <span class="nt">--no-options</span> <span class="nt">--no-default-keyring</span> <span class="nt">--secret-keyring</span> /tmp/tmp.4SGucrYWX8 <span class="nt">--trustdb-name</span> /etc/apt/trustdb.gpg <span class="nt">--keyring</span> /etc/apt/trusted.gpg <span class="nt">--primary-keyring</span> /etc/apt/trusted.gpg <span class="nt">--keyserver</span> keyserver.ubuntu.com <span class="nt">--recv</span> 4BD6EC30
 ...
 ...
 ...
 amazon-ebs: update-alternatives: using /usr/bin/gem1.9.1 to provide /usr/bin/gem <span class="o">(</span>gem<span class="o">)</span> <span class="k">in </span>manual mode.
-<span class="gp">==&gt; </span>amazon-ebs: Stopping the <span class="nb">source </span>instance...
-<span class="gp">==&gt; </span>amazon-ebs: Waiting <span class="k">for </span>the instance to stop...
-<span class="gp">==&gt; </span>amazon-ebs: Creating the AMI: web-ami 1399508247
+<span class="o">==&gt;</span> amazon-ebs: Stopping the <span class="nb">source </span>instance...
+<span class="o">==&gt;</span> amazon-ebs: Waiting <span class="k">for </span>the instance to stop...
+<span class="o">==&gt;</span> amazon-ebs: Creating the AMI: web-ami 1399508247
 amazon-ebs: AMI: ami-XXXXXXXX
-<span class="gp">==&gt; </span>amazon-ebs: Waiting <span class="k">for </span>AMI to become ready...
-<span class="gp">==&gt; </span>amazon-ebs: Terminating the <span class="nb">source </span>AWS instance...
-<span class="gp">==&gt; </span>amazon-ebs: Deleting temporary security group...
-<span class="gp">==&gt; </span>amazon-ebs: Deleting temporary keypair...
+<span class="o">==&gt;</span> amazon-ebs: Waiting <span class="k">for </span>AMI to become ready...
+<span class="o">==&gt;</span> amazon-ebs: Terminating the <span class="nb">source </span>AWS instance...
+<span class="o">==&gt;</span> amazon-ebs: Deleting temporary security group...
+<span class="o">==&gt;</span> amazon-ebs: Deleting temporary keypair...
 Build <span class="s1">'amazon-ebs'</span> finished.
-<span class="gp">==&gt; </span>Builds finished. The artifacts of successful builds are:
-<span class="gp">--&gt; </span>amazon-ebs: AMIs were created:
+<span class="o">==&gt;</span> Builds finished. The artifacts of successful builds are:
+<span class="nt">--</span><span class="o">&gt;</span> amazon-ebs: AMIs were created:
 ap-southeast-2: ami-XXXXXXXX
 root@earth:~#</code></pre></figure>
 
 <h3 id="conclusion">conclusion</h3>
 
-<p>Packer gives us a method to consistently create base AMI’s that can be further configured with tools like Puppet. Packer ensures that these AMI’s are documented with code so that at later dates we can upgrade instances and know exactly how they were created. By using custom-built AMI’s your able to speed up the time it takes ASG to boot new instances.</p>
+<p>Packer gives us a method to consistently create base AMI’s that can be further configured with tools like Puppet. Packer ensures that these AMI’s are documented with code so that at later dates we can upgrade instances and know exactly how they were created. By using custom-built AMI’s you’re able to speed up the time it takes ASG to boot new instances.</p>
 
 <h2 id="further-reading">further reading</h2>
 <p><a href="http://www.packer.io/docs" title="packer.io docs" target="_blank">http://www.packer.io/docs</a></p>
@@ -348,7 +348,7 @@ root@earth:~#</code></pre></figure>
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

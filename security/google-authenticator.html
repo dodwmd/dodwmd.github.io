@@ -173,7 +173,7 @@
 
 <p>To install the package on Ubuntu, run the following command:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>sudo apt-get install libpam-google-authenticator</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nb">install </span>libpam-google-authenticator</code></pre></figure>
 
 <p>(This will only install the PAM module on your system you will have to activate it for SSH logins manually.)</p>
 
@@ -183,11 +183,11 @@
 
 <p>Login as the user you wish to use 2FA and type:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>google-authenticator</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>google-authenticator</code></pre></figure>
 
 <p>After answering ‘yes’ to the question if you want authentication tokens to be time-based, it should produce some output that looks like the following:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Do you want authentication tokens to be <span class="nb">time</span>-based <span class="o">(</span>y/n<span class="o">)</span> y
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Do you want authentication tokens to be time-based <span class="o">(</span>y/n<span class="o">)</span> y
 
 Your new secret key is: S5JUU47ZVAE2IX4R
 Your verification code is 983290
@@ -211,7 +211,7 @@ token? This restricts you to one login about every 30s, but it increases
 your chances to notice or even prevent man-in-the-middle attacks <span class="o">(</span>y/n<span class="o">)</span> y
 
 By default, tokens are good <span class="k">for </span>30 seconds and <span class="k">in </span>order to compensate <span class="k">for
-</span>possible <span class="nb">time</span>-skew between the client and the server, we allow an extra
+</span>possible time-skew between the client and the server, we allow an extra
 token before and after the current time. If you experience problems with poor
 <span class="nb">time </span>synchronization, you can increase the window from its default
 size of 1:30min to about 4min. Do you want to <span class="k">do </span>so <span class="o">(</span>y/n<span class="o">)</span> n
@@ -225,25 +225,25 @@ Do you want to enable rate-limiting (y/n) y</span></code></pre></figure>
 
 <p>Now that you’ve setup everything it’s time to actually enable the PAM module. You can do this with the following:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span><span class="nb">echo</span> <span class="s1">'auth required pam_google_authenticator.so'</span> | sudo tee -a /etc/pam.d/sshd</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">echo</span> <span class="s1">'auth required pam_google_authenticator.so'</span> | <span class="nb">sudo tee</span> <span class="nt">-a</span> /etc/pam.d/sshd</code></pre></figure>
 
 <p>You will also need to edit /etc/ssh/sshd_config. Look for the ‘ChallengeResponseAuthentication’ line and enable it.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ChallengeResponseAuthentication yes</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ChallengeResponseAuthentication <span class="nb">yes</span></code></pre></figure>
 
 <p>If you followed my <a href="https://dodwell.us/security/ssh-setup/">previous post</a>, you will also need to update ‘PasswordAuthentication’ from ‘no’ to ‘yes’.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">PasswordAuthentication yes</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">PasswordAuthentication <span class="nb">yes</span></code></pre></figure>
 
 <p>Finally, restart the SSH server so your changes will take effect:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>sudo service ssh restart</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>service ssh restart</code></pre></figure>
 
 <h3 id="testing">testing</h3>
 
 <p>You can now simply ssh to localhost and see if you get the 2FA.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>ssh localhost
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>ssh localhost
 Password:
 Verification code:
 <span class="err">$</span></code></pre></figure>
@@ -321,7 +321,7 @@ Verification code:
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

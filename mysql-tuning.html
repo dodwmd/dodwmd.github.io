@@ -191,9 +191,9 @@
     COUNT<span class="o">(</span><span class="k">*</span><span class="o">)</span> <span class="s2">"Num Tables"</span>
 FROM  INFORMATION_SCHEMA.TABLES
 WHERE  table_schema not <span class="k">in</span> <span class="o">(</span><span class="s2">"information_schema"</span>, <span class="s2">"performance_schema"</span><span class="o">)</span>
-GROUP BY  ENGINE;</code></pre></figure>
+GROUP BY  ENGINE<span class="p">;</span></code></pre></figure>
 
-<h4 id="myisam-keybuffers">myisam key_buffers</h4>
+<h4 id="myisam-key_buffers">myisam key_buffers</h4>
 
 <p>If using just MyISAM, set key_buffer_size to 20% of <em>available</em> RAM. (Plus innodb_buffer_pool_size=0)</p>
 
@@ -206,7 +206,7 @@ GROUP BY  ENGINE;</code></pre></figure>
 
 <p>To check the health of your key_buffers run the following:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">SHOW GLOBAL STATUS LIKE <span class="s1">'Key%'</span>;</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">SHOW GLOBAL STATUS LIKE <span class="s1">'Key%'</span><span class="p">;</span></code></pre></figure>
 
 <p>Now, calculate Key_read_requests / Key_reads If it is high (say, over 10), then the key_buffer is big enough. You can also add up Index_length for all the MyISAM tables. Set key_buffer_size no larger than that size. Use the SQL in the InnoDB section above to select the index_length for your MyISAM tables.</p>
 
@@ -254,7 +254,7 @@ If you decide the QC is right for you, then I recommend</p>
   <li>SQL_CACHE or SQL_NO_CACHE in all SELECTs, based on which queries are likely to benefit from caching.</li>
 </ul>
 
-<h4 id="threadcachesize">thread_cache_size</h4>
+<h4 id="thread_cache_size">thread_cache_size</h4>
 
 <p>This is a minor tunable. Zero will slow down thread (connection) creation. A small (say, 10), non-zero number is good. The setting has essentially no impact on RAM usage.</p>
 
@@ -356,7 +356,7 @@ If you decide the QC is right for you, then I recommend</p>
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

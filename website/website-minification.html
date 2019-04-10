@@ -155,16 +155,16 @@
 <p>The first section I wanted to cover is HTML minification. As a developer it’s important to set out code in a readable way. This means adding indentation and new lines to making reading and editing your code much easier. However, all this setting out uses valuable space. Most of the sites I administrate currently are written in PHP. I use templating engines to seperate the PHP code from the HTML code. However I don’t want to maintain multiple copies of templates (minified and non-minified). Using a bunch of code from <a href="http://code.google.com/p/minify/">here</a>. You can include the following at the start of your PHP script to minify the HTML that’s being sent to users.</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">function </span>sanitize_output<span class="o">(</span><span class="nv">$buffer</span><span class="o">)</span> <span class="o">{</span>
-    require_once<span class="o">(</span><span class="s1">'min/lib/Minify/HTML.php'</span><span class="o">)</span>;
-    require_once<span class="o">(</span><span class="s1">'min/lib/Minify/CSS.php'</span><span class="o">)</span>;
-    require_once<span class="o">(</span><span class="s1">'min/lib/JSMin.php'</span><span class="o">)</span>;
+    require_once<span class="o">(</span><span class="s1">'min/lib/Minify/HTML.php'</span><span class="o">)</span><span class="p">;</span>
+    require_once<span class="o">(</span><span class="s1">'min/lib/Minify/CSS.php'</span><span class="o">)</span><span class="p">;</span>
+    require_once<span class="o">(</span><span class="s1">'min/lib/JSMin.php'</span><span class="o">)</span><span class="p">;</span>
     <span class="nv">$buffer</span> <span class="o">=</span> Minify_HTML::minify<span class="o">(</span><span class="nv">$buffer</span>, array<span class="o">(</span>
-        <span class="s1">'cssMinifier'</span> <span class="o">=</span>&gt; array<span class="o">(</span><span class="s1">'Minify_CSS'</span>, <span class="s1">'minify'</span><span class="o">)</span>,
-        <span class="s1">'jsMinifier'</span> <span class="o">=</span>&gt; array<span class="o">(</span><span class="s1">'JSMin'</span>, <span class="s1">'minify'</span><span class="o">)</span>
-    <span class="o">))</span>;
-    <span class="k">return</span> <span class="nv">$buffer</span>;
+        <span class="s1">'cssMinifier'</span> <span class="o">=&gt;</span> array<span class="o">(</span><span class="s1">'Minify_CSS'</span>, <span class="s1">'minify'</span><span class="o">)</span>,
+        <span class="s1">'jsMinifier'</span> <span class="o">=&gt;</span> array<span class="o">(</span><span class="s1">'JSMin'</span>, <span class="s1">'minify'</span><span class="o">)</span>
+    <span class="o">))</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nv">$buffer</span><span class="p">;</span>
 <span class="o">}</span>
-ob_start<span class="o">(</span><span class="s1">'sanitize_output'</span><span class="o">)</span>;</code></pre></figure>
+ob_start<span class="o">(</span><span class="s1">'sanitize_output'</span><span class="o">)</span><span class="p">;</span></code></pre></figure>
 
 <h3 id="cssjs">css/js</h3>
 
@@ -172,7 +172,7 @@ ob_start<span class="o">(</span><span class="s1">'sanitize_output'</span><span c
 
 <p>Simply run the tool on your CSS/JS files and then output them into new files adding something like ‘min’ to the filename.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>yui-compressor --type css file.css &gt; file.min.css</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>yui-compressor <span class="nt">--type</span> css file.css <span class="o">&gt;</span> file.min.css</code></pre></figure>
 
 <p>Then just include the minified version in your templates.</p>
 
@@ -188,38 +188,38 @@ ob_start<span class="o">(</span><span class="s1">'sanitize_output'</span><span c
 
 <p>Once it’s installed:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>git clone https://github.com/tjko/jpegoptim
-<span class="gp">$ </span><span class="nb">cd </span>jpegoptim
-<span class="gp">$ </span>./configure
-<span class="gp">$ </span>make
-<span class="gp">$ </span>make strip
-<span class="gp">$ </span>make install</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/tjko/jpegoptim
+<span class="nv">$ </span><span class="nb">cd </span>jpegoptim
+<span class="nv">$ </span>./configure
+<span class="nv">$ </span>make
+<span class="nv">$ </span>make strip
+<span class="nv">$ </span>make <span class="nb">install</span></code></pre></figure>
 
 <p>You can let it run rampant on your source images to ensure they are optimized:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>find ./ -name <span class="k">*</span>jpg | xargs jpegoptim
-./images/ck1.jpg 768x433 24bit P JFIF  <span class="o">[</span>OK] 32411 --&gt; 32411 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/ZZ379.jpg 768x461 24bit P JFIF  <span class="o">[</span>OK] 55101 --&gt; 55101 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/RZdaU99.jpg 768x649 24bit P JFIF  <span class="o">[</span>OK] 71753 --&gt; 71753 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/tmpUltimateselfie.jpg 768x511 24bit P JFIF  <span class="o">[</span>OK] 66329 --&gt; 66329 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/Robinwilliams46602a.jpg 768x933 24bit P JFIF  <span class="o">[</span>OK] 72161 --&gt; 72161 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/Elephantsarehuge.jpg 768x615 24bit P JFIF  <span class="o">[</span>OK] 36062 --&gt; 36062 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/1408196499535.jpg 768x1152 24bit P JFIF  <span class="o">[</span>OK] 135273 --&gt; 135273 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
-./images/TexasGovRickPerryindictedforabuseofpower.jpg 768x512 24bit P JFIF  <span class="o">[</span>OK] 31000 --&gt; 31000 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>find ./ <span class="nt">-name</span> <span class="k">*</span>jpg | xargs jpegoptim
+./images/ck1.jpg 768x433 24bit P JFIF  <span class="o">[</span>OK] 32411 <span class="nt">--</span><span class="o">&gt;</span> 32411 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/ZZ379.jpg 768x461 24bit P JFIF  <span class="o">[</span>OK] 55101 <span class="nt">--</span><span class="o">&gt;</span> 55101 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/RZdaU99.jpg 768x649 24bit P JFIF  <span class="o">[</span>OK] 71753 <span class="nt">--</span><span class="o">&gt;</span> 71753 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/tmpUltimateselfie.jpg 768x511 24bit P JFIF  <span class="o">[</span>OK] 66329 <span class="nt">--</span><span class="o">&gt;</span> 66329 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/Robinwilliams46602a.jpg 768x933 24bit P JFIF  <span class="o">[</span>OK] 72161 <span class="nt">--</span><span class="o">&gt;</span> 72161 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/Elephantsarehuge.jpg 768x615 24bit P JFIF  <span class="o">[</span>OK] 36062 <span class="nt">--</span><span class="o">&gt;</span> 36062 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/1408196499535.jpg 768x1152 24bit P JFIF  <span class="o">[</span>OK] 135273 <span class="nt">--</span><span class="o">&gt;</span> 135273 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.
+./images/TexasGovRickPerryindictedforabuseofpower.jpg 768x512 24bit P JFIF  <span class="o">[</span>OK] 31000 <span class="nt">--</span><span class="o">&gt;</span> 31000 bytes <span class="o">(</span>0.00%<span class="o">)</span>, skipped.</code></pre></figure>
 
 <p>You can also optimize your PNG files with OptiPNG. <a href="http://optipng.sourceforge.net/">OptiPNG</a> is a PNG optimizer that re-compresses image files to a smaller size, without losing any information. This program also converts external formats (BMP, GIF, PNM and TIFF) to optimized PNG, and performs PNG integrity checks and corrections. If you wish to learn how PNG optimization works, or to know about other similar tools, see the PNG-Tech article <a href="http://optipng.sourceforge.net/pngtech/optipng.html">A guide to PNG optimization</a>.</p>
 
 <p>Again this is included in most distributions but again is a little old. So lets grab a copy and compile it:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>hg clone http://optipng.hg.sourceforge.net/hgweb/optipng/optipngreal
-<span class="gp">$ </span><span class="nb">cd </span>optipng
-<span class="gp">$ </span>./configure
-<span class="gp">$ </span>make
-<span class="gp">$ </span>make install</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>hg clone http://optipng.hg.sourceforge.net/hgweb/optipng/optipngreal
+<span class="nv">$ </span><span class="nb">cd </span>optipng
+<span class="nv">$ </span>./configure
+<span class="nv">$ </span>make
+<span class="nv">$ </span>make <span class="nb">install</span></code></pre></figure>
 
 <p>Lets let it fix up our PNG files now.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>find ./ -name <span class="k">*</span>png | xargs optipng
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>find ./ <span class="nt">-name</span> <span class="k">*</span>png | xargs optipng
 OptiPNG 0.6.4: Advanced PNG optimizer.
 Copyright <span class="o">(</span>C<span class="o">)</span> 2001-2010 Cosmin Truta.
 <span class="k">**</span> Processing: ./images/logo_large.png
@@ -244,7 +244,7 @@ Why? Because your site is being increasingly viewed on smaller, slower, low band
 
 <p>All we have to do is install the adaptive images php code to our root and then add a rewrite to redirect all image fetches to the php file. Via:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>git clone https://github.com/MattWilcox/Adaptive-Images</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/MattWilcox/Adaptive-Images</code></pre></figure>
 
 <p>Then edit your nginx config file and add the following:</p>
 
@@ -253,7 +253,7 @@ Why? Because your site is being increasingly viewed on smaller, slower, low band
 location ai-cache <span class="o">{</span>
 <span class="o">}</span>
 location ~ ^/images/ <span class="o">{</span>
-    rewrite <span class="se">\.</span><span class="o">(</span>?:jpe?g|gif|png<span class="o">)</span><span class="nv">$ </span>/Adaptive-Images/adaptive-images.php;
+    rewrite <span class="se">\.</span><span class="o">(</span>?:jpe?g|gif|png<span class="o">)</span><span class="nv">$ </span>/Adaptive-Images/adaptive-images.php<span class="p">;</span>
 <span class="o">}</span></code></pre></figure>
 
 <p>We also have to ensure that a cookie is set in the users browser that specifies what resolution they are viewing the site with. I modified the authors javascript cookie code to allow for a domain wide cookie (allowing me to separate where I serve images from vs where the rest of the site is generated from).</p>
@@ -340,7 +340,7 @@ location ~ ^/images/ <span class="o">{</span>
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

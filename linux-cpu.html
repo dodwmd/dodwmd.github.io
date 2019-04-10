@@ -176,7 +176,7 @@
 
 <p>If the server your investigating has multiple cores it’s useful to see the breakdown of each CPU. You can use a command called ‘mpstat’ to do this.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@earth:~# </span>mpstat -P ALL
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# mpstat <span class="nt">-P</span> ALL
 Linux 3.11.0-15-generic <span class="o">(</span>ultima<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span>4 CPU<span class="o">)</span>
 09:14:01 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
 09:14:01 PM  all    2.03    0.00    2.41    0.24    0.00    0.18    0.00    0.00    0.00   95.14
@@ -190,7 +190,7 @@ root@earth:~#</code></pre></figure>
 
 <p>Sometimes you may wish to see how the CPU has been running over the day and a tool called ‘sar’ takes care of this. sar by default will grab archived information that has been written to via a cron job.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@earth:~# </span>sar
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# sar
 Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span>8 CPU<span class="o">)</span>
 07:35:01 PM     CPU     %user     %nice   %system   %iowait    %steal     %idle
 07:45:01 PM     all      0.31      0.00      0.38      0.06      0.00     99.25
@@ -209,7 +209,7 @@ root@earth:~#</code></pre></figure>
 
 <p>The sar command can also be ran so that you can see a live summary over time.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@earth:~# </span>sar -u 2 5
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# sar <span class="nt">-u</span> 2 5
 Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span>8 CPU<span class="o">)</span>
 09:22:16 PM     CPU     %user     %nice   %system   %iowait    %steal     %idle
 09:22:18 PM     all      3.13      0.00      1.63      1.56      0.00     93.68
@@ -302,7 +302,7 @@ root@earth:~#</code></pre></figure>
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

@@ -165,27 +165,27 @@
 
 <p>First you need to get UFW all installed and ready to go.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>sudo apt-get -y install ufw fail2ban
-<span class="gp">$ </span>sudo sed -i <span class="s1">'s/IPV6=no/IPV6=yes/g'</span> /etc/default/ufw
-<span class="gp">$ </span>sudo ufw allow ssh
-<span class="gp">$ </span>sudo ufw default deny incoming
-<span class="gp">$ </span>sudo ufw default allow outgoing
-<span class="gp">$ </span>sudo ufw logging low
-<span class="gp">$ </span>sudo ufw disable
-<span class="gp">$ </span>sudo ufw <span class="nb">enable</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nt">-y</span> <span class="nb">install </span>ufw fail2ban
+<span class="nv">$ </span><span class="nb">sudo sed</span> <span class="nt">-i</span> <span class="s1">'s/IPV6=no/IPV6=yes/g'</span> /etc/default/ufw
+<span class="nv">$ </span><span class="nb">sudo </span>ufw allow ssh
+<span class="nv">$ </span><span class="nb">sudo </span>ufw default deny incoming
+<span class="nv">$ </span><span class="nb">sudo </span>ufw default allow outgoing
+<span class="nv">$ </span><span class="nb">sudo </span>ufw logging low
+<span class="nv">$ </span><span class="nb">sudo </span>ufw disable
+<span class="nv">$ </span><span class="nb">sudo </span>ufw <span class="nb">enable</span></code></pre></figure>
 
 <p>The above should install UFW &amp; fail2ban. In UFW it should enable IPv6 support, allow ssh and setup some default firewall direction rules. We also want to only log denined packets to the kernel logger. The last step gives it a restart (disable/enable).</p>
 
 <p>Now if we generate some port open requests from another server to a port other than ssh we should see this:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>sudo dmesg
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>dmesg
 <span class="o">[</span>3071864.995451] <span class="o">[</span>UFW BLOCK] <span class="nv">IN</span><span class="o">=</span>venet0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>192.168.0.1 <span class="nv">DST</span><span class="o">=</span>192.168.0.2 <span class="nv">LEN</span><span class="o">=</span>48 <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span>46 <span class="nv">ID</span><span class="o">=</span>12308 <span class="nv">PROTO</span><span class="o">=</span>UDP <span class="nv">SPT</span><span class="o">=</span>40393 <span class="nv">DPT</span><span class="o">=</span>40104 <span class="nv">LEN</span><span class="o">=</span>28</code></pre></figure>
 
 <p>Great! But you need this in a log file so fail2ban can use it. Lets take a look at our rsyslogd config:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">root@vps:/etc/rsyslog.d# </span>ls -la <span class="k">*</span>ufw<span class="k">*</span>
--rw-r--r--   1 root root    94 May 28 01:31 20-ufw.conf
-<span class="gp">root@vps:/etc/rsyslog.d# </span>cat 20-ufw.conf
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@vps:/etc/rsyslog.d# <span class="nb">ls</span> <span class="nt">-la</span> <span class="k">*</span>ufw<span class="k">*</span>
+<span class="nt">-rw-r--r--</span>   1 root root    94 May 28 01:31 20-ufw.conf
+root@vps:/etc/rsyslog.d# <span class="nb">cat </span>20-ufw.conf
 <span class="c"># Log kernel generated UFW log messages to file</span>
 :msg,contains,<span class="s2">"[UFW "</span> /var/log/ufw.log
 root@vps:/etc/rsyslog.d#</code></pre></figure>
@@ -234,7 +234,7 @@ actionstart =
 actionstop =
 actioncheck =
 actionban = ufw deny in from &lt;ip&gt;
-actionunban = ufw delete deny in from &lt;ip&gt;'</span> | sudo tee /etc/fail2ban/action.d/ufw.conf</code></pre></figure>
+actionunban = ufw delete deny in from &lt;ip&gt;'</span> | <span class="nb">sudo tee</span> /etc/fail2ban/action.d/ufw.conf</code></pre></figure>
 
 <p>While here you might want to edit your jail.conf file and update where required the actions of other services you want to monitor.</p>
 
@@ -242,7 +242,7 @@ actionunban = ufw delete deny in from &lt;ip&gt;'</span> | sudo tee /etc/fail2ba
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">'[Definition]
 failregex = UFW BLOCK.* SRC=&lt;HOST&gt;
-ignoreregex ='</span> | sudo tee /etc/fail2ban/filter.d/portscan.conf</code></pre></figure>
+ignoreregex ='</span> | <span class="nb">sudo tee</span> /etc/fail2ban/filter.d/portscan.conf</code></pre></figure>
 
 <p>Now the clever amoung you will realise that UFW will block port ATTEMPTS which means that some nice fellow could craft some packets so that the connection attempt comes from hosts that should be allowed to connect.</p>
 
@@ -258,11 +258,11 @@ filter   = portscan
 logpath  = /var/log/ufw.log
 action   = ufw
 maxretry = 5
-'</span> | tee -a /etc/fail2ban/jail.conf</code></pre></figure>
+'</span> | <span class="nb">tee</span> <span class="nt">-a</span> /etc/fail2ban/jail.conf</code></pre></figure>
 
 <p>And lastly don’t forget to reload fail2ban:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo service fail2ban restart</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo </span>service fail2ban restart</code></pre></figure>
 
 
                         <br>
@@ -337,7 +337,7 @@ maxretry = 5
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

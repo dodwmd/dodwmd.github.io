@@ -155,8 +155,8 @@
 
 <p>At the minimum on the checking list, you can use the puppet client to check the syntax of your modules. It’s very easy for simple typos to break a puppet run. When editing a manifest file simply type the following (using init.pp as an example):</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">dodwmd@puppet:~/puppet/modules/postgresql/manifests$ </span>puppet parser validate init.pp
-Error: Could not parse <span class="k">for </span>environment production: Syntax error at end of file; expected <span class="s1">'}'</span> at /etc/puppet/modules/postgresql/manifests/init.pp:631
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~/puppet/modules/postgresql/manifests<span class="nv">$ </span>puppet parser validate init.pp
+Error: Could not parse <span class="k">for </span>environment production: Syntax error at end of file<span class="p">;</span> expected <span class="s1">'}'</span> at /etc/puppet/modules/postgresql/manifests/init.pp:631
 dodwmd@puppet:~/puppet/modules/postgresql/manifests<span class="err">$</span></code></pre></figure>
 
 <p>As you can see I’ve left out the ‘}’ somewhere around line 631.</p>
@@ -165,7 +165,7 @@ dodwmd@puppet:~/puppet/modules/postgresql/manifests<span class="err">$</span></c
 
 <p>Once we’re happy that the syntax is correct in our file we may want to work on how we’ve written the file so other developers are able to understand it. We can do this with a tool called ‘<a href="http://puppet-lint.com/" title="puppet-lint" target="_blank">puppet-lint</a>’. Once it’s installed we can once again run a test against our init.pp file:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">dodwmd@puppet:~/puppet/modules/postgresql/manifests$ </span>puppet-lint init.pp
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">dodwmd@puppet:~/puppet/modules/postgresql/manifests<span class="nv">$ </span>puppet-lint init.pp
 WARNING: line has more than 80 characters on line 20
 WARNING: line has more than 80 characters on line 36
 WARNING: line has more than 80 characters on line 37
@@ -257,15 +257,15 @@ dodwmd@puppet:~/puppet/modules/postgresql/manifests<span class="err">$</span></c
 <p>The following walk through is going to focus on using EC2 to spin up instances for testing puppet manifests. Let’s get started!
 We need to install puppetlabs_spec_helper via:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>git clone git://github.com/puppetlabs/puppetlabs_spec_helper.git
-<span class="gp">$ </span><span class="nb">cd </span>puppetlabs_spec_helper
-<span class="gp">$ </span>rake package:gem
-<span class="gp">$ </span>gem install pkg/puppetlabs_spec_helper-<span class="k">*</span>.gem</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone git://github.com/puppetlabs/puppetlabs_spec_helper.git
+<span class="nv">$ </span><span class="nb">cd </span>puppetlabs_spec_helper
+<span class="nv">$ </span>rake package:gem
+<span class="nv">$ </span>gem <span class="nb">install </span>pkg/puppetlabs_spec_helper-<span class="k">*</span>.gem</code></pre></figure>
 
 <p>Lets grab an example puppet module that already has most of the required files needed for our testing.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>git clone https://github.com/puppetlabs/puppetlabs-mysql.git mysql
-<span class="gp">$ </span><span class="nb">cd </span>mysql</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/puppetlabs/puppetlabs-mysql.git mysql
+<span class="nv">$ </span><span class="nb">cd </span>mysql</code></pre></figure>
 
 <p>Take a look in spec/acceptance and you can find pre-written acceptance tests.</p>
 
@@ -333,17 +333,17 @@ AMI:
 
 <p>Let’s give it a spin.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">~/mysql$ </span>bundle <span class="nb">exec </span>beaker --log-level debug --hosts spec/acceptance/nodesets/default.yml --tests spec/acceptance
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">~/mysql<span class="nv">$ </span>bundle <span class="nb">exec </span>beaker <span class="nt">--log-level</span> debug <span class="nt">--hosts</span> spec/acceptance/nodesets/default.yml <span class="nt">--tests</span> spec/acceptance
 Hypervisor <span class="k">for </span>ubuntu-1204-64-1 is ec2
 Hypervisor <span class="k">for </span>ubuntu-1204-64-2 is ec2
 Beaker::Hypervisor, found some ec2 boxes to create
 aws-sdk: Iterate across all hosts <span class="k">in </span>configuration and launch them
 aws-sdk: Checking image ami-4d51ca77 exists and getting its root device
-<span class="o">[</span>AWS EC2 200 0.313706 0 retries] describe_images<span class="o">(</span>:image_ids<span class="o">=</span>&gt;[<span class="s2">"ami-4d51ca77"</span><span class="o">])</span>
-aws-sdk: Image block_device_mappings: <span class="o">{</span><span class="s2">"/dev/sda1"</span><span class="o">=</span>&gt;<span class="o">{</span>:snapshot_id<span class="o">=</span>&gt;<span class="s2">"snap-4a216d7e"</span>, :volume_size<span class="o">=</span>&gt;8, :delete_on_termination<span class="o">=</span>&gt;true, :volume_type<span class="o">=</span>&gt;<span class="s2">"standard"</span><span class="o">}}</span>
+<span class="o">[</span>AWS EC2 200 0.313706 0 retries] describe_images<span class="o">(</span>:image_ids<span class="o">=&gt;[</span><span class="s2">"ami-4d51ca77"</span><span class="o">])</span>
+aws-sdk: Image block_device_mappings: <span class="o">{</span><span class="s2">"/dev/sda1"</span><span class="o">=&gt;{</span>:snapshot_id<span class="o">=&gt;</span><span class="s2">"snap-4a216d7e"</span>, :volume_size<span class="o">=&gt;</span>8, :delete_on_termination<span class="o">=&gt;</span><span class="nb">true</span>, :volume_type<span class="o">=&gt;</span><span class="s2">"standard"</span><span class="o">}}</span>
 aws-sdk: Launch instance
 aws-sdk: Ensure key pair exists, create <span class="k">if </span>not
-<span class="o">[</span>AWS EC2 200 0.076698 0 retries] describe_key_pairs<span class="o">(</span>:filters<span class="o">=</span>&gt;[<span class="o">{</span>:name<span class="o">=</span>&gt;<span class="s2">"key-name"</span>,:values<span class="o">=</span>&gt;[<span class="s2">"Beaker-root-puppet-dodwell-us"</span><span class="o">]}])</span>
+<span class="o">[</span>AWS EC2 200 0.076698 0 retries] describe_key_pairs<span class="o">(</span>:filters<span class="o">=&gt;[{</span>:name<span class="o">=&gt;</span><span class="s2">"key-name"</span>,:values<span class="o">=&gt;[</span><span class="s2">"Beaker-root-puppet-dodwell-us"</span><span class="o">]}])</span>
 ....
 ....
 ....</code></pre></figure>
@@ -431,7 +431,7 @@ aws-sdk: Ensure key pair exists, create <span class="k">if </span>not
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

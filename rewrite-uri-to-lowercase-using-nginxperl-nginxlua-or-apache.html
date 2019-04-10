@@ -153,7 +153,7 @@
 <h3 id="perl-method">perl method</h3>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">location ~ <span class="o">[</span>A-Z] <span class="o">{</span>
-  perl <span class="s1">'sub { my $r = shift; $r-&gt;internal_redirect(lc($r-&gt;uri)); }'</span>;
+  perl <span class="s1">'sub { my $r = shift; $r-&gt;internal_redirect(lc($r-&gt;uri)); }'</span><span class="p">;</span>
 <span class="o">}</span></code></pre></figure>
 
 <p>OR</p>
@@ -161,7 +161,7 @@
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">  http <span class="o">{</span>
   ...
     <span class="c"># Include the perl module</span>
-    perl_modules perl/lib;
+    perl_modules perl/lib<span class="p">;</span>
     ...
     <span class="c"># Define this function</span>
     perl_set <span class="nv">$uri_lowercase</span> <span class="s1">'sub {
@@ -169,14 +169,14 @@
       my $uri = $r-&gt;uri;
       $uri = lc($uri);
       return $uri;
-    }'</span>;
+    }'</span><span class="p">;</span>
     ...
     server <span class="o">{</span>
     ...
       <span class="c"># As your first location entry, tell nginx to rewrite your uri,</span>
       <span class="c"># if the path contains uppercase characters</span>
       location ~ <span class="o">[</span>A-Z] <span class="o">{</span>
-        rewrite ^<span class="o">(</span>.<span class="k">*</span><span class="o">)</span><span class="nv">$ $scheme</span>://<span class="nv">$host$uri_lowercase</span>;
+        rewrite ^<span class="o">(</span>.<span class="k">*</span><span class="o">)</span><span class="nv">$ $scheme</span>://<span class="nv">$host$uri_lowercase</span><span class="p">;</span>
       <span class="o">}</span>
     ...</code></pre></figure>
 
@@ -186,9 +186,9 @@
   ...
     server <span class="o">{</span>
     ...
-      set_by_lua <span class="nv">$uri_lowercase</span> <span class="s2">"return string.lower(ngx.var.uri)"</span>;
+      set_by_lua <span class="nv">$uri_lowercase</span> <span class="s2">"return string.lower(ngx.var.uri)"</span><span class="p">;</span>
       location ~ <span class="o">[</span>A-Z] <span class="o">{</span>
-        try_files <span class="nv">$uri</span> <span class="nv">$uri</span>/ <span class="nv">$uri_lowercase</span> <span class="nv">$uri_lowercase</span>/ <span class="o">=</span>404;
+        try_files <span class="nv">$uri</span> <span class="nv">$uri</span>/ <span class="nv">$uri_lowercase</span> <span class="nv">$uri_lowercase</span>/ <span class="o">=</span>404<span class="p">;</span>
       <span class="o">}</span>
     ...</code></pre></figure>
 
@@ -199,7 +199,7 @@
     server <span class="o">{</span>
     ...
       location ~ <span class="o">[</span>A-Z] <span class="o">{</span>
-        rewrite_by_lua <span class="s1">'ngx.exec(string.lower(ngx.var.uri))'</span>;
+        rewrite_by_lua <span class="s1">'ngx.exec(string.lower(ngx.var.uri))'</span><span class="p">;</span>
       <span class="o">}</span>
     ...</code></pre></figure>
 
@@ -283,7 +283,7 @@ RewriteRule <span class="o">(</span>.<span class="k">*</span><span class="o">)</
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2016 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             
