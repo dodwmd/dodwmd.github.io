@@ -87,10 +87,59 @@ permalink: /resume/
                             <h2>Experience</h2>
                         </div> 
                         <div class="yui-u">
+
+                            <div class="job">
+                                <h2>Maestro</h2>
+                                <h3>Senior DevOps Lead</h3>
+                                <h4>Aug 2020 – Current</h4>
+                                <p align="justify"><i>Maestro is the interactive video platform for creators looking to own, engage, and monetize audiences</i></br>
+                                Senior DevOps Lead tasked with the need to automate the creation of GKE clusters to aide in the deployment process. Environments where manually created then cloned over time to upgrade. Site had complex scaling issues due to the nature of hosting video streaming events that experienced massive spikes in load as an event started by sometimes an unknown amount of viewership. The Infrastructure consisted of multiple K/V and document databases and self-managed GKE clusters with CDN in front. Pod count would reach multiple thousand during events and scaling required heavy tuning to be able to cope with the sudden spikes in load.
+                                  <ol type="disc">
+                                      <li>Greenfield/side-by-side deployment of infrastructure using Terraform on GCP, the GitOps methodology was used in all repos to ensure environments and configuration could be released via git commands</li>
+                                      <li>Resolved complex production issues allowing for cost reduction and improvements to customer experience</li>
+                                      <li>Created tooling and processes around the deployment of change</li>
+                                      <li>Setup ArgoCD to sync git managed manifests for application deployment and configuration on GKE. Abstracting complexity away using YTT templating</li>
+                                      <li>Improvements to CDN (fastly) configuration and simplified how certificates where managed improving self-service for customers</li>
+                                  </ol>
+                                </p>
+                            </div>
+                            <div class="job">
+                                <h2>Console Group</h2>
+                                <h3>Senior DevOps Engineer</h3>
+                                <h4>Oct 2018 – Aug 2020</h4>
+                                <p align="justify"><i>Property Management software to manage your portfolio in minutes</i></br>
+                                Senior DevOps Lead working with a small team to deliver DevOps capabilities to the company, allowing teams to be able to release multiple times a day and creating automation around being able to create named development environments as required and scheduling development and pre-production environments to be created and destroyed as required.
+                                  <ol type="disc">
+                                      <li>Introduced a container first philosophy, by updating all existing containers to use a unified Ubuntu base image. Migrated workloads that were running on dedicated instances to run on ASG backed ECS clusters</li>
+                                      <li>Allowed for the deployment of infrastructure to multiple AWS regions, which allowed for engineer teams that where located in India to work on development environments locally and to allow for faster network access for testing</li>
+                                      <li>Mentored junior staff on both technology and agile methodologies, empowered development teams to be able to champion change into production</li>
+                                      <li>Provided management with insight into current industry trends and guidance on understanding Agile, posing questions to stimulate new thought and creating an environment to bridge the divide and connect the DevOps team</li>
+                                      <li>Helped maintain and improve Ansible playbooks and code to allow for entire named environments to be created by any developer in the company adhoc, working through cost issues and creating a tagging system to be able to track the usage of cloud resources to teams</li>
+                                      <li>Created procedures around when and how outages can occur and SLA on services we offered to the business</li>
+                                  </ol>
+                                </p>
+                            </div>
+                            <div class="job">
+                                <h2>Redhat Software</h2>
+                                <h3>Senior Systems Adminsitrator</h3>
+                                <h4>Oct 2017 – Sep 2018</h4>
+                                <p align="justify"><i>World’s leading provider of open source, enterprise IT solutions</i></br>
+                                Promoted to pivotal role as Brew’s Technical Lead overseeing Red Hat’s cross-architecture build environment, having been recruited with accountability for upkeep and support of major OpenStack environment (CI-RHOS). Delivered core CI/CD pipeline producing client-use packaged software. Migrated CI-RHOS into full stack implementation of RHEL’s Upshift.
+                                  <ol type="disc">
+                                      <li>Sustained upkeep and maintenance of infrastructure and application uptime for customer viability mission critical component, Brew (application carrying out rpm package creation and testing for all supported architectures including but not limited to PPC, ARM64, S390, X86_64 and IA64)</li>
+                                      <li>As Brew Technical Lead, managed cross-geography team of 7 engineers working out of China, India, Bruno and USA, justifying case for making team adjustments ultimately achieving smooth operations and best possible outcome</li>
+                                      <li>Successfully introduced SCRUM and other methodologies to the SysOps teams, overcoming resistance through educating on the methodology, complexities and purpose from both a management and SysOps and DevOps perspective</li>
+                                      <li>Fostered a climate of understanding and collaboration towards achieving workable timelines and realistic outcomes</li>
+                                      <li>Provided management with insight into current industry trends and guidance on understanding Agile, posing questions to stimulate new thought and creating an environment to bridge the divide and connect SysOps and DevOps</li>
+                                      <li>Developed detailed Ansible playbooks used in support of the Brew environment, quickly learning and adding this Red Hat product to an extensive raft of languages</li>
+                                      <li>Technical resource during major upgrades and architectural change of OpenStack 12-13</li>
+                                  </ol>
+                                </p>
+                            </div>
                             <div class="job">
                                 <h2>Accenture</h2>
                                 <h3>DevOps & Agile Capability Manager (fulltime)</h3>
-                                <h4>Feburary 2015 – Current</h4>
+                                <h4>Feburary 2015 – Oct 2017</h4>
                                 <p align="justify"><i>Accenture is a management consulting, technology services and outsourcing company helping clients in Australia become high-performing</i></br>
 				I was brought on to Accenture to help augment and build their DevOps practice. Accenture wanted to develop a practice in the Australasian and Pacific region(s) to meet client demand. During my first assignment, I was able to create a small team with a major Telecommunications provider helping them to establish an automation framework for the provisioning of infrastructure to assist in the acquisition of new customers onto their hosted environments. By developing a python framework using Fabric, I was able to manage the configuration of their existing hardware to allow for the automated provision of new clients. This increased the turnaround for new account signups to be a matter of minutes rather than days. I also served as a mentor and guide for both client and Accenture staff; primarily in the DevOps practice. I was also part of an Openstack proposal and worked closely with Red Hat Solutions Architects in how we were able to bring this to market under the Telecommunications provider’s banner.</br>
 				FINANCIAL SECTOR</br>
