@@ -11,7 +11,6 @@
 				        
 				
 					<description>&lt;p&gt;I’m using bastion hosts for my cloud infra and found this little hack to systemd to setup ssh-agent for my auth forwarding.&lt;/p&gt;
-
 </description>
 				
 				<pubDate>Sun, 18 Dec 2016 00:00:00 +1100</pubDate>
@@ -60,7 +59,6 @@
 				        
 				
 					<description>&lt;p&gt;I run a few different client sites and some personal ones and wanted to share with the greater community different tips on how to improve your search engine ranking. Alot of different sites offer this information with big price tags and most of it is just common sense.&lt;/p&gt;
-
 </description>
 				
 				<pubDate>Thu, 04 Jun 2015 00:00:00 +1000</pubDate>
@@ -73,7 +71,6 @@
 				        
 				
 					<description>&lt;p&gt;I just wanted to write down some issues I had as a reminder to myself and some notes that other people might find useful. I want to be able to setup some automatic host based firewall rules for some servers I look after so help mitigate any possible brute force attacks and general nastiness that you get on the internet. To do this I’m going to install UFW, fail2ban and setup some filters and actions in fail2ban to use information from UFW on Ubuntu 14.04.2.&lt;/p&gt;
-
 </description>
 				
 				<pubDate>Thu, 28 May 2015 00:00:00 +1000</pubDate>
@@ -86,7 +83,6 @@
 				        
 				
 					<description>&lt;p&gt;&lt;a href=&quot;http://dodwell.us/security/ssh-setup/&quot;&gt;Previously&lt;/a&gt; I posted on how to make some changes to SSH to improve it’s security. One of the configuration options I said to change was to disable password authentication. I want to cover how you can keep password authentication enable by using 2-factor authentication powered by Google Authenticator.&lt;/p&gt;
-
 </description>
 				
 				<pubDate>Mon, 04 May 2015 00:00:00 +1000</pubDate>
@@ -99,7 +95,6 @@
 				        
 				
 					<description>&lt;p&gt;I wanted to cover off how I currently host this blog for free using a number of services being offered by different companies.&lt;/p&gt;
-
 </description>
 				
 				<pubDate>Thu, 16 Apr 2015 00:00:00 +1000</pubDate>

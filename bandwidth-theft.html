@@ -165,30 +165,30 @@
 <p>First we need some code that will overlay our ‘watermark’ to the image and output the result. Lets create a ‘hotlink.php’ file in the root directory of our site.</p>
 
 <figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
-<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'filename'</span><span class="p">]))</span> <span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'filename'</span><span class="p">]))</span> <span class="p">{</span>
         <span class="cm">/* Create Imagick object */</span>
-        <span class="nv">$image</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Imagick</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'filename'</span><span class="p">]);</span>
+        <span class="nv">$image</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Imagick</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'filename'</span><span class="p">]);</span>
         <span class="cm">/* pull in overlay image */</span>
-        <span class="nv">$watermark</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Imagick</span><span class="p">(</span> <span class="s1">'misc/hotlink-overlay.png'</span><span class="p">);</span>
+        <span class="nv">$watermark</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Imagick</span><span class="p">(</span> <span class="s1">'misc/hotlink-overlay.png'</span><span class="p">);</span>
         <span class="c1">// Check if the watermark is bigger than the image</span>
-        <span class="nv">$image_width</span>            <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getImageWidth</span><span class="p">();</span>
-        <span class="nv">$image_height</span>           <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getImageHeight</span><span class="p">();</span>
-        <span class="nv">$watermark_width</span>        <span class="o">=</span> <span class="nv">$watermark</span><span class="o">-&gt;</span><span class="na">getImageWidth</span><span class="p">();</span>
-        <span class="nv">$watermark_height</span>       <span class="o">=</span> <span class="nv">$watermark</span><span class="o">-&gt;</span><span class="na">getImageHeight</span><span class="p">();</span>
+        <span class="nv">$image_width</span>            <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="nf">getImageWidth</span><span class="p">();</span>
+        <span class="nv">$image_height</span>           <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="nf">getImageHeight</span><span class="p">();</span>
+        <span class="nv">$watermark_width</span>        <span class="o">=</span> <span class="nv">$watermark</span><span class="o">-&gt;</span><span class="nf">getImageWidth</span><span class="p">();</span>
+        <span class="nv">$watermark_height</span>       <span class="o">=</span> <span class="nv">$watermark</span><span class="o">-&gt;</span><span class="nf">getImageHeight</span><span class="p">();</span>
         <span class="nv">$padding</span>                <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="nv">$image_width</span> <span class="o">&lt;</span> <span class="nv">$watermark_width</span> <span class="o">+</span> <span class="nv">$padding</span> <span class="o">||</span> <span class="nv">$image_height</span> <span class="o">&lt;</span> <span class="nv">$watermark_height</span> <span class="o">+</span> <span class="nv">$padding</span> <span class="p">)</span> <span class="p">{</span>
                 <span class="c1">//small image just output image</span>
-                <span class="nv">$output</span> <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getImageBlob</span><span class="p">();</span>
-                <span class="nb">header</span><span class="p">(</span> <span class="s2">"Content-Type: "</span><span class="o">.</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getFormat</span><span class="p">()</span> <span class="p">);</span>
+                <span class="nv">$output</span> <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="nf">getImageBlob</span><span class="p">();</span>
+                <span class="nb">header</span><span class="p">(</span> <span class="s2">"Content-Type: "</span><span class="mf">.</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="nf">getFormat</span><span class="p">()</span> <span class="p">);</span>
                 <span class="k">echo</span> <span class="nv">$output</span><span class="p">;</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
                 <span class="c1">// center the overlay on the orignal image</span>
                 <span class="nv">$dest_x</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$image_width</span> <span class="o">-</span> <span class="nv">$watermark_width</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
                 <span class="nv">$dest_y</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$image_height</span> <span class="o">-</span> <span class="nv">$watermark_height</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
                 <span class="c1">// Draw the watermark</span>
-                <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">compositeImage</span><span class="p">(</span><span class="nv">$watermark</span><span class="p">,</span><span class="nx">Imagick</span><span class="o">::</span><span class="na">COMPOSITE_OVER</span><span class="p">,</span><span class="nv">$dest_x</span><span class="p">,</span><span class="nv">$dest_y</span><span class="p">);</span>
-                <span class="nv">$output</span> <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getImageBlob</span><span class="p">();</span>
-                <span class="nb">header</span><span class="p">(</span> <span class="s2">"Content-Type: "</span><span class="o">.</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="na">getFormat</span><span class="p">()</span> <span class="p">);</span>
+                <span class="nv">$image</span><span class="o">-&gt;</span><span class="nf">compositeImage</span><span class="p">(</span><span class="nv">$watermark</span><span class="p">,</span><span class="nc">Imagick</span><span class="o">::</span><span class="no">COMPOSITE_OVER</span><span class="p">,</span><span class="nv">$dest_x</span><span class="p">,</span><span class="nv">$dest_y</span><span class="p">);</span>
+                <span class="nv">$output</span> <span class="o">=</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="nf">getImageBlob</span><span class="p">();</span>
+                <span class="nb">header</span><span class="p">(</span> <span class="s2">"Content-Type: "</span><span class="mf">.</span> <span class="nv">$image</span><span class="o">-&gt;</span><span class="nf">getFormat</span><span class="p">()</span> <span class="p">);</span>
                 <span class="k">echo</span> <span class="nv">$output</span><span class="p">;</span>
         <span class="p">}</span>
 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -286,7 +286,7 @@
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2021 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

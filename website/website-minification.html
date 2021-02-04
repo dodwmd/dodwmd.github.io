@@ -258,7 +258,7 @@ location ~ ^/images/ <span class="o">{</span>
 
 <p>We also have to ensure that a cookie is set in the users browser that specifies what resolution they are viewing the site with. I modified the authors javascript cookie code to allow for a domain wide cookie (allowing me to separate where I serve images from vs where the rest of the site is generated from).</p>
 
-<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">document</span><span class="o">.</span><span class="na">cookie</span><span class="o">=</span><span class="err">'</span><span class="n">resolution</span><span class="o">=</span><span class="err">'</span><span class="o">+</span><span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">screen</span><span class="o">.</span><span class="na">width</span><span class="o">,</span><span class="n">screen</span><span class="o">.</span><span class="na">height</span><span class="o">)+</span><span class="err">'</span><span class="o">;</span><span class="n">domain</span><span class="o">=.</span><span class="na">dodwell</span><span class="o">.</span><span class="na">us</span><span class="o">;</span> <span class="n">path</span><span class="o">=/</span><span class="err">'</span><span class="o">;</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">document</span><span class="o">.</span><span class="na">cookie</span><span class="o">=</span><span class="err">'</span><span class="n">resolution</span><span class="o">=</span><span class="err">'</span><span class="o">+</span><span class="nc">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">screen</span><span class="o">.</span><span class="na">width</span><span class="o">,</span><span class="n">screen</span><span class="o">.</span><span class="na">height</span><span class="o">)+</span><span class="err">'</span><span class="o">;</span><span class="n">domain</span><span class="o">=.</span><span class="na">dodwell</span><span class="o">.</span><span class="na">us</span><span class="o">;</span> <span class="n">path</span><span class="o">=/</span><span class="err">'</span><span class="o">;</span></code></pre></figure>
 
 <p>Make sure the webserver is able to write to the ai-cache and assets directories before testing.</p>
 
@@ -340,7 +340,7 @@ location ~ ^/images/ <span class="o">{</span>
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2021 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             

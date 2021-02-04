@@ -199,7 +199,7 @@ Under the ‘extras_configure_flags’ lets ensure ‘–add-module=$(MODULESDIR
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">....
 extras_configure_flags :<span class="o">=</span> <span class="se">\</span>
-                        <span class="k">$(</span>common_configure_flags<span class="k">)</span> <span class="se">\</span>
+                        <span class="si">$(</span>common_configure_flags<span class="si">)</span> <span class="se">\</span>
                         <span class="nt">--with-http_addition_module</span> <span class="se">\</span>
                         <span class="nt">--with-http_dav_module</span> <span class="se">\</span>
                         <span class="nt">--with-http_flv_module</span> <span class="se">\</span>
@@ -215,18 +215,18 @@ extras_configure_flags :<span class="o">=</span> <span class="se">\</span>
                         <span class="nt">--with-http_xslt_module</span> <span class="se">\</span>
                         <span class="nt">--with-mail</span> <span class="se">\</span>
                         <span class="nt">--with-mail_ssl_module</span> <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-auth-pam <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-cache-purge <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-dav-ext-module <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-echo <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/ngx-fancyindex <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-http-push <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-lua <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-upload-progress <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-upstream-fair <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/ngx_http_substitutions_filter_module <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/nginx-development-kit <span class="se">\</span>
-                        <span class="nt">--add-module</span><span class="o">=</span><span class="k">$(</span>MODULESDIR<span class="k">)</span>/set-misc-nginx-module
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/nginx-auth-pam <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/nginx-cache-purge <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/nginx-dav-ext-module <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/nginx-echo <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/ngx-fancyindex <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/nginx-http-push <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/nginx-lua <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/nginx-upload-progress <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/nginx-upstream-fair <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/ngx_http_substitutions_filter_module <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/nginx-development-kit <span class="se">\</span>
+                        <span class="nt">--add-module</span><span class="o">=</span><span class="si">$(</span>MODULESDIR<span class="si">)</span>/set-misc-nginx-module
 ....</code></pre></figure>
 
 <p>Now lets save this and update the changelog making a local package.</p>
@@ -339,7 +339,7 @@ Once you’ve copied the packages to your repo and installed the ‘nginx-extras
             </li>
         </ul>
             <div>
-                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2019 &bull; All rights reserved.
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2021 &bull; All rights reserved.
             </div>
             <ul class="menu-items">
             
