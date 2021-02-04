@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MySQL Tuning &#8211; dodwell.us</title>
+<meta name="description" content="DevOPS: For fun and profit">
+<meta name="keywords" content="">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dodwell.us/images/devops_logo.gif">
+<meta name="twitter:title" content="MySQL Tuning">
+<meta name="twitter:description" content="DevOPS: For fun and profit">
+<meta name="twitter:creator" content="@MichaelDodwell">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL Tuning">
+<meta property="og:description" content="DevOPS: For fun and profit">
+<meta property="og:url" content="https://dodwell.us/mysql-tuning.html">
+<meta property="og:site_name" content="dodwell.us">
+<meta property="og:image" content="https://dodwell.us/images/default_bg1.jpg">
+
+
+
+
+
+<link rel="canonical" href="https://dodwell.us/mysql-tuning.html">
+<link href="https://dodwell.us/feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us/assets/css/dodwell-min.css" />
+
+
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="https://dodwell.us/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://dodwell.us/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://dodwell.us/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
+<div id="fade"></div>
+<a id="slide" class="animated fade"></a>
+<aside id="sidebar">
+    <nav id="navigation">
+    <h2>MENU</h2>
+    <hr>
+
+            <li>
+                    <a href="https://dodwell.us/">Home</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/categories">Categories</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/tags">Tags</a>
+                 </li>
+            
+           <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+    </nav>
+    
+    
+</aside>
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom"  style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand" href="https://dodwell.us" role="banner" itemprop="url">
+
+                <img itemprop="logo" src="https://dodwell.us/images/devops_logo.gif" alt="dodwell.us Logo" />
+
+            <h1 class="blog-title light" itemprop="name">
+                dodwell.us
+            </h1>
+                
+            </a>
+        </div>
+    </div>
+    
+    
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+
+        </svg>
+    </div>
+    
+</header>
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+    <div class="container">
+        <div class="row">
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">MySQL Tuning</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published updated"><time datetime="2014-09-02T01:45:30+10:00" class="post-time" itemprop="datePublished">02 Sep 2014</time><span>
+                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">7.265</span> minutes read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p>Previously I wrote about <a href="https://dodwell.us/linux-memory/" title="Linux Memory">Linux Memory</a> and <a href="https://dodwell.us/linux-cpu/" title="Linux CPU">Linux CPU</a>. This post I want to talk about database tuning, mainly in regards to MySQL.</p>
+
+<h3 id="mysql-table-types">mysql table types</h3>
+
+<p>Before we can begin to allocate the correct amount of RAM to MySQL we need to have a good understanding of the type of data we’re serving and the type of load the data is going to receive. MySQL has two main table types, MyISAM and InnoDB.</p>
+
+<h3 id="myisam">myisam</h3>
+
+<p>MyISAM was the default storage engine for the MySQL relational database management system versions prior to 5.5. It is based on the older ISAM code but has many useful extensions.</p>
+
+<p>MyISAM is optimized for environments with heavy read operations, and few writes, or none at all. A typical area in which one could prefer MyISAM is data warehouse, because it involves queries on very big tables, and the update of such tables is done when the database is not in use (usually by night).</p>
+
+<h3 id="innodb">innodb</h3>
+
+<p>InnoDB is a general-purpose storage engine that balances high reliability and high performance. As of MySQL 5.5, it is the default MySQL storage engine. In MySQL 5.6, issuing the CREATE TABLE statement without an ENGINE= clause creates an InnoDB table.</p>
+
+<p>InnoDB uses row level locking to enable fast updates to table information and is generally best suited for storage of data with a high frequency of change.</p>
+
+<h4 id="separate-workloads">separate workloads</h4>
+
+<p>Generally speaking a MySQL server should serve either MyISAM or InnoDB table types. If you have different use cases (need to warehouse data and have a web frontend you wish to service) it’s generally good practise to have separate database clusters setup to service each of these use cases. Although you can mix table type types on your MySQL server, you won’t be able be able to gain the maximum performance for your server/cluster.</p>
+
+<p>When dealing with databases it’s always a good idea to be using a 64-bit address space. This means we have access to more than 4G of memory without having to use OS tricks (Physical Address Extension) that generally have performance hits.</p>
+
+<h4 id="innodb-buffer-pools">innodb buffer pools</h4>
+
+<p>If using just InnoDB, set innodb_buffer_pool_size to 70% of <em>available</em> RAM. (Plus key_buffer_size = 10M, small, but not zero.) If you have lots of RAM and are using 5.5 (or later), then consider having multiple pools. Recommend 1-16 innodb_buffer_pool_instances, such that each one is no smaller than 1GB. (Sorry, no metric on how much this will help; probably not a lot.)</p>
+
+<p>Meanwhile, set key_buffer_size = 20M (tiny, but non-zero)</p>
+
+<p>InnoDB does all its caching in a the “buffer pool”, whose size is controlled by innodb_buffer_pool_size. It contains 16KB data and index blocks from the open tables, plus some maintenance overhead.</p>
+
+<p>MySQL 5.5 (and 5.1 with the “Plugin”) lets you declare the block size to be 8KB or 4KB. MySQL 5.5 allows multiple buffer pools; this can help because there is one mutex per pool, thereby relieving some of the Mutex bottleneck.</p>
+
+<p>If you are sharing resources on a MySQL server and want to estimate what the correct allocation of RAM should be (rather than just taking 70% of the RAM). You can estimate this via looking at the databases hosted on the server. Add up Data_length + Index_length for all the InnoDB tables. Set innodb_buffer_pool_size to no more than 110% of that total. Make sure this number is less than the 70% of available RAM, otherwise it could lead to the system swapping.</p>
+
+<p>You can run the following SQL to get the sizes of the data used by your engines:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">SELECT  ENGINE,
+    ROUND<span class="o">(</span>SUM<span class="o">(</span>data_length<span class="o">)</span> /1024/1024, 1<span class="o">)</span> AS <span class="s2">"Data MB"</span>,
+    ROUND<span class="o">(</span>SUM<span class="o">(</span>index_length<span class="o">)</span>/1024/1024, 1<span class="o">)</span> AS <span class="s2">"Index MB"</span>,
+    ROUND<span class="o">(</span>SUM<span class="o">(</span>data_length + index_length<span class="o">)</span>/1024/1024, 1<span class="o">)</span> AS <span class="s2">"Total MB"</span>,
+    COUNT<span class="o">(</span><span class="k">*</span><span class="o">)</span> <span class="s2">"Num Tables"</span>
+FROM  INFORMATION_SCHEMA.TABLES
+WHERE  table_schema not <span class="k">in</span> <span class="o">(</span><span class="s2">"information_schema"</span>, <span class="s2">"performance_schema"</span><span class="o">)</span>
+GROUP BY  ENGINE<span class="p">;</span></code></pre></figure>
+
+<h4 id="myisam-key_buffers">myisam key_buffers</h4>
+
+<p>If using just MyISAM, set key_buffer_size to 20% of <em>available</em> RAM. (Plus innodb_buffer_pool_size=0)</p>
+
+<p>MyISAM does two different things for caching.</p>
+
+<ul>
+  <li>Index blocks (1KB each, BTree structured, from .MYI file) live in the “key buffer”.</li>
+  <li>Data block caching (from .MYD file) is left to the OS, so be sure to leave a bunch of free space for this.</li>
+</ul>
+
+<p>To check the health of your key_buffers run the following:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">SHOW GLOBAL STATUS LIKE <span class="s1">'Key%'</span><span class="p">;</span></code></pre></figure>
+
+<p>Now, calculate Key_read_requests / Key_reads If it is high (say, over 10), then the key_buffer is big enough. You can also add up Index_length for all the MyISAM tables. Set key_buffer_size no larger than that size. Use the SQL in the InnoDB section above to select the index_length for your MyISAM tables.</p>
+
+<h4 id="mutex-bottleneck">mutex bottleneck</h4>
+
+<p>MySQL was designed in the days of single-CPU machines, and designed to be easily ported to many different architectures. Unfortunately, that lead to some sloppiness in how to interlock actions. There are small number (too small) of “mutexes” to gain access to several critical processes. Of note:</p>
+
+<ul>
+  <li>MyISAM’s key_buffer</li>
+  <li>The Query Cache</li>
+  <li>InnoDB’s buffer_pool</li>
+</ul>
+
+<p>With multi-core boxes, the mutex problem is causing performance problems. In general, past 4-8 cores, MySQL gets slower, not faster. MySQL 5.5 and Percona’s XtraDB are making that somewhat better in InnoDB; the practical limit for cores is more like 32, and performance tends plateaus after that rather than declining. 5.6 claims to scale up to about 48 cores.</p>
+
+<h4 id="hyperthreading-and-multiple-cores">hyperthreading and multiple cores</h4>
+
+<p>HyperThreading is great for marketing, lousy for performance. It involves having two processing units sharing a single hardware cache. If both units are doing the same thing, the cache will be reasonably useful. If the units are doing different things, they will be clobbering each other’s cache entries.</p>
+
+<p>Furthermore MySQL is not great on using multiple cores. So, if you turn off HT, the remaining cores run a little faster.</p>
+
+<h4 id="open-files">open files</h4>
+
+<p>The OS has some limit on the number of open files it will let a process have. Each table needs 1 to 3 open files. Each PARTITION is effectively a table. Most operations on a partitioned table open <em>all</em> partitions.</p>
+
+<p>In *nix, ulimit tells you what the file limit is. The maximum value is in the tens of thousands, but sometimes it is set to only 1024. This limits you to about 300 tables.</p>
+
+<p>You can see how well your system is performing via SHOW GLOBAL STATUS; and computing the opens/second via Opened_files / Uptime If this is more than, say, 5, table_cache should be increased. If it is less than, say, 1, you might get improvement by decreasing table_cache.</p>
+
+<h4 id="query-cache">query cache</h4>
+
+<p>Generally speaking switching query_cache off should get rid of some unwanted overheads.</p>
+
+<p>To turn off query_cache you can set the following in your mysql.conf file.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">query_cache_type <span class="o">=</span> OFF
+query_cache_size <span class="o">=</span> 0</code></pre></figure>
+
+<p>To see how well your QC is performing, SHOW GLOBAL STATUS LIKE ‘Qc%’; then compute the read hit rate: Qcache_hits / Qcache_inserts If it is over, say, 5, the QC might be worth keeping. 
+If you decide the QC is right for you, then I recommend</p>
+
+<ul>
+  <li>query_cache_size = no more than 50M</li>
+  <li>query_cache_type = DEMAND</li>
+  <li>SQL_CACHE or SQL_NO_CACHE in all SELECTs, based on which queries are likely to benefit from caching.</li>
+</ul>
+
+<h4 id="thread_cache_size">thread_cache_size</h4>
+
+<p>This is a minor tunable. Zero will slow down thread (connection) creation. A small (say, 10), non-zero number is good. The setting has essentially no impact on RAM usage.</p>
+
+<p>It is the number of extra processes to hang onto. It does not restrict the number of threads; max_connections does.</p>
+
+<h4 id="binary-logs">binary Logs</h4>
+
+<p>If you have turned on binary logging (via log_bin) for replication and/or point-in-time recovery, The system will create binary logs forever. That is, they can slowly fill up disk. Suggest setting expire_logs_days = 14 to keep only 14 days’ worth of logs. It’s also a good idea to store these logs on a separate mount point to your database files.</p>
+
+<h4 id="swappiness">swappiness</h4>
+
+<p>MySQL would love for RAM allocations to be reasonably stable – the caches are (mostly) pre-allocated; the threads, etc, are (mostly) of limited scope. <strong>ANY</strong> swapping is likely to severely hurt performance of MySQL.</p>
+
+<p>With a high value for swappiness, you lose some RAM because the OS is trying to keep a lot of space free for future allocations (that MySQL is not likely to need).</p>
+
+<p>With swappiness = 0, the OS will probably crash rather than swap. I would rather have MySQL limping than die.</p>
+
+<p>Somewhere in between, 5, is a good value for a MySQL-only server.</p>
+
+<h4 id="tools">tools</h4>
+
+<p><a href="http://mysqltuner.com/" target="_blank">http://mysqltuner.com/</a></p>
+
+<p>MySQLTuner is a script written in Perl that allows you to review a MySQL installation quickly and make adjustments to increase performance and stability. The current configuration variables and status data is retrieved and presented in a brief format along with some basic performance suggestions.</p>
+
+<p><a href="https://launchpad.net/mysql-tuning-primer" target="_blank">https://launchpad.net/mysql-tuning-primer</a></p>
+
+<p>This script takes information from “SHOW STATUS LIKE…” and “SHOW VARIABLES LIKE…” then attempts to produce sane recommendations for tuning server variables. It is compatible with all versions of MySQL 3.23 and above.</p>
+
+                        <br>
+                    
+                    
+                    </div>
+        </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;MySQL Tuning&quot;%20https://dodwell.us/mysql-tuning.html%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us/mysql-tuning.html"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us/mysql-tuning.html"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us/images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us/resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
+    </div>
+</div>
+
+<footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" >
+
+
+    <div class="inner">
+        <div class="container">
+
+            <ul class="social-icons">
+            <li>
+                <a href="http://twitter.com/MichaelDodwell" data-toggle="tooltip" title="Michael Dodwell on Twitter" target="_blank">
+                    <i class="icon-twitter"></i>
+                </a>
+            </li>
+            
+            
+            
+            <li>
+                <a href="https://au.linkedin.com/in/michaeldodwell" data-toggle="tooltip" title="Michael Dodwell on LinkedIn" target="_blank">
+                    <i class="icon-linkedin"></i>
+                </a>
+            </li>
+            
+            
+            <li>
+                <a href="http://github.com/dodwmd" data-toggle="tooltip" title="Michael Dodwell on Github" target="_blank">
+                    <i class="icon-github"></i>
+                </a>
+            </li>
+        </ul>
+            <div>
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2021 &bull; All rights reserved.
+            </div>
+            <ul class="menu-items">
+            
+            <li>
+                
+                    <a href="https://dodwell.us/"><i class="icon-home"></i></a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/categories">Categories</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/tags">Tags</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+        </ul>
+        </div>
+    </div>
+    
+        <div class="decor-wrapper">
+            <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+                <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+                <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+
+                <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+
+                <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+
+                <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+
+            </svg>
+        </div>
+    
+</footer>
+
+
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://dodwell.us/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="https://dodwell.us/assets/js/scripts.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/waypoints.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl = 
+ '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-60832716-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+ 
+</body>
+</html>

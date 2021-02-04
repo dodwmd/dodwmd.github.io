@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UFW, fail2ban and blocking portscans oh my! &#8211; dodwell.us</title>
+<meta name="description" content="Using fail2ban and UFW together to block unwanted traffic">
+<meta name="keywords" content="">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dodwell.us/images/devops_logo.gif">
+<meta name="twitter:title" content="UFW, fail2ban and blocking portscans oh my!">
+<meta name="twitter:description" content="Using fail2ban and UFW together to block unwanted traffic">
+<meta name="twitter:creator" content="@MichaelDodwell">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UFW, fail2ban and blocking portscans oh my!">
+<meta property="og:description" content="Using fail2ban and UFW together to block unwanted traffic">
+<meta property="og:url" content="https://dodwell.us/security/ufw-fail2ban-portscan.html">
+<meta property="og:site_name" content="dodwell.us">
+<meta property="og:image" content="https://dodwell.us/images/default_bg1.jpg">
+
+
+
+
+
+<link rel="canonical" href="https://dodwell.us/security/ufw-fail2ban-portscan.html">
+<link href="https://dodwell.us/feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us/assets/css/dodwell-min.css" />
+
+
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="https://dodwell.us/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://dodwell.us/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://dodwell.us/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
+<div id="fade"></div>
+<a id="slide" class="animated fade"></a>
+<aside id="sidebar">
+    <nav id="navigation">
+    <h2>MENU</h2>
+    <hr>
+
+            <li>
+                    <a href="https://dodwell.us/">Home</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/categories">Categories</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/tags">Tags</a>
+                 </li>
+            
+           <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+    </nav>
+    
+    
+</aside>
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom"  style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand light" href="https://dodwell.us" role="banner" itemprop="url">
+
+                <img itemprop="logo" src="https://dodwell.us/images/devops_logo.gif" alt="dodwell.us Logo" />
+
+            <h1 class="blog-title light" itemprop="name">
+                dodwell.us
+            </h1>
+                
+            </a>
+            <h2 class="blog-description light bordered bordered-top" itemprop="description">
+                How to get UFW and fail2ban to work together to block port scanning
+            </h2>
+        </div>
+    </div>
+    
+    
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+
+        </svg>
+    </div>
+    
+</header>
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+    <div class="container">
+        <div class="row">
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">UFW, fail2ban and blocking portscans oh my!</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;">Using fail2ban and UFW together to block unwanted traffic</div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published"><time datetime="2015-05-28T00:00:00+10:00" class="post-time" itemprop="datePublished">28 May 2015</time><span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.16</span> minutes read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p>I just wanted to write down some issues I had as a reminder to myself and some notes that other people might find useful. I want to be able to setup some automatic host based firewall rules for some servers I look after so help mitigate any possible brute force attacks and general nastiness that you get on the internet. To do this I’m going to install UFW, fail2ban and setup some filters and actions in fail2ban to use information from UFW on Ubuntu 14.04.2.</p>
+
+<h3 id="what-is-it">what is it?</h3>
+
+<p><em>fail2ban</em></p>
+
+<p>I’ve used <a href="http://www.fail2ban.org/">fail2ban</a> as a minimal method to stop brute force attacks. Basically it will read config files for different services and if someone enters in the wrong password too many times will firewall them from the server for a period of time. This wont stop someone from ‘eventually’ brute forcing poor passwords but it increases the time taken exponentially and hopefully they get bored and move onto softer targets.</p>
+
+<p><em>UFW</em></p>
+
+<p>I’ve started using <a href="https://help.ubuntu.com/community/UFW">UFW</a> a little while ago. Normally I prefer to use <a href="http://shorewall.net/">shorewall</a> but it can be a little complex to setup at times so for this post I’m going to focus just on UFW.</p>
+
+<h3 id="where-to-start">where to start</h3>
+
+<p>First you need to get UFW all installed and ready to go.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nt">-y</span> <span class="nb">install </span>ufw fail2ban
+<span class="nv">$ </span><span class="nb">sudo sed</span> <span class="nt">-i</span> <span class="s1">'s/IPV6=no/IPV6=yes/g'</span> /etc/default/ufw
+<span class="nv">$ </span><span class="nb">sudo </span>ufw allow ssh
+<span class="nv">$ </span><span class="nb">sudo </span>ufw default deny incoming
+<span class="nv">$ </span><span class="nb">sudo </span>ufw default allow outgoing
+<span class="nv">$ </span><span class="nb">sudo </span>ufw logging low
+<span class="nv">$ </span><span class="nb">sudo </span>ufw disable
+<span class="nv">$ </span><span class="nb">sudo </span>ufw <span class="nb">enable</span></code></pre></figure>
+
+<p>The above should install UFW &amp; fail2ban. In UFW it should enable IPv6 support, allow ssh and setup some default firewall direction rules. We also want to only log denined packets to the kernel logger. The last step gives it a restart (disable/enable).</p>
+
+<p>Now if we generate some port open requests from another server to a port other than ssh we should see this:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>dmesg
+<span class="o">[</span>3071864.995451] <span class="o">[</span>UFW BLOCK] <span class="nv">IN</span><span class="o">=</span>venet0 <span class="nv">OUT</span><span class="o">=</span> <span class="nv">MAC</span><span class="o">=</span> <span class="nv">SRC</span><span class="o">=</span>192.168.0.1 <span class="nv">DST</span><span class="o">=</span>192.168.0.2 <span class="nv">LEN</span><span class="o">=</span>48 <span class="nv">TOS</span><span class="o">=</span>0x00 <span class="nv">PREC</span><span class="o">=</span>0x00 <span class="nv">TTL</span><span class="o">=</span>46 <span class="nv">ID</span><span class="o">=</span>12308 <span class="nv">PROTO</span><span class="o">=</span>UDP <span class="nv">SPT</span><span class="o">=</span>40393 <span class="nv">DPT</span><span class="o">=</span>40104 <span class="nv">LEN</span><span class="o">=</span>28</code></pre></figure>
+
+<p>Great! But you need this in a log file so fail2ban can use it. Lets take a look at our rsyslogd config:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@vps:/etc/rsyslog.d# <span class="nb">ls</span> <span class="nt">-la</span> <span class="k">*</span>ufw<span class="k">*</span>
+<span class="nt">-rw-r--r--</span>   1 root root    94 May 28 01:31 20-ufw.conf
+root@vps:/etc/rsyslog.d# <span class="nb">cat </span>20-ufw.conf
+<span class="c"># Log kernel generated UFW log messages to file</span>
+:msg,contains,<span class="s2">"[UFW "</span> /var/log/ufw.log
+root@vps:/etc/rsyslog.d#</code></pre></figure>
+
+<p>Great UFW has already setup a method to log UFW messages. But when I checked /var/log/ufw.log it didn’t exist. Restarting rsyslog didn’t seem to help. But then I noticed /etc/rsyslogd.conf:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#  /etc/rsyslog.conf    Configuration file for rsyslog.</span>
+<span class="c">#</span>
+<span class="c">#                       For more information see</span>
+<span class="c">#                       /usr/share/doc/rsyslog-doc/html/rsyslog_conf.html</span>
+<span class="c">#</span>
+<span class="c">#  Default logging rules can be found in /etc/rsyslog.d/50-default.conf</span>
+
+
+<span class="c">#################</span>
+<span class="c">#### MODULES ####</span>
+<span class="c">#################</span>
+
+<span class="nv">$ModLoad</span> imuxsock <span class="c"># provides support for local system logging</span>
+<span class="c">#$ModLoad imklog   # provides kernel logging support</span>
+<span class="c">#$ModLoad immark  # provides --MARK-- message capability</span></code></pre></figure>
+
+<p>After enabling ‘$ModLoad imklog’ I get the following in /var/log/kern.log:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">May 28 01:38:00 vps rsyslogd: imklog: cannot open kernel log <span class="o">(</span>/proc/kmsg<span class="o">)</span>: Operation not permitted.</code></pre></figure>
+
+<p>This appears due to rsyslog not opening /proc/kmsg before it drops it’s privs! This is now where we get into hacky area. Some people suggest using dd to mirror /proc/kmsg and getting rsyslogd to open that. Personally I just stopped rsyslog from dropping it’s privs all together.</p>
+
+<p>Edit /etc/rsyslogd.conf and comment out the following:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$PrivDropToUser</span> syslog
+<span class="nv">$PrivDropToGroup</span> syslog</code></pre></figure>
+
+<p>Now restart rsyslogd with ‘service rsyslog restart’.</p>
+
+<p>Checking /var/log/ufw.log it now exists and it has some data in it for us to play with! Great! Lets move onto fail2ban.</p>
+
+<h3 id="fail2ban">fail2ban</h3>
+
+<p>fail2ban will insert iptables rules when it chooses to ban hosts. This can cause a problem with UFW so lets make fail2ban play nicely with UFW.</p>
+
+<p>First lets setup a action rule that we can use to deny/allow users from being able to connect in:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">'[Definition]
+actionstart =
+actionstop =
+actioncheck =
+actionban = ufw deny in from &lt;ip&gt;
+actionunban = ufw delete deny in from &lt;ip&gt;'</span> | <span class="nb">sudo tee</span> /etc/fail2ban/action.d/ufw.conf</code></pre></figure>
+
+<p>While here you might want to edit your jail.conf file and update where required the actions of other services you want to monitor.</p>
+
+<p>Now lets setup a filter for our log file to know when to ban a user:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">'[Definition]
+failregex = UFW BLOCK.* SRC=&lt;HOST&gt;
+ignoreregex ='</span> | <span class="nb">sudo tee</span> /etc/fail2ban/filter.d/portscan.conf</code></pre></figure>
+
+<p>Now the clever amoung you will realise that UFW will block port ATTEMPTS which means that some nice fellow could craft some packets so that the connection attempt comes from hosts that should be allowed to connect.</p>
+
+<p>Lets setup some whitelist rules to make sure our networks and hosts that should never be firewalled aren’t. In jail.conf you will find a ‘whitelist’ varible. Lets update this with all our friendly networks.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">whilelist <span class="o">=</span> 10.0.0.0/8</code></pre></figure>
+
+<p>Ok now we just need to add a rule to tie it all together in our jail.conf file:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">'[portscan]
+enabled  = true
+filter   = portscan
+logpath  = /var/log/ufw.log
+action   = ufw
+maxretry = 5
+'</span> | <span class="nb">tee</span> <span class="nt">-a</span> /etc/fail2ban/jail.conf</code></pre></figure>
+
+<p>And lastly don’t forget to reload fail2ban:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo </span>service fail2ban restart</code></pre></figure>
+
+
+                        <br>
+                    
+                    
+                    </div>
+        </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;UFW, fail2ban and blocking portscans oh my!&quot;%20https://dodwell.us/security/ufw-fail2ban-portscan.html%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us/security/ufw-fail2ban-portscan.html"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us/security/ufw-fail2ban-portscan.html"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us/images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us/resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
+    </div>
+</div>
+
+<footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" >
+
+
+    <div class="inner">
+        <div class="container">
+
+            <ul class="social-icons">
+            <li>
+                <a href="http://twitter.com/MichaelDodwell" data-toggle="tooltip" title="Michael Dodwell on Twitter" target="_blank">
+                    <i class="icon-twitter"></i>
+                </a>
+            </li>
+            
+            
+            
+            <li>
+                <a href="https://au.linkedin.com/in/michaeldodwell" data-toggle="tooltip" title="Michael Dodwell on LinkedIn" target="_blank">
+                    <i class="icon-linkedin"></i>
+                </a>
+            </li>
+            
+            
+            <li>
+                <a href="http://github.com/dodwmd" data-toggle="tooltip" title="Michael Dodwell on Github" target="_blank">
+                    <i class="icon-github"></i>
+                </a>
+            </li>
+        </ul>
+            <div>
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2021 &bull; All rights reserved.
+            </div>
+            <ul class="menu-items">
+            
+            <li>
+                
+                    <a href="https://dodwell.us/"><i class="icon-home"></i></a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/categories">Categories</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/tags">Tags</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+        </ul>
+        </div>
+    </div>
+    
+        <div class="decor-wrapper">
+            <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+                <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+                <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+
+                <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+
+                <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+
+                <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+
+            </svg>
+        </div>
+    
+</footer>
+
+
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://dodwell.us/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="https://dodwell.us/assets/js/scripts.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/waypoints.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl = 
+ '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-60832716-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+ 
+</body>
+</html>

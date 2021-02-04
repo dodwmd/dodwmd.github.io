@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Disk Debugging &#8211; dodwell.us</title>
+<meta name="description" content="DevOPS: For fun and profit">
+<meta name="keywords" content="">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dodwell.us/images/devops_logo.gif">
+<meta name="twitter:title" content="Disk Debugging">
+<meta name="twitter:description" content="DevOPS: For fun and profit">
+<meta name="twitter:creator" content="@MichaelDodwell">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Disk Debugging">
+<meta property="og:description" content="DevOPS: For fun and profit">
+<meta property="og:url" content="https://dodwell.us/disk-debugging.html">
+<meta property="og:site_name" content="dodwell.us">
+<meta property="og:image" content="https://dodwell.us/images/default_bg1.jpg">
+
+
+
+
+
+<link rel="canonical" href="https://dodwell.us/disk-debugging.html">
+<link href="https://dodwell.us/feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us/assets/css/dodwell-min.css" />
+
+
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="https://dodwell.us/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://dodwell.us/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://dodwell.us/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
+<div id="fade"></div>
+<a id="slide" class="animated fade"></a>
+<aside id="sidebar">
+    <nav id="navigation">
+    <h2>MENU</h2>
+    <hr>
+
+            <li>
+                    <a href="https://dodwell.us/">Home</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/categories">Categories</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/tags">Tags</a>
+                 </li>
+            
+           <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+    </nav>
+    
+    
+</aside>
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom"  style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand" href="https://dodwell.us" role="banner" itemprop="url">
+
+                <img itemprop="logo" src="https://dodwell.us/images/devops_logo.gif" alt="dodwell.us Logo" />
+
+            <h1 class="blog-title light" itemprop="name">
+                dodwell.us
+            </h1>
+                
+            </a>
+        </div>
+    </div>
+    
+    
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+
+        </svg>
+    </div>
+    
+</header>
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+    <div class="container">
+        <div class="row">
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Disk Debugging</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published updated"><time datetime="2014-07-09T02:05:01+10:00" class="post-time" itemprop="datePublished">09 Jul 2014</time><span>
+                            in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.89</span> minutes read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p><a href="https://dodwell.us/linux-cpu/" title="Linux CPU">sar</a> gives us an overview of what the system is doing. If you had a high %iowait you might want to figure out what drive is currently being used. To do this we use ‘iostat’. ‘iostat’ will by default give you all the reads and writes that the server has performed since start up.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# iostat
+Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span>8 CPU<span class="o">)</span>
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           4.71    0.08    1.76    2.70    0.00   90.75
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+sda              43.18       444.49       377.38 4868027082 4133006543
+sdb              43.21       390.18       437.79 4273169451 4794601370
+sdc              43.37       372.14       455.47 4075619576 4988231906
+sdd              43.12       303.40       520.57 3322820691 5701198578
+md0             112.68       196.71       987.63 2154354407 10816361389
+dm-0              0.02         0.00         0.02       3710     191813
+dm-1              0.07         0.13         0.15    1415036    1608712
+dm-2            105.45       196.58       987.46 2152916405 10814560864
+root@earth:~#</code></pre></figure>
+
+<p>You can specify the following command to tell you where data is currently being written to disk.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# iostat 5 2
+Linux 3.11.0-15-generic <span class="o">(</span>earth<span class="o">)</span>        07/01/2014      _x86_64_        <span class="o">(</span>8 CPU<span class="o">)</span>
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           4.71    0.08    1.75   32.70    0.00   70.75
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+sda              43.19       444.48       377.40 4870534754 4135461454
+sdb              43.22       390.15       437.81 4275250131 4797504917
+sdc              43.37       372.11       455.50 4077567336 4991286137
+sdd              43.12       303.37       520.60 3324288487 5704684509
+md0             112.70       196.63       987.67 2154614063 10822740329
+dm-0              0.02         0.00         0.02       3710     191813
+dm-1              0.07         0.13         0.15    1415124    1608712
+dm-2            105.46       196.50       987.50 2153175973 10820939804
+dm-3            123.51       420.50      9537.33 93284825825 394839274299
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+          13.69    0.00    0.35   22.20    0.00   63.76
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+sda              27.40         3.20       283.40         16       1417
+sdb              23.40         7.20       227.40         36       1137
+sdc              17.40       158.40        57.80        792        289
+sdd              14.20       165.60         1.80        828          9
+md0              77.80         3.20       281.60         16       1408
+dm-0              0.00         0.00         0.00          0          0
+dm-1              0.00         0.00         0.00          0          0
+dm-2             70.60         3.20       281.60         16       1408
+dm-3           1392.60      1209.40      9012.49       4931       5912
+root@earth:~#</code></pre></figure>
+
+<p>It should be noted that the first block of text is indeed the total summary since startup. The second block is an average from the last 5 seconds.</p>
+
+<p>On a heavily used system, sometimes, it’s not that apparent what process is causing a high amount of load to a certain drive. Once we have identified what drive is under load with iostat we can find the drives mount point (dmsetup ls) and then use a program called ‘lsof’ to find what processes have files open on that mount.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:~# dmsetup <span class="nb">ls
+</span>vg_earth-boot  <span class="o">(</span>252:0<span class="o">)</span>
+vg_earth-swap  <span class="o">(</span>252:1<span class="o">)</span>
+vg_earth-root  <span class="o">(</span>252:2<span class="o">)</span>
+vg_earth-usr   <span class="o">(</span>252:2<span class="o">)</span>
+root@earth:~# mount | <span class="nb">grep </span>vg_earth-usr
+/dev/mapper/vg_earth-app on /app <span class="nb">type </span>ext4 <span class="o">(</span>rw,errors<span class="o">=</span>remount-ro<span class="o">)</span>
+root@earth:~# lsof +D /usr/
+COMMAND     PID     USER   FD   TYPE DEVICE SIZE/OFF     NODE NAME
+irqbalanc  1421     root  txt    REG  252,2    44136 13896668 /usr/sbin/irqbalance
+sshd       8424     root  mem    REG  252,2    14536 13894192 /usr/lib/x86_64-linux-gnu/libck-connector.so.0.0.0
+sshd       8518   dodwmd  mem    REG  252,2    14536 13894192 /usr/lib/x86_64-linux-gnu/libck-connector.so.0.0.0
+php-cgi    9346 www-data  cwd    DIR  252,2    49152 13893777 /usr/bin
+php-cgi    9346 www-data  txt    REG  252,2  9022832 13894634 /usr/bin/php5-cgi
+php-cgi    9346 www-data  mem    REG  252,2   162032  4333607 /usr/lib/php5/20121212/xcache.so
+php-cgi    9346 www-data  mem    REG  252,2   179184 13894891 /usr/lib/x86_64-linux-gnu/libedit.so.2.0.47
+php-cgi    9346 www-data  mem    REG  252,2    31472  4332415 /usr/lib/php5/20121212/readline.so
+...
+...</code></pre></figure>
+
+<h3 id="iotop">iotop</h3>
+
+<p>If we still don’t know what file(s) are being written to the most, you can use a program called ‘iotop’ to figure out what files on a certain mount are being written to more than anything else.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@earth:/# iotop <span class="nt">-o</span> <span class="nt">-a</span> <span class="nt">-P</span> <span class="nt">-b</span> <span class="nt">-d</span> 5 <span class="nt">-n</span> 5 <span class="sb">`</span>lsof +D /usr <span class="nt">-t</span> | <span class="nb">sed</span> <span class="s1">'s/^/-p /g'</span><span class="sb">`</span>
+Total DISK READ :       0.00 B/s | Total DISK WRITE :       0.00 B/s
+Actual DISK READ:       0.00 B/s | Actual DISK WRITE:       0.00 B/s
+  PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+Total DISK READ :       0.00 B/s | Total DISK WRITE :      27.94 K/s
+Actual DISK READ:       0.00 B/s | Actual DISK WRITE:     107.77 K/s
+  PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+20396 be/4 www-data      0.00 B     24.00 K  0.00 %  2.24 % php-cgi
+32108 be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
+Total DISK READ :      59.67 K/s | Total DISK WRITE :       3.98 K/s
+Actual DISK READ:      59.67 K/s | Actual DISK WRITE:       3.98 K/s
+  PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+20396 be/4 www-data      0.00 B     24.00 K  0.00 %  1.12 % php-cgi
+32108 be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
+Total DISK READ :       0.00 B/s | Total DISK WRITE :       0.00 B/s
+Actual DISK READ:       0.00 B/s | Actual DISK WRITE:       0.00 B/s
+  PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+20396 be/4 www-data      0.00 B     24.00 K  0.00 %  0.75 % php-cgi
+32108 be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
+Total DISK READ :       0.00 B/s | Total DISK WRITE :       3.98 K/s
+Actual DISK READ:       0.00 B/s | Actual DISK WRITE:     286.66 K/s
+  PID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+20396 be/4 www-data      0.00 B     24.00 K  0.00 %  0.56 % php-cgi
+32108 be/4 www-data      0.00 B      4.00 K  0.00 %  0.00 % php-cgi
+root@earth:/#</code></pre></figure>
+
+<p>In the above command we ask iotop: (-o) Only show processes or threads actually doing I/O, (-a) Show accumulated I/O instead of bandwidth, (-P) only show processes - not threads, (-b) turn on non-interactive mode, (-d 5) set the delay between iterations in seconds, (-n 5) set the number of iterations before quitting. Then we call lsof +D /usr -t to output only the PID’s that are currently using /usr and use sed to put -p in front of the PID so that it can be called with iotop. In the output you now have a list of PID’s that are currently using disk I/O on the drive in question.</p>
+
+<p>Using some really great tools we’re able to figure out exactly what is causing heavy load of a file system so that we can deliver a better experience to users while ensuring we don’t over deliver and increase the costs of hosting.</p>
+
+                        <br>
+                    
+                    
+                    </div>
+        </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;Disk Debugging&quot;%20https://dodwell.us/disk-debugging.html%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us/disk-debugging.html"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us/disk-debugging.html"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us/images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us/resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
+    </div>
+</div>
+
+<footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" >
+
+
+    <div class="inner">
+        <div class="container">
+
+            <ul class="social-icons">
+            <li>
+                <a href="http://twitter.com/MichaelDodwell" data-toggle="tooltip" title="Michael Dodwell on Twitter" target="_blank">
+                    <i class="icon-twitter"></i>
+                </a>
+            </li>
+            
+            
+            
+            <li>
+                <a href="https://au.linkedin.com/in/michaeldodwell" data-toggle="tooltip" title="Michael Dodwell on LinkedIn" target="_blank">
+                    <i class="icon-linkedin"></i>
+                </a>
+            </li>
+            
+            
+            <li>
+                <a href="http://github.com/dodwmd" data-toggle="tooltip" title="Michael Dodwell on Github" target="_blank">
+                    <i class="icon-github"></i>
+                </a>
+            </li>
+        </ul>
+            <div>
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2021 &bull; All rights reserved.
+            </div>
+            <ul class="menu-items">
+            
+            <li>
+                
+                    <a href="https://dodwell.us/"><i class="icon-home"></i></a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/categories">Categories</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/tags">Tags</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+        </ul>
+        </div>
+    </div>
+    
+        <div class="decor-wrapper">
+            <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+                <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+                <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+
+                <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+
+                <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+
+                <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+
+            </svg>
+        </div>
+    
+</footer>
+
+
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://dodwell.us/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="https://dodwell.us/assets/js/scripts.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/waypoints.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl = 
+ '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-60832716-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+ 
+</body>
+</html>

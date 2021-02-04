@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Secure SSH Setup &#8211; dodwell.us</title>
+<meta name="description" content="What is SSH and how can we secure it.">
+<meta name="keywords" content="">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dodwell.us/images/devops_logo.gif">
+<meta name="twitter:title" content="Secure SSH Setup">
+<meta name="twitter:description" content="What is SSH and how can we secure it.">
+<meta name="twitter:creator" content="@MichaelDodwell">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Secure SSH Setup">
+<meta property="og:description" content="What is SSH and how can we secure it.">
+<meta property="og:url" content="https://dodwell.us/security/ssh-setup.html">
+<meta property="og:site_name" content="dodwell.us">
+<meta property="og:image" content="https://dodwell.us/images/default_bg1.jpg">
+
+
+
+
+
+<link rel="canonical" href="https://dodwell.us/security/ssh-setup.html">
+<link href="https://dodwell.us/feed.xml" type="application/atom+xml" rel="alternate" title="dodwell.us Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" type="text/css" href="https://dodwell.us/assets/css/dodwell-min.css" />
+
+
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="https://dodwell.us/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="https://dodwell.us/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://dodwell.us/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://dodwell.us/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://dodwell.us/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">  
+<div id="fade"></div>
+<a id="slide" class="animated fade"></a>
+<aside id="sidebar">
+    <nav id="navigation">
+    <h2>MENU</h2>
+    <hr>
+
+            <li>
+                    <a href="https://dodwell.us/">Home</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/categories">Categories</a>
+                 </li>
+
+            <li>
+                    <a href="https://dodwell.us/tags">Tags</a>
+                 </li>
+            
+           <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+    </nav>
+    
+    
+</aside>
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom"  style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand light" href="https://dodwell.us" role="banner" itemprop="url">
+
+                <img itemprop="logo" src="https://dodwell.us/images/devops_logo.gif" alt="dodwell.us Logo" />
+
+            <h1 class="blog-title light" itemprop="name">
+                dodwell.us
+            </h1>
+                
+            </a>
+            <h2 class="blog-description light bordered bordered-top" itemprop="description">
+                Secure SSH Setup
+            </h2>
+        </div>
+    </div>
+    
+    
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+
+        </svg>
+    </div>
+    
+</header>
+<div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+    <div class="container">
+        <div class="row">
+            <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            
+            
+            
+                    <header class="post-header entry-header">
+                    
+                        
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">Secure SSH Setup</h1>
+                        
+                        <div class="cursive" style="color: #000; font-style:italic;">What is SSH and how can we secure it.</div>
+                        <div class="post-info text-center small">
+                            <span class="entry-date date published"><time datetime="2015-01-21T00:00:00+11:00" class="post-time" itemprop="datePublished">21 Jan 2015</time><span>
+                            in <span class="post-tags"><a href="https://dodwell.us/categories/index.html#security" data-toggle="tooltip" title="Other posts from the Security category" rel="tag">Security</a></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">3.625</span> minutes read</span>
+                        </div>
+                    </header>
+                    <div class="post-body bordered-bottom" itemprop="description">
+                        
+                        <p>Previously I posted on how to make some changes to SSL to improve it’s security for your users. This post I want to cover off some information on how to setup SSH to secure your server for yourself.</p>
+
+<h3 id="what-is-it">what is it?</h3>
+
+<blockquote>
+  <p>Secure Shell (SSH) is a cryptographic network protocol for secure data communication, remote command-line login, remote command execution, and other secure network services between two networked computers. It connects, via a secure channel over an insecure network, a server and a client running SSH server and SSH client programs, respectively. The protocol specification distinguishes between two major versions that are referred to as SSH-1 and SSH-2.
+The best-known application of the protocol is for access to shell accounts on Unix-like operating systems, but it can also be used in a similar fashion for accounts on Windows. It was designed as a replacement for Telnet and other insecure remote shell protocols such as the Berkeley rsh and rexec protocols, which send information, notably passwords, in plaintext, rendering them susceptible to interception and disclosure using packet analysis.</p>
+
+  <p>– <a href="http://en.wikipedia.org/wiki/Secure_Shell">http://en.wikipedia.org/wiki/Secure_Shell</a></p>
+</blockquote>
+
+<h3 id="what-to-protect">what to protect</h3>
+
+<p>SSH contains a number of attack vectors that we need to cover. It should be noted that to properly protect your access to servers you should protect your client and the server. Below I’ll give options that should be set on the computer doing the access and should be set on the remote server recieving the access request. By disallowing bad security within your SSH client you are able to defeat rogue servers from exposing key information that you should protect.</p>
+
+<h3 id="key-exchange">key exchange</h3>
+
+<p>When a ssh session is opened to a remote server the SSH session begins by agreeing on a shared key. This exchange happens via Diffie-Hellman and Elliptic Curve Diffie-Hellman. Both methods provide forward secrecy. Which as previously covered in my SSL post is required to ensure that the session can’t be passively recorded and later decrypted once servers private key has been collected.</p>
+
+<p>OpenSSH supports 8 key exchange protocols:</p>
+
+<ul>
+  <li>ecdh-sha2-nistp256: ECDH over NIST P-256 with SHA2</li>
+  <li>ecdh-sha2-nistp384: ECDH over NIST P-384 with SHA2</li>
+  <li>ecdh-sha2-nistp521: ECDH over NIST P-521 with SHA2</li>
+  <li>diffie-hellman-group1-sha1: 1024 bit DH with SHA1</li>
+  <li>diffie-hellman-group14-sha1: 2048 bit DH with SHA1</li>
+  <li>diffie-hellman-group-exchange-sha1: Custom DH with SHA1</li>
+  <li>diffie-hellman-group-exchange-sha256: Custom DH with SHA2</li>
+  <li>curve25519-sha256: ECDH over Curve25519 with SHA2</li>
+</ul>
+
+<p>The first 3 options are out due to failures with NIST curves. They leak secrets through timing side channels and off-curve inputs.</p>
+
+<p>We should also elimate anything that uses SHA1.</p>
+
+<p>This leaves us with diffie-hellman-group-exchange-sha256 and curve25519-sha256.</p>
+
+<p>Recommended /etc/ssh/sshd_config snippet:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256</code></pre></figure>
+
+<p>Recommended /etc/ssh/ssh_config snippet:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Host <span class="k">*</span>
+    KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256</code></pre></figure>
+
+<p>We should also regenerate our moduli file via:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ssh-keygen <span class="nt">-G</span> <span class="s2">"</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span><span class="s2">/moduli"</span> <span class="nt">-b</span> 4096
+ssh-keygen <span class="nt">-T</span> /etc/ssh/moduli <span class="nt">-f</span> <span class="s2">"</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span><span class="s2">/moduli"</span></code></pre></figure>
+
+<h3 id="authentication">authentication</h3>
+
+<p>Now that we have a secure channel we need a way to authenticate. Firstly the server must prove it’s who it says it is. It does this by signing the key resulting from the key exchange. It has 4 different methods for this signing to occur.</p>
+
+<ul>
+  <li>DSA with SHA1</li>
+  <li>ECDSA with SHA256, SHA384 or SHA512 depending on key size</li>
+  <li>Ed25519 with SHA512</li>
+  <li>RSA with SHA1</li>
+</ul>
+
+<p>We want to disable DSA (due to a limitation of keys needing to be 1024) and ECDSA due to them needing randomness for signatures. If our random function is poor it can lead to our keys being recoverable. We can however either use RSA or Ed25519.</p>
+
+<p>Recommended /etc/ssh/sshd_config snippet:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Protocol 2
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_rsa_key</code></pre></figure>
+
+<p>You should also now take this oppitunity to regenerate your SSH server keys.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /etc/ssh
+<span class="nb">rm </span>ssh_host_<span class="k">*</span>key<span class="k">*</span>
+ssh-keygen <span class="nt">-t</span> ed25519 <span class="nt">-f</span> ssh_host_ed25519_key &lt; /dev/null
+ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-b</span> 4096 <span class="nt">-f</span> ssh_host_rsa_key &lt; /dev/null</code></pre></figure>
+
+<p>The client must prove its identity to the server as well. There are various methods to do that.</p>
+
+<p>The simplest is password authentication. This should be disabled immediately after setting up a more secure method because it allows compromised servers to steal passwords. Password authentication is also more vulnerable to online bruteforce attacks.</p>
+
+<p>Recommended /etc/ssh/sshd_config snippet:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">PasswordAuthentication no
+ChallengeResponseAuthentication no</code></pre></figure>
+
+<p>Recommended /etc/ssh/ssh_config snippet:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Host <span class="k">*</span>
+    PasswordAuthentication no
+    ChallengeResponseAuthentication no</code></pre></figure>
+
+<p>The most common and secure method is public key authentication, basically the same process as the server authentication.</p>
+
+<p>Recommended /etc/ssh/sshd_config snippet:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">PubkeyAuthentication <span class="nb">yes</span></code></pre></figure>
+
+<p>Recommended /etc/ssh/ssh_config snippet:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Host <span class="k">*</span>
+    PubkeyAuthentication <span class="nb">yes
+    </span>HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-rsa-cert-v00@openssh.com,ssh-ed25519,ssh-rsa</code></pre></figure>
+
+<p>Generate client keys using the following commands:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ssh-keygen <span class="nt">-t</span> ed25519 <span class="nt">-o</span> <span class="nt">-a</span> 100
+ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-b</span> 4096 <span class="nt">-o</span> <span class="nt">-a</span> 100</code></pre></figure>
+
+
+                        <br>
+                    
+                    
+                    </div>
+        </div>
+                    <footer class="post-footer entry-meta">
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=&quot;Secure SSH Setup&quot;%20https://dodwell.us/security/ssh-setup.html%20via%20&#64;MichaelDodwell"
+            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip" title="Share on Twitter" itemprop="Twitter">
+                <i class="icon-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a  href="https://www.facebook.com/sharer/sharer.php?u=https://dodwell.us/security/ssh-setup.html"
+            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="icon-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=https://dodwell.us/security/ssh-setup.html"
+           onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="icon-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                        <div class="post-author text-center">                       
+	        <img src="https://dodwell.us/images/dodwmd.jpg" alt="Michael Dodwell's photo" itemprop="image" class="post-avatar img-circle img-responsive"/>    
+	    <h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">By <span itemprop="name" class="fn"><a href="https://dodwell.us/resume/" title="About Michael Dodwell" itemprop="url">Michael Dodwell</a></span></h4>
+	    <p>I have a strong analytical and problem solving background in multi-platform systems administration and computing solutions and I am able to identify problems and facilitate solutions in a timely matter. Therefore, I am most interested in a challenging and responsible position where my initiative, experience, and interpersonal skills will be fully utilized and valued.</p>
+</div>
+ 
+                        
+                    </footer>
+            </article>
+    </div>
+</div>
+
+<footer id="footer"  class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(https://dodwell.us/images/default_bg1.jpg)" >
+
+
+    <div class="inner">
+        <div class="container">
+
+            <ul class="social-icons">
+            <li>
+                <a href="http://twitter.com/MichaelDodwell" data-toggle="tooltip" title="Michael Dodwell on Twitter" target="_blank">
+                    <i class="icon-twitter"></i>
+                </a>
+            </li>
+            
+            
+            
+            <li>
+                <a href="https://au.linkedin.com/in/michaeldodwell" data-toggle="tooltip" title="Michael Dodwell on LinkedIn" target="_blank">
+                    <i class="icon-linkedin"></i>
+                </a>
+            </li>
+            
+            
+            <li>
+                <a href="http://github.com/dodwmd" data-toggle="tooltip" title="Michael Dodwell on Github" target="_blank">
+                    <i class="icon-github"></i>
+                </a>
+            </li>
+        </ul>
+            <div>
+                <a href="https://dodwell.us/resume/">Michael Dodwell</a> &copy; 2021 &bull; All rights reserved.
+            </div>
+            <ul class="menu-items">
+            
+            <li>
+                
+                    <a href="https://dodwell.us/"><i class="icon-home"></i></a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/resume"><i class="icon-book"></i> Resume</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/categories">Categories</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li>
+                
+                    <a href="https://dodwell.us/tags">Tags</a>&nbsp;&bull;
+                 
+            </li>
+            
+            <li><a href="https://dodwell.us/feed.xml" title="Atom/RSS feed"><i class="icon-rss"></i> Feed</a></li>
+        </ul>
+        </div>
+    </div>
+    
+        <div class="decor-wrapper">
+            <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+                <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+
+                <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+
+                <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+
+                <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+
+                <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+
+            </svg>
+        </div>
+    
+</footer>
+
+
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://dodwell.us/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="https://dodwell.us/assets/js/scripts.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/waypoints.min.js"></script>
+<script type="text/javascript" src="https://dodwell.us/assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl = 
+ '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-60832716-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+ 
+</body>
+</html>
