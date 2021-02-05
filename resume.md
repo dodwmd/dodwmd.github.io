@@ -92,7 +92,7 @@ permalink: /resume/
                                 <h2>Maestro</h2>
                                 <h3>Senior DevOps Lead</h3>
                                 <h4>Aug 2020 – Current</h4>
-                                <p align="justify"><i>Maestro is the interactive video platform for creators looking to own, engage, and monetize audiences</i></br>
+                                <p align="justify"><i>Maestro is the interactive video platform for creators looking to own, engage, and monetize audiences</i><br>
                                 Senior DevOps Lead tasked with the need to automate the creation of GKE clusters to aide in the deployment process. Environments where manually created then cloned over time to upgrade. Site had complex scaling issues due to the nature of hosting video streaming events that experienced massive spikes in load as an event started by sometimes an unknown amount of viewership. The Infrastructure consisted of multiple K/V and document databases and self-managed GKE clusters with CDN in front. Pod count would reach multiple thousand during events and scaling required heavy tuning to be able to cope with the sudden spikes in load.
                                   <ol type="disc">
                                       <li>Greenfield/side-by-side deployment of infrastructure using Terraform on GCP, the GitOps methodology was used in all repos to ensure environments and configuration could be released via git commands</li>
@@ -107,7 +107,7 @@ permalink: /resume/
                                 <h2>Console Group</h2>
                                 <h3>Senior DevOps Engineer</h3>
                                 <h4>Oct 2018 – Aug 2020</h4>
-                                <p align="justify"><i>Property Management software to manage your portfolio in minutes</i></br>
+                                <p align="justify"><i>Property Management software to manage your portfolio in minutes</i><br>
                                 Senior DevOps Lead working with a small team to deliver DevOps capabilities to the company, allowing teams to be able to release multiple times a day and creating automation around being able to create named development environments as required and scheduling development and pre-production environments to be created and destroyed as required.
                                   <ol type="disc">
                                       <li>Introduced a container first philosophy, by updating all existing containers to use a unified Ubuntu base image. Migrated workloads that were running on dedicated instances to run on ASG backed ECS clusters</li>
@@ -123,7 +123,7 @@ permalink: /resume/
                                 <h2>Redhat Software</h2>
                                 <h3>Senior Systems Adminsitrator</h3>
                                 <h4>Oct 2017 – Sep 2018</h4>
-                                <p align="justify"><i>World’s leading provider of open source, enterprise IT solutions</i></br>
+                                <p align="justify"><i>World’s leading provider of open source, enterprise IT solutions</i><br>
                                 Promoted to pivotal role as Brew’s Technical Lead overseeing Red Hat’s cross-architecture build environment, having been recruited with accountability for upkeep and support of major OpenStack environment (CI-RHOS). Delivered core CI/CD pipeline producing client-use packaged software. Migrated CI-RHOS into full stack implementation of RHEL’s Upshift.
                                   <ol type="disc">
                                       <li>Sustained upkeep and maintenance of infrastructure and application uptime for customer viability mission critical component, Brew (application carrying out rpm package creation and testing for all supported architectures including but not limited to PPC, ARM64, S390, X86_64 and IA64)</li>
@@ -140,11 +140,11 @@ permalink: /resume/
                                 <h2>Accenture</h2>
                                 <h3>DevOps & Agile Capability Manager (fulltime)</h3>
                                 <h4>Feburary 2015 – Oct 2017</h4>
-                                <p align="justify"><i>Accenture is a management consulting, technology services and outsourcing company helping clients in Australia become high-performing</i></br>
-				I was brought on to Accenture to help augment and build their DevOps practice. Accenture wanted to develop a practice in the Australasian and Pacific region(s) to meet client demand. During my first assignment, I was able to create a small team with a major Telecommunications provider helping them to establish an automation framework for the provisioning of infrastructure to assist in the acquisition of new customers onto their hosted environments. By developing a python framework using Fabric, I was able to manage the configuration of their existing hardware to allow for the automated provision of new clients. This increased the turnaround for new account signups to be a matter of minutes rather than days. I also served as a mentor and guide for both client and Accenture staff; primarily in the DevOps practice. I was also part of an Openstack proposal and worked closely with Red Hat Solutions Architects in how we were able to bring this to market under the Telecommunications provider’s banner.</br>
-				FINANCIAL SECTOR</br>
-				Within the financial sector I helped design, and architect a proposal for a project; which was to automate the creation of environments to help service the internally developed software lifecycle for the Core Banking products utilised by the institution. During the accepted proposal; I acted as the Delivery Manager for a group of engineers, which spanned a collaborative network of global staff and external vendors. Upon completion of the project the team had managed to improve the deployment(s) 10-fold and allowed for the migration of on-prem environments to AWS. This work enabled a massive cost reduction to environment deployments which enabled a higher concurrency of development work to be carried out and a massive cost reduction to the purchase of new hardware to service these environments. </br>
-				GOVERNMENT SECTOR</br>
+                                <p align="justify"><i>Accenture is a management consulting, technology services and outsourcing company helping clients in Australia become high-performing</i><br>
+				I was brought on to Accenture to help augment and build their DevOps practice. Accenture wanted to develop a practice in the Australasian and Pacific region(s) to meet client demand. During my first assignment, I was able to create a small team with a major Telecommunications provider helping them to establish an automation framework for the provisioning of infrastructure to assist in the acquisition of new customers onto their hosted environments. By developing a python framework using Fabric, I was able to manage the configuration of their existing hardware to allow for the automated provision of new clients. This increased the turnaround for new account signups to be a matter of minutes rather than days. I also served as a mentor and guide for both client and Accenture staff; primarily in the DevOps practice. I was also part of an Openstack proposal and worked closely with Red Hat Solutions Architects in how we were able to bring this to market under the Telecommunications provider’s banner.<br>
+				FINANCIAL SECTOR<br>
+				Within the financial sector I helped design, and architect a proposal for a project; which was to automate the creation of environments to help service the internally developed software lifecycle for the Core Banking products utilised by the institution. During the accepted proposal; I acted as the Delivery Manager for a group of engineers, which spanned a collaborative network of global staff and external vendors. Upon completion of the project the team had managed to improve the deployment(s) 10-fold and allowed for the migration of on-prem environments to AWS. This work enabled a massive cost reduction to environment deployments which enabled a higher concurrency of development work to be carried out and a massive cost reduction to the purchase of new hardware to service these environments. <br>
+				GOVERNMENT SECTOR<br>
 				Currently, I am working out of the main Brisbane office on a project for a government department where I am directly responsible for a large group of System Engineers. Here I assist the training and act as the oversight for DevOps transformation. The core work that is being carried out is to migrate to the cloud agnostically. With a limited approach to services offered by providers (IAAS) we are able to utilise products like vRealize to build templates that are able to be built on a subset of selected cloud providers. I was further able to guide and educate staff in how to operate using Agile/DevOps methodologies and practices. Working with the Release Train I was also able to reorganize the existing feature and systems teams to create 6 cross-functional teams able to meet future business needs under SAFE.
                                 </p>
                             </div>
@@ -152,7 +152,7 @@ permalink: /resume/
                                 <h2>Outware</h2>
                                 <h3>DevOps Consultant (contract)</h3>
                                 <h4>October 2014 – Feburary 2015</h4>
-                                <p align="justify"><i>Outware Mobile is Australia's leading mobile app development and design company. Custom app developers for iPhone, iPad and Android.</i></br>
+                                <p align="justify"><i>Outware Mobile is Australia's leading mobile app development and design company. Custom app developers for iPhone, iPad and Android.</i><br>
                                 I was asked to join the Outware team to help solve some directional problems they were having with their build environments. This role required me to work directly with one of Outware's major clients, ANZ, finding a solution that would meet both ANZ’s and Outware's requirements for a stable/secure build environment. The existing build environment required major rework and while contracting at Outware I was able to complete all necessary planning and implementation of the recreation of the environment. This work consisted of upgrades to the OS/virtualization/CI and implementation of better testing framework/build reporting. This work also required generic pattern setup to allow for use with other clients.
                                 </p>
                             </div>
@@ -160,105 +160,105 @@ permalink: /resume/
                                 <h2>Geoplex</h2>
                                 <h3>DevOps Consultant (contract)</h3>
                                 <h4>March 2014 - October 2014</h4>
-                                <p align="justify"><i>Geoplex help organisations they work with reach their goals by providing a skilled team of spatial system architects, developers and analysts; geospatial professionals with a common interest and shared expertise. Geoplex brings a clear thinking approach to the projects they work on, by rationalising problems, and carefully designing solutions.</i></br>
+                                <p align="justify"><i>Geoplex help organisations they work with reach their goals by providing a skilled team of spatial system architects, developers and analysts; geospatial professionals with a common interest and shared expertise. Geoplex brings a clear thinking approach to the projects they work on, by rationalising problems, and carefully designing solutions.</i><br>
                                 My role at Geoplex consisted of the creation and automation of server environments capable of real-time monitoring of assets for the waste management industry. This was enabled through the installation of monitoring hardware installed on all trucks that would send GPS location and status information back to a centralized database, which was frequently queried “in real-time” for reporting and tracking analysis tasks, utilised by both company and council. Analysis data included photographic-proof of incidents. On average nearly a million records of real-time activity are recorded per month.</p>
                             </div>
                             <div class="job">
                                 <h2>UXC Connect</h2>
                                 <h3>Solutions Architect (contract)</h3>
                                 <h4>August 2012 - December 2014</h4>
-                                <p align="justify"><i>UXC Connect is a focused IT company providing ICT solutions in Consulting, Business Applications, Infrastructure and the Cloud that support customers to design, implement & enhance, and operate & manage their ICT requirements.</i></br>
+                                <p align="justify"><i>UXC Connect is a focused IT company providing ICT solutions in Consulting, Business Applications, Infrastructure and the Cloud that support customers to design, implement & enhance, and operate & manage their ICT requirements.</i><br>
                                 My role at UXC Connect was to assist in the contract to provide managed services to the Victorian government's Worksafe and TAC initiatives. The infrastructure was in dire need of renewal and suffered from a lack of upkeep. UXC was brought in to renew the entire infrastructure, re-platform archaic solutions and to bring new capabilities to the management of systems to the environment.</p>
                             </div>
                             <div class="job">
                                 <h2>Australia Post</h2>
                                 <h3>Sr. UNIX Systems Administrator (contract)</h3>
                                 <h4>January 2012 - July 2012</h4>
-                                <p align="justify"><i>For more than 200 years, Australia Post has met the changing needs of Australians. We continue to be a trusted part of everyday life for people and businesses across the nation.</i></br>
+                                <p align="justify"><i>For more than 200 years, Australia Post has met the changing needs of Australians. We continue to be a trusted part of everyday life for people and businesses across the nation.</i><br>
                                 Australia Post has a project to create a Digital Mailbox within Australia called Redbox. The role was created to manage the operational requirement to bring to market a new solution. The original role required working with 3rd party providers to create a solution but later pivoted to use an existing solution from a supplier based out of the USA. The role required me to carry out a detailed analysis of the solution to confirm that it would fit into an Australian market. The role also required to deploy the solution into a shared hosting environment on an extremely short deadline. The hosting provider had to be selected and worked with to ensure compliance with PCI-DSS. The network consisted of over 10 environments, each environment being a sandbox to enable testing without interrupting or impacting production systems. The environment's where setup via custom built orchestration tools and puppet consisting mainly of CentOS instances. While this work was happening a local software provider was also commissioned to build front end applications that better suited the Australian market. Support for this development process was also required.</p>
                             </div>
                             <div class="job">
                                 <h2>Blue Central</h2>
                                 <h3>Sr. UNIX Systems Administrator (contract)</h3>
                                 <h4>March 2011 - September 2011</h4>
-                                <p align="justify"><i>A leading provider of managed infrastructure, application hosting and mobile connectivity services to small to medium business, enterprise and government.</i></br>
+                                <p align="justify"><i>A leading provider of managed infrastructure, application hosting and mobile connectivity services to small to medium business, enterprise and government.</i><br>
                                 Blue central has POP locations in Sydney and Melbourne. The .4th level team., which I was part of, is mainly managed out of Melbourne and support and business management directed from Sydney. The in-house environment consists of mainly Dell servers with networking provided by Jupiter networks. The business also hosts infrastructure of clients so the variety is quite large. SAN's are used to provide bulk storage for backup and provisioning to clients for virtual machine use. The network is made up of multiple environments due to acquisitions and strategic planning, making administration and planning difficult at times. Blue Central being a hosting company had large deployments of VMware ESX. Operating systems are varied due to the nature of the business; however, core blue central consisted of RedHat.</p>
                             </div>
                             <div class="job last">
                                 <h2>Hyperlink</h2>
                                 <h3>UNIX Systems Administrator</h3>
                                 <h4>June 2010 - March 2011</h4>
-                                <p align="justify"><i>Hyperlink is one of Australia's leading providers of managed infrastructure, private network connectivity, website design and maintenance, and hosting services.</i></br>
+                                <p align="justify"><i>Hyperlink is one of Australia's leading providers of managed infrastructure, private network connectivity, website design and maintenance, and hosting services.</i><br>
                                 Hyperlink's environment is a mix and match environment due to the nature of the business. Most clients have existing infrastructure before hiring Hyperlink to manage their services. This meant that each client had separate environments and each had separate SOE. One of the larger clients, who were the original owners when I started, was ASG whom had 3 different SAN's connected via fibre controllers to a large VMware ESX farm that hosted around 100 virtual guests. Other clients used hardware and infrastructure provided by Hyperlink while other clients had hardware housed in-house but was managed by us. Hyperlink also had an internal VMware ESX cluster as well as single dedicated ESX hosts with a small number of VM's created. Hyperlink also offered shared web and mail stores. The hardware ranged from Sun (4500, 4600), HP DL380's, IBM x3755's to HP P-class blade chassis and a lot of miscellaneous pieces of gear. The core operating system used was Redhat closely complemented by Open Solaris.</p>
                             </div>
                             <div class="job last">
                                 <h2>Anywebcam.com</h2>
                                 <h3>UNIX Systems Administrator</h3>
                                 <h4>June 2009 - September 2011</h4>
-                                <p align="justify"><i>ANYwebcam.com is an active, online community web site where real people, using real web cameras, interact in real-time with live video text chat.</i></br>
+                                <p align="justify"><i>ANYwebcam.com is an active, online community web site where real people, using real web cameras, interact in real-time with live video text chat.</i><br>
                                 Their principle client base interacts in a real-time webcam environment. At current, the Anywebcam architecture houses 33 servers at Manhattan, NYC, USA. These servers are mission critical to the web-portal interactive environment and must be maintained 24/7. I was brought into the anywebcam.com team to help with an existing web architecture setup that was in a critical state at my time of arrival. Therefore, my role in this project encompassed the following components: The load was balanced by a Radware WSD that was constantly going faulty and required a manual flushing of ARP tables to reset it to a sane state. The web-stack is backed into Resin (java application server) and Zeus (web server). The database system was run out of a cluster of MySQL servers held together with EAC cluster technology. In the initial few months I was at AWC I had to carry out sweeping changes to the network and sub-systems to improve uptime and reliability.</p>
                             </div>
                             <div class="job last">
                                 <h2>E-kit</h2>
                                 <h3>UNIX Systems Administrator</h3>
                                 <h4>September 2006 - March 2009</h4>
-                                <p align="justify"><i>E-kit is a global provider of integrated communications and Internet services, designed to keep travellers in touch.</i></br>
+                                <p align="justify"><i>E-kit is a global provider of integrated communications and Internet services, designed to keep travellers in touch.</i><br>
                                 E-kit's environment consisted of a large number of Solaris (7-10) hosts (150+) and a smaller number of RedHat installations that serviced as both firewalls and customer service workstations (50+). My role required regular servicing of these machines, which included hardware support, OS maintenance and deployment. While at E-kit I upgraded most Solaris hosts to version 9 and later to version 10, while also upgrading workstations and firewalls from RedHat Fedora 7 to Fedora 10. E-kit is a leader in Telecommunications catered for the travel industry which gave me a strong understanding of voice and data networks. The core operating system was Solaris 10 with core networking services (radius, firewalling, POP fileserver and CS desktops) provided by RedHat.</p>
                             </div>
                             <div class="job last">
                                 <h2>Toll Solutions</h2>
                                 <h3>UNIX Systems Administrator (contract)</h3>
                                 <h4>March 2006 - August 2006</h4>
-                                <p align="justify"><i>The Toll Group is Australia's largest Logistics and Transportation solution provider.</i></br>
+                                <p align="justify"><i>The Toll Group is Australia's largest Logistics and Transportation solution provider.</i><br>
                                 This was a extended contract role working out of Toll's development department which required me to liaise with Toll Group and to assist in the software and hardware rollouts of new developments tailored to the business. The core operating systems was Redhat.</p>
                             </div>
                             <div class="job last">
                                 <h2>Sensis</h2>
                                 <h3>UNIX Systems Administrator</h3>
                                 <h4>February 2005 - January 2006</h4>
-                                <p align="justify"><i>Sensis . operates several well-known brands on behalf of Telstra including White Pages, Yellow Pages, Citysearch, Whereis, Trading Post and sensis.com.au.</i></br>
+                                <p align="justify"><i>Sensis . operates several well-known brands on behalf of Telstra including White Pages, Yellow Pages, Citysearch, Whereis, Trading Post and sensis.com.au.</i><br>
                                 My role at Sensis involved the support of daily operations of the entire Internet presence of the company. This included hardware and software monitoring of over 700 systems 24/7. The role also required liaising with the development teams as well as supporting new rollouts of the existing hardware and software upgrades all following strict change control systems. Due to the complexity of the business a very diverse deployment consisting of RedHat, Solaris and AIX serviced the business needs.</p>
                             </div>
                             <div class="job last">
                                 <h2>Sytec Resources</h2>
                                 <h3>UNIX Systems Consultant (contract)</h3>
                                 <h4>August 2004 - December 2004</h4>
-                                <p align="justify"><i>Sytec Resources offers information, communication, and technology (ICT) consulting; ICT security; and outsourcing services to corporate and government clients.</i></br>
+                                <p align="justify"><i>Sytec Resources offers information, communication, and technology (ICT) consulting; ICT security; and outsourcing services to corporate and government clients.</i><br>
                                 </p>
                             </div>
                             <div class="job last">
                                 <h2>RequestDSL</h2>
                                 <h3>Netflow Engineer</h3>
                                 <h4>August 2003 - August 2004</h4>
-                                <p align="justify"><i>Australia wide business broadband, including ADSL and SHDSL for Internet and private networking.</i></br>
+                                <p align="justify"><i>Australia wide business broadband, including ADSL and SHDSL for Internet and private networking.</i><br>
                                 </p>
                             </div>
                             <div class="job last">
                                 <h2>FIS, UK</h2>
                                 <h3>UNIX Consultant (contract)</h3>
                                 <h4>November 2002 - March 2003</h4>
-                                <p align="justify"><i>Froogle Internet Services providing information portal and webhosting.</i></br>
+                                <p align="justify"><i>Froogle Internet Services providing information portal and webhosting.</i><br>
                                 </p>
                             </div>
                             <div class="job last">
                                 <h2>HERMES PRECISA PTY. LIMITED</h2>
                                 <h3>Business Solutions Engineer (contract)</h3>
                                 <h4>July 2002 - October 2002</h4>
-                                <p align="justify"><i>One of Australia's most largest outsourced business service providers, delivering inbound and outbound communication management, results processing and information management services.</i></br>
+                                <p align="justify"><i>One of Australia's most largest outsourced business service providers, delivering inbound and outbound communication management, results processing and information management services.</i><br>
                                 </p>
                             </div>
                             <div class="job last">
                                 <h2>Trellian</h2>
                                 <h3>Systems Administrator</h3>
                                 <h4>January 2001 - May 2002</h4>
-                                <p align="justify"><i>One of the oldest and most experienced Internet Companies; Trellian leads with its innovative development in both Software and Internet solutions.</i></br>
+                                <p align="justify"><i>One of the oldest and most experienced Internet Companies; Trellian leads with its innovative development in both Software and Internet solutions.</i><br>
                                 </p>
                             </div>
                             <div class="job last">
                                 <h2>Alphalink Australia Pty Ltd</h2>
                                 <h3>Systems Architect</h3>
                                 <h4>January 1999 - December 2000</h4>
-                                <p align="justify"><i>Internet service provider with dial up access, ADSL and wireless broadband services.</i></br>
+                                <p align="justify"><i>Internet service provider with dial up access, ADSL and wireless broadband services.</i><br>
                                 </p>
                             </div>
                         </div> 
