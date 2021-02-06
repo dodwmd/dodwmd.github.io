@@ -7,6 +7,18 @@
 		<atom:link href="https://dodwell.us/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Finding the apiVersion in kubernetes</title>
+				        
+				
+					<description>&lt;h3 id=&quot;what-is-it&quot;&gt;what is it?&lt;/h3&gt;
+</description>
+				
+				<pubDate>Sun, 07 Feb 2021 00:00:00 +1100</pubDate>
+				<link>https://dodwell.us/kubernetes/api-group.html</link>
+				<guid isPermaLink="true">https://dodwell.us/kubernetes/api-group.html</guid>
+			</item>
+		
+			<item>
 				<title>Setting up Systemd to spawn ssh-agent and adding your keys</title>
 				        
 				
@@ -112,18 +124,6 @@
 				<pubDate>Tue, 10 Mar 2015 00:00:00 +1100</pubDate>
 				<link>https://dodwell.us/funny/easter.html</link>
 				<guid isPermaLink="true">https://dodwell.us/funny/easter.html</guid>
-			</item>
-		
-			<item>
-				<title>Huuuge Disappointment</title>
-				        
-				
-					<description>&lt;p&gt;&lt;img width=&quot;730&quot; src=&quot;/images/jO9v67o.png&quot; /&gt;&lt;/p&gt;
-</description>
-				
-				<pubDate>Tue, 03 Mar 2015 00:00:00 +1100</pubDate>
-				<link>https://dodwell.us/funny/boomers.html</link>
-				<guid isPermaLink="true">https://dodwell.us/funny/boomers.html</guid>
 			</item>
 		
 	</channel>
