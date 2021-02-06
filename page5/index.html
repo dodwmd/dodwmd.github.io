@@ -146,6 +146,44 @@
 			
 	        
 	        
+	        
+	        
+	        <div class="row">
+	            <article class="post post col-md-8 col-md-offset-2">
+	               <header class="post-header">
+	               
+	                    
+	                    <h2 class="post-title text-center super lighter bordered-bottom">
+	                        <a href="https://dodwell.us/disk-debugging.html">Disk Debugging</a>
+	                    
+	                    </h2>
+	                    <div class="post-info text-center small">
+	                        <time datetime="2014-07-09T02:05:01+10:00" class="post-time">09 Jul 2014</time>
+	                        in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">4.89</span> minutes read</span>
+	                    </div>
+	                </header>
+	                <div class="post-body bordered-bottom">
+	                
+	                <p class = "lead">sar gives us an overview of what the system is doing. If you had a high %iowait you might want to figure out what drive is currently being used. To do this we use ‘iostat’. ‘iostat’ will by default give you all the reads and writes that the server has performed since start up.
+&hellip;</p>
+	                    <div class="text-center">
+	                    
+		                <a href="https://dodwell.us/disk-debugging.html" data-toggle="tooltip" title="Read more about Disk Debugging" class="more-link btn btn-danger btn-large">
+		                    <i class="icon-link"></i> read more...
+		                </a>
+		                
+		                </div>
+	                </div>
+	            </article>
+	        </div>
+			
+	
+		
+		
+		
+			
+	        
+	        
 	        <div class="row">
 	            <article class="post post col-md-8 col-md-offset-2">
 	               <header class="post-header">
@@ -330,44 +368,6 @@ http://blog.docker.com/2014/06/its-here-docker-1-0/
 	                    <div class="text-center">
 	                    
 		                <a href="https://dodwell.us/docker-1-0.html" data-toggle="tooltip" title="Read more about Docker 1.0" class="more-link btn btn-danger btn-large">
-		                    <i class="icon-link"></i> read more...
-		                </a>
-		                
-		                </div>
-	                </div>
-	            </article>
-	        </div>
-			
-	
-		
-		
-		
-			
-	        
-	        
-	        
-	        
-	        <div class="row">
-	            <article class="post post col-md-8 col-md-offset-2">
-	               <header class="post-header">
-	               
-	                    
-	                    <h2 class="post-title text-center super lighter bordered-bottom">
-	                        <a href="https://dodwell.us/using-nginx-to-proxy-private-amazon-s3-web-services.html">Using Nginx to proxy private Amazon S3 web services</a>
-	                    
-	                    </h2>
-	                    <div class="post-info text-center small">
-	                        <time datetime="2014-06-07T05:48:29+10:00" class="post-time">07 Jun 2014</time>
-	                        in <span class="post-tags"></span>&nbsp;<span class="post-tags"><i class="icon-time"></i>&nbsp;<span class="time">2.275</span> minutes read</span>
-	                    </div>
-	                </header>
-	                <div class="post-body bordered-bottom">
-	                
-	                
-	                    <p>I thought I’d share how I set up Nginx to proxy a private S3 bucket. I wanted to be able to password protect the contents of a bucket and without allowing any owner information of the bucket from leaking to the web user. A simple configuration can be used if you want to serve objects that are public: location ~* ^/s3/(.*) { resolver 172.31.0.2 valid=300s; resolver_timeout 10s; set $s3_bucket 'your_bucket.s3.amazonaws.com'; set $url_full '$1'; proxy_http_version 1.1; proxy_set_header Host $s3_bucket; proxy_set_header Authorization ''; proxy_hide_header x-amz-id-2; proxy_hide_header x-amz-request-id; proxy_hide_header Set-Cookie; proxy_ignore_headers "Set-Cookie"; proxy_buffering off; proxy_intercept_errors on; proxy_pass http://$s3_bucket/$url_full; } To setup nginx to...&hellip;</p>
-	                    <div class="text-center">
-	                    
-		                <a href="https://dodwell.us/using-nginx-to-proxy-private-amazon-s3-web-services.html" data-toggle="tooltip" title="Read more about Using Nginx to proxy private Amazon S3 web services" class="more-link btn btn-danger btn-large">
 		                    <i class="icon-link"></i> read more...
 		                </a>
 		                
