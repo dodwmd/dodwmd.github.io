@@ -1,0 +1,86 @@
+---
+layout: post
+title: "Finding the apiVersion in kubernetes"
+description: Figure out what the apiVersion is for a particular apiGroup on kubernetes
+headline: How to figure out the apiVersion in kubernetes
+modified: 2021-02-07                # Date
+category: security
+tags: []
+image: 
+  feature: kubernetes.png
+comments: false
+mathjax:
+---
+### what is it? 
+
+> The core of Kubernetes' control plane is the API server. The API server exposes an HTTP API that lets end users, different parts of your cluster, and external components communicate with one another.
+> 
+> The Kubernetes API lets you query and manipulate the state of API objects in Kubernetes (for example: Pods, Namespaces, ConfigMaps, and Events).
+> 
+> Most operations can be performed through the kubectl command-line interface or other command-line tools, such as kubeadm, which in turn use the API. However, you can also access the API directly using REST calls.
+> 
+> Consider using one of the client libraries if you are writing an application using the Kubernetes API.
+> 
+> -- <a href="https://kubernetes.io/docs/concepts/overview/kubernetes-api/">https://kubernetes.io/docs/concepts/overview/kubernetes-api/</a>
+
+### why?
+
+When you create a kubernetes resource you need to specify the apiVersion of the resource that you want to apply the resource against. With different versions of kubernetes and different CRD's applied to your cluster keeping track of the version your cluster is setup to use can be a little trickey to remember.
+
+The format of the apiVersion is apiGroup/version unless the resource is part of the core API group in which case youd don't need to specify the api_group. So to figure out the apiVersion we'll need to figure out both the api_group and version of a resource.
+
+### finding the group
+
+To find get a list of installed api groups you can run the following command:
+
+{% highlight bash %}
+$ kubectl api-resources
+{% endhighlight %}
+
+You should get a output that looks similar to the following:
+
+{% highlight bash %}
+NAME                              SHORTNAMES   APIGROUP                       NAMESPACED   KIND
+bindings                                                                      true         Binding
+componentstatuses                 cs                                          false        ComponentStatus
+configmaps                        cm                                          true         ConfigMap
+endpoints                         ep                                          true         Endpoints
+events                            ev                                          true         Event
+limitranges                       limits                                      true         LimitRange
+namespaces                        ns                                          false        Namespace
+nodes                             no                                          false        Node
+persistentvolumeclaims            pvc                                         true         PersistentVolumeClaim
+persistentvolumes                 pv                                          false        PersistentVolume
+pods                              po                                          true         Pod
+podtemplates                                                                  true         PodTemplate
+replicationcontrollers            rc                                          true         ReplicationController
+resourcequotas                    quota                                       true         ResourceQuota
+secrets                                                                       true         Secret
+serviceaccounts                   sa                                          true         ServiceAccount
+services                          svc                                         true         Service
+challenges                                     acme.cert-manager.io           true         Challenge
+orders                                         acme.cert-manager.io           true         Order
+mutatingwebhookconfigurations                  admissionregistration.k8s.io   false        MutatingWebhookConfiguration
+validatingwebhookconfigurations                admissionregistration.k8s.io   false        ValidatingWebhookConfiguration
+customresourcedefinitions         crd,crds     apiextensions.k8s.io           false        CustomResourceDefinition
+apiservices                                    apiregistration.k8s.io         false        APIService
+controllerrevisions                            apps                           true         ControllerRevision
+daemonsets                        ds           apps                           true         DaemonSet
+deployments                       deploy       apps                           true         Deployment
+replicasets                       rs           apps                           true         ReplicaSet
+statefulsets                      sts          apps                           true         StatefulSet
+...
+{% endhighlight %}
+
+If you look in the third column you can see a APIGROUP. For example if we needed to create a new resource for a daemonset we can see the apigroup is `apps`.
+
+### getting the api group version
+
+Using the api group name we can grab the version with
+
+{% highlight bash %}
+$ kubectl api-versions | grep '^apps/'
+apps/v1
+{% endhighlight %}
+
+As you can see the `apps/v1` contains the version required to create a daemonset.
