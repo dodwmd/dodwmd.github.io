@@ -1,0 +1,18 @@
+/* You can add custom styles here. */
+.blog-background {
+    background-image: url(https://dodwell.us/images/default_bg1.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 15rem;
+}
+
+@media (max-width: 1024px) {
+    .blog-background {
+        background-attachment: scroll;
+    }
+}

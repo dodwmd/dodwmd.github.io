@@ -1,0 +1,78 @@
+---
+baseURL: https://dodwell.us/
+title: DODWELL.US
+theme: hugo-geekblog
+pygmentsUseClasses: true
+pygmentsCodeFences: true
+enableGitInfo: false
+timeout: 180000
+pluralizeListTitles: false
+
+params:
+  logo: /images/devops_logo.gif
+  subtitle: DevOPS - For fun and profit
+paginate: 5
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  tableOfContents:
+    startLevel: 1
+    endLevel: 9
+
+taxonomies:
+  author: authors
+  tag: tags
+
+mediaTypes:
+  "application/atom+xml":
+    suffixes:
+      - "xml"
+
+outputFormats:
+  Atom:
+    # https://validator.w3.org/feed/docs/atom.html#whatIsAtom
+    name: "Atom"
+    mediaType: "application/atom+xml"
+    # generated file: <baseName>.<mediaType."application/atom+xml".suffixes[0]> = atom.xml
+    baseName: "feed"
+    isPlainText: false
+    rel: "alternate"
+    isHTML: false
+    noUgly: true
+    permalinkable: false
+  Json:
+    # https://www.jsonfeed.org/2020/08/07/json-feed-version.html
+    name: "Json"
+    mediaType: "application/json"
+    # generated file: <baseName>.<mediaType."application/feed+json".suffixes[0]> = feed.json
+    baseName: "feed"
+    isPlainText: false
+    rel: "alternate"
+    isHTML: false
+    noUgly: true
+    permalinkable: false
+
+outputs:
+  home:
+    - HTML
+    - ATOM
+    - JSON
+  page:
+    - HTML
+  section:
+    - HTML
+  taxonomy:
+    - HTML
+  term:
+    - HTML
+    - ATOM
+    - JSON
+
+enableRobotsTXT: true
+
+security:
+  exec:
+    allow:
+      - "^asciidoctor$"
