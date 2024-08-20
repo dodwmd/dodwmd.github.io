@@ -11,7 +11,7 @@ modified: 2024-08-20
 tags:
   - kubernetes
 title: "getting started with ytt: a better way to template yaml"
-url: /2024/08/20/argocd/
+url: /2024/08/20/ytt/
 ---
 
 ## what is it? 
