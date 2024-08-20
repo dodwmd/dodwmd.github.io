@@ -9,7 +9,7 @@ headline: Rate limiting IP ranges that belong to the FCC
 mathjax: null
 tags:
   - funny
-title: Rate Limit the FCC
+title: rate limit the fcc
 date: 2014-05-11
 url: /2014/05/11/rate-limit-fcc/
 ---

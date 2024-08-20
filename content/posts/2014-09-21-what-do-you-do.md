@@ -8,7 +8,7 @@ mathjax: null
 modified: 2014-09-21
 tags:
   - videos
-title: What do you do?
+title: what do you do?
 url: /2014/09/21/what-do-you-do/
 ---
 

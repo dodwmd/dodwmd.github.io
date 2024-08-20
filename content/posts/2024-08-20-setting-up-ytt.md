@@ -10,7 +10,7 @@ mathjax: null
 modified: 2024-08-20
 tags:
   - kubernetes
-title: "Getting Started with ytt: A Better Way to Template YAML"
+title: "getting started with ytt: a better way to template yaml"
 url: /2024/08/20/argocd/
 ---
 

@@ -1,7 +1,7 @@
 ---
 description: Kernel bug plagues java users on current Ubuntu LTS
 headline: Ubuntu LTS "trusty" affected kernel bug
-title: Ubuntu LTS "trusty" affected kernel bug
+title: ubuntu lts "trusty" affected kernel bug
 date: 2014-05-19
 url: /2014/05/19/ubuntu-lts-trusty-affected-kernel-bug/
 tags:

@@ -14,7 +14,7 @@ tags:
   - configuration
   - management
   - puppet
-title: Testing Puppet
+title: testing puppet
 date: 2014-05-14
 url: /2014/05/14/testing-puppet/
 ---

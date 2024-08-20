@@ -10,7 +10,7 @@ mathjax: null
 modified: 2015-02-21
 tags:
   - videos
-title: Brain Hack
+title: brain hack
 url: /2015/02/21/brain-hack/
 ---
 

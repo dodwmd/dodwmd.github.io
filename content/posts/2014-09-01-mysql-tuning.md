@@ -1,7 +1,7 @@
 ---
 published: true
 status: publish
-title: MySQL Tuning
+title: mysql tuning
 date: 2014-09-01
 url: /2014/09/01/mysql-tuning/
 tags:

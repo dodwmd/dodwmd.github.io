@@ -4,8 +4,9 @@ categories:
 published: true
 status: publish
 date: 2014-08-18
-title: Website Minification
+title: website minification
 url: /2014/08/18/website-minification/
+featured_image: /images/growth-average-web-page2014.png
 tags:
   - website
 ---

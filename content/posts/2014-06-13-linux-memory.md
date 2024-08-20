@@ -1,7 +1,7 @@
 ---
 published: true
 status: publish
-title: Linux Memory
+title: linux memory
 date: 2014-06-13
 url: /2014/06/13/linux-memory/
 tags:

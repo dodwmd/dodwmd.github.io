@@ -1,7 +1,7 @@
 ---
 published: true
 status: publish
-title: Insecure default in Elasticsearch enables remote code execution
+title: insecure default in elasticsearch enables remote code execution
 date: 2014-05-30
 url: /2014/05/30/insecure-default-in-elasticsearch-enables-remote-code-execution/
 tags:

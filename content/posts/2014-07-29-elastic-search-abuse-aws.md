@@ -1,7 +1,7 @@
 ---
 published: true
 status: publish
-title: elastic search abuse on AWS
+title: elastic search abuse on aws
 date: 2014-07-29
 url: /2014/07/29/elastic-search-abuse-aws/
 tags:

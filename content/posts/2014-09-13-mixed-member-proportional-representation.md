@@ -7,7 +7,7 @@ headline: Mixed-Member Proportional Representation
 mathjax: null
 tags:
   - videos
-title: Mixed-Member Proportional Representation
+title: mixed-member proportional representation
 date: 2014-09-13
 url: /2014/09/13/mixed-member-proportional-representation/
 ---

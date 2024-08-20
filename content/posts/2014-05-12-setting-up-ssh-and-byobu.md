@@ -9,7 +9,7 @@ headline: Setting up SSH & Byobu to give Windows users a nice shell prompt
 mathjax: null
 tags:
   - unix
-title: Setting up SSH & Byobu
+title: setting up ssh & byobu
 date: 2014-05-12
 url: /2014/05/12/setting-up-ssh-and-byobu/
 ---

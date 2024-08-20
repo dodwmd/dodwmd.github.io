@@ -1,7 +1,7 @@
 ---
 published: true
 status: publish
-title: Integrating Bitbucket and Jenkins
+title: integrating bitbucket and jenkins
 date: 2014-05-21
 url: /2014/05/21/integrating-bitbucket-and-jenkins/
 tags:

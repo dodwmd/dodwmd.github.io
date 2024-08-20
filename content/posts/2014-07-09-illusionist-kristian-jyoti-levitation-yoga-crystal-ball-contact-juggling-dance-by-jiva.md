@@ -7,7 +7,7 @@ headline: Contact Juggling with Kristian Jyoti
 mathjax: null
 tags:
   - videos
-title: Contact Juggling with Kristian Jyoti
+title: contact juggling with kristian jyoti
 date: 2014-07-09
 url: /2014/07/09/illusionist-kristian-jyoti-levitation-yoga-crystal-ball-contact-juggling-dance-by-jiva/
 ---

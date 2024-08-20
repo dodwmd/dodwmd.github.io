@@ -9,7 +9,7 @@ headline: The Expert (Short Comedy Sketch)
 mathjax: null
 tags:
   - videos
-title: The Expert (Short Comedy Sketch)
+title: the expert (short comedy sketch)
 date: 2014-05-08
 url: /2014/05/08/the-expert/
 ---

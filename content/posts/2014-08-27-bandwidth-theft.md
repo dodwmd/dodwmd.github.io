@@ -1,7 +1,7 @@
 ---
 published: true
 status: publish
-title: Bandwidth Theft
+title: bandwidth theft
 date: 2014-08-27
 url: /2014/08/27/bandwidth-theft/
 tags:

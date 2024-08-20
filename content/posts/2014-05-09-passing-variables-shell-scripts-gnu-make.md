@@ -9,7 +9,7 @@ headline: Using shell variables from GNU make
 mathjax: null
 tags:
   - unix
-title: Passing variables from shell scripts to GNU Make
+title: passing variables from shell scripts to gnu make
 date: 2014-05-09
 url: /2014/05/09/passing-variables-shell-scripts-gnu-make/
 ---

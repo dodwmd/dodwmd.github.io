@@ -10,7 +10,7 @@ mathjax: null
 modified: 2015-05-04
 tags:
   - security
-title: Google Authenticator for SSH
+title: google authenticator for ssh
 url: /2015/05/04/google-authenticator/
 ---
 

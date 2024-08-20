@@ -1,7 +1,7 @@
 ---
 published: true
 status: publish
-title: SysAdmin Day
+title: sysadmin day
 date: 2014-07-23
 url: /2014/07/23/sysadmin-day/
 tags:

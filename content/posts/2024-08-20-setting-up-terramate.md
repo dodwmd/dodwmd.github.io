@@ -1,5 +1,5 @@
 ---
-title: "How to Set Up Terramate for Efficient Infrastructure Management"
+title: "how to set up terramate for efficient infrastructure management"
 draft: false
 tags: ["devops", "terraform", "terramate", "iac"]
 categories: ["devOps", "tutorials"]

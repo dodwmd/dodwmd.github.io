@@ -7,7 +7,7 @@ headline: Relativity Paradox - Sixty Symbols
 mathjax: null
 tags:
   - videos
-title: Relativity Paradox - Sixty Symbols
+title: relativity paradox - sixty symbols
 date: 2014-05-16
 url: /2014/05/16/relativity-paradox-sixty-symbols/
 ---

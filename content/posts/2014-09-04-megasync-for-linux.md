@@ -1,7 +1,7 @@
 ---
 published: true
 status: publish
-title: MEGASync for Linux
+title: megasync for linux
 date: 2014-09-04
 url: /2014/09/04/megasync-for-linux/
 tags:

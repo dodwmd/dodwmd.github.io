@@ -10,7 +10,7 @@ mathjax: null
 modified: 2024-08-20
 tags:
   - kubernetes
-title: ArgoCD getting started guide
+title: argocd getting started guide
 url: /2024/08/20/argocd/
 ---
 

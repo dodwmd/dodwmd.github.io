@@ -1,7 +1,7 @@
 ---
 published: true
 status: publish
-title: Using Nginx to proxy private Amazon S3 web services
+title: using nginx to proxy private amazon s3 web services
 date: 2014-06-06
 url: /2014/06/06/using-nginx-to-proxy-private-amazon-s3-web-services/
 tags:

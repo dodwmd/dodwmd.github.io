@@ -11,7 +11,7 @@ mathjax: null
 tags:
   - configuration
   - management
-title: Linux Build Environment
+title: linux build environment
 date: 2014-05-07
 url: /2014/05/07/linux-build-environment/
 ---

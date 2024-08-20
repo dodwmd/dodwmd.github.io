@@ -1,7 +1,7 @@
 ---
 published: true
 status: publish
-title: AWS Management Portal for vCenter
+title: aws management portal for vcenter
 date: 2014-06-03
 url: /2014/06/03/aws-management-portal-for-vcenter/
 tags:

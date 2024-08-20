@@ -8,7 +8,7 @@ mathjax: null
 modified: 2015-05-28
 tags:
   - security
-title: UFW, fail2ban and blocking portscans oh my!
+title: ufw, fail2ban and blocking portscans oh my!
 url: /2015/05/28/ufw-fail2ban-portscan/
 ---
 

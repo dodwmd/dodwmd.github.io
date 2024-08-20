@@ -1,7 +1,7 @@
 ---
 published: true
 status: publish
-title: Disk Debugging
+title: disk debugging
 date: 2014-07-08
 url: /2014/07/08/disk-debugging/
 tags:

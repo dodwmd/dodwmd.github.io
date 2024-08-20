@@ -9,8 +9,9 @@ date: 2015-09-15
 photo: data-centre-fog-machine.jpg
 tags:
   - funny
-title: Fog Machine for the Datacenter
+title: fog machine for the datacenter
 url: /2015/09/15/data-center-fog-machine/
+featured_image: /images/data-centre-fog-machine.jpg
 ---
 
 <img width="730" src="/images/data-centre-fog-machine.jpg">

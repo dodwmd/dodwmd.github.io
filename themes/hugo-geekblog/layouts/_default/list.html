@@ -12,7 +12,13 @@
           <a href="{{ .RelPermalink }}">{{ partial "utils/title" . }}</a>
         </h1>
       </header>
-
+      {{ if .Params.featured_image }}
+      <div class="post-thumbnail">
+        <a href="{{ .Permalink }}">
+          <img class="post-thumbnail" src="{{ .Params.featured_image }}" alt="{{ .Title }}">
+        </a>
+      </div>
+      {{ end }}
       <section class="gblog-markdown">
         {{ .Summary }}
       </section>

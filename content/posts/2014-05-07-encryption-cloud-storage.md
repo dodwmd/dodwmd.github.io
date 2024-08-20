@@ -7,7 +7,7 @@ headline: Using PGP encryption for mail and file storage
 mathjax: null
 tags: 
   - security
-title: Encryption for Cloud Storage
+title: encryption for cloud storage
 date: 2014-05-07
 url: /2014/05/07/encryption-cloud-storage/
 ---
