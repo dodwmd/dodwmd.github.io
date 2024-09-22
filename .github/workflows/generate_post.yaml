@@ -1,0 +1,46 @@
+name: Generate Blog Content
+
+on:
+  workflow_dispatch:
+
+# Add permissions for the GITHUB_TOKEN
+permissions:
+  contents: write
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout blog repository
+        uses: actions/checkout@v3
+        with:
+          path: blog
+          fetch-depth: 0  # Fetch all history for .GitInfo and .Lastmod
+
+      - name: Checkout hugo_generator repository
+        uses: actions/checkout@v3
+        with:
+          repository: dodwmd/hugo_generator
+          path: hugo_generator
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        uses: py-actions/py-dependency-install@v4
+        with:
+          path: "hugo_generator/requirements.txt"
+
+      - name: Run content generator
+        run: |
+          cd hugo_generator
+          python main.py
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          repository: blog
+          commit_message: "Auto-generate blog content using hugo_generator"
+          file_pattern: '.'
