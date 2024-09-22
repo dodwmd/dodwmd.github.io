@@ -37,7 +37,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
-          HUGO_CONTENT_DIR: ../content/posts
+          HUGO_CONTENT_DIR: ${{ github.workspace }}/blog/content/posts
           LOG_LEVEL: INFO
         run: |
           cd hugo_generator
