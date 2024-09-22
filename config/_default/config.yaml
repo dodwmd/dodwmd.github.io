@@ -11,6 +11,9 @@ pluralizeListTitles: false
 params:
   logo: /images/devops_logo.gif
   subtitle: DevOPS - For fun and profit
+  keywords: "devops, linux, aws, gcp, security"
+  geekblogAuthor: "Michael Dodwell <michael@dodwell.us"
+
 paginate: 5
 
 markup:

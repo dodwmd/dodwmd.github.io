@@ -1,0 +1,3 @@
+[submodule "hugo_generator"]
+	path = hugo_generator
+	url = git@github.com:dodwmd/hugo_generator.git
