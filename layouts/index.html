@@ -2,6 +2,12 @@
 {{- $p := hugo.Data.profile -}}
 
 <section class="hero">
+  {{ with resources.Get "images/banner.jpg" }}
+  {{ $sm := .Resize "800x webp q75" }}{{ $md := .Resize "1440x webp q75" }}{{ $lg := .Resize "1732x webp q75" }}
+  <div class="banner">
+    <img src="{{ $md.RelPermalink }}" srcset="{{ $sm.RelPermalink }} 800w, {{ $md.RelPermalink }} 1440w, {{ $lg.RelPermalink }} 1732w" sizes="100vw" width="{{ $lg.Width }}" height="{{ $lg.Height }}" alt="" fetchpriority="high">
+  </div>
+  {{ end }}
   <div class="wrap">
    <div class="hero-copy">
     <a class="who rise" style="--i:0" href="/" aria-label="{{ $p.name }}">
