@@ -82,11 +82,11 @@
 <section class="section" id="writing">
   <div class="wrap">
     <div class="section-head">
-      <h2 class="section-title">Recent writing</h2>
+      <h2 class="section-title">Selected writing</h2>
       <a class="link-arrow" href="/posts/">All posts {{ partial "icon.html" "arrow" }}</a>
     </div>
     <div class="grid grid-3">
-      {{ range first 3 (where site.RegularPages "Section" "posts") }}
+      {{ range first 3 (where (where site.RegularPages "Section" "posts") "Params.featured" true) }}
         {{ partial "post-card.html" . }}
       {{ end }}
     </div>

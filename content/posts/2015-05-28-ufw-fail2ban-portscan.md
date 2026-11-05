@@ -1,4 +1,5 @@
 ---
+featured: true
 categories:
   - security
 comments: false
