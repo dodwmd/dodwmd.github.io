@@ -6,6 +6,7 @@
 <body>
   <a class="skip" href="#main">Skip to content</a>
   {{ partial "header.html" . }}
+  {{ if not .IsHome }}{{ partial "banner.html" "slim" }}{{ end }}
   <main id="main">
     {{ block "main" . }}{{ end }}
   </main>

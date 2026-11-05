@@ -1,0 +1,7 @@
+{{- /* Profile banner. Usage: partial "banner.html" "slim" (or "") */ -}}
+{{ with resources.Get "images/banner.jpg" }}
+{{ $sm := .Resize "800x webp q75" }}{{ $md := .Resize "1440x webp q75" }}{{ $lg := .Resize "1732x webp q75" }}
+<div class="banner{{ if eq $ "slim" }} banner-slim{{ end }}">
+  <img src="{{ $md.RelPermalink }}" srcset="{{ $sm.RelPermalink }} 800w, {{ $md.RelPermalink }} 1440w, {{ $lg.RelPermalink }} 1732w" sizes="100vw" width="{{ $lg.Width }}" height="{{ $lg.Height }}" alt=""{{ if ne $ "slim" }} fetchpriority="high"{{ end }}>
+</div>
+{{ end }}
