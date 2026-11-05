@@ -1,4 +1,5 @@
 ---
+draft: true
 categories:
   - unix
 comments: false

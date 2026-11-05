@@ -1,4 +1,5 @@
 ---
+draft: true
 status: publish
 title: sysadmin day
 date: 2014-07-23

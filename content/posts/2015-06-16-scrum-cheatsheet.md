@@ -1,4 +1,5 @@
 ---
+draft: true
 categories:
   - devops
 comments: false

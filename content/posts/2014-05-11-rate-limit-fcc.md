@@ -1,4 +1,5 @@
 ---
+draft: true
 categories:
   - funny
 comments: false
