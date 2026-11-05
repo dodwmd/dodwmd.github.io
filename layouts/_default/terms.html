@@ -1,15 +1,15 @@
 {{ define "main" }}
 <section class="page-head">
   <div class="wrap narrow">
-    <p class="eyebrow"><a href="/posts/">← Blog</a></p>
+    <p class="crumb mono"><a href="/posts/">Blog</a></p>
     <h1>Tags</h1>
   </div>
 </section>
 <section class="section tight">
   <div class="wrap narrow">
-    <ul class="chips big">
+    <ul class="tag-list mono">
       {{ range .Data.Terms.Alphabetical }}
-      <li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }} <span>{{ .Count }}</span></a></li>
+      <li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a> <span class="muted">{{ .Count }}</span></li>
       {{ end }}
     </ul>
   </div>

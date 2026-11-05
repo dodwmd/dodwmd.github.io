@@ -4,28 +4,46 @@
 <section class="hero">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow">{{ $p.role }}</p>
-      <h1>{{ $p.headline }}</h1>
-      <p class="lead">{{ $p.intro }}</p>
-      <div class="cta">
-        <a class="btn" href="#contact">Get in touch {{ partial "icon.html" "arrow" }}</a>
-        <a class="btn btn-ghost" href="{{ $p.resume }}">{{ partial "icon.html" "file" }} Résumé</a>
-        <a class="icon-btn" href="{{ $p.github }}" rel="me noopener" aria-label="GitHub">{{ partial "icon.html" "github" }}</a>
-        <a class="icon-btn" href="{{ $p.linkedin }}" rel="me noopener" aria-label="LinkedIn">{{ partial "icon.html" "linkedin" }}</a>
+      <h1 class="rise" style="--i:0">{{ $p.headline }}</h1>
+      <p class="lead rise" style="--i:1">{{ $p.intro }}</p>
+      <div class="cta rise" style="--i:2">
+        <a class="btn btn-primary" href="mailto:{{ $p.email }}">Get in touch</a>
+        <a class="btn btn-secondary" href="{{ $p.resume }}">Résumé</a>
       </div>
     </div>
-    <div class="terminal" aria-hidden="true">
-      <div class="terminal-bar"><i></i><i></i><i></i><span>~/platform</span></div>
-<pre><span class="t-dim">$</span> git commit -m "scale for the spike"
-<span class="t-dim">$</span> git push origin main
-<span class="t-ok">✓</span> terraform plan   <span class="t-dim">0 to destroy</span>
-<span class="t-ok">✓</span> argocd sync     <span class="t-dim">apps healthy</span>
-<span class="t-ok">✓</span> rollout         <span class="t-dim">no downtime</span>
-<span class="t-dim">$</span> <span class="cursor"></span></pre>
-    </div>
+
+    <figure class="panel chart rise" style="--i:3">
+      <figcaption class="chart-head">
+        <span class="mono muted">Pods during a live event</span>
+        <span class="legend mono muted">
+          <span class="key key-pods">Pods</span>
+          <span class="key key-demand">Demand</span>
+        </span>
+      </figcaption>
+      <div class="plot">
+        <div class="yaxis mono muted" aria-hidden="true">
+          <span style="top:23.1%">1,000</span>
+          <span style="top:61.5%">500</span>
+          <span style="top:100%">0</span>
+        </div>
+        <div class="plot-area">
+          {{ partial "chart-pods.html" . }}
+          <span class="note mono" style="left:54.2%;top:13.8%">1,000+ pods</span>
+          <span class="note note-event mono muted" style="left:16.7%">Event starts</span>
+        </div>
+      </div>
+      <div class="xaxis mono muted" aria-hidden="true">
+        <span style="left:0">−20 min</span>
+        <span style="left:16.7%;transform:translateX(-50%)">0</span>
+        <span style="left:58.3%;transform:translateX(-50%)">+50</span>
+        <span style="right:0">+100</span>
+      </div>
+      <p class="chart-foot mono muted">Illustrative data, not production metrics</p>
+    </figure>
   </div>
+
   <div class="wrap">
-    <dl class="stats">
+    <dl class="facts">
       {{ range $p.stats }}
       <div><dt>{{ .value }}</dt><dd>{{ .label }}</dd></div>
       {{ end }}
@@ -34,73 +52,78 @@
 </section>
 
 <section class="section" id="focus">
-  <div class="wrap">
+  <div class="wrap split">
     <h2 class="section-title">What I do</h2>
-    <div class="grid grid-2">
-      {{ range $p.focus }}
-      <article class="card">
-        <span class="card-icon">{{ partial "icon.html" .icon }}</span>
-        <h3>{{ .title }}</h3>
-        <p>{{ .body }}</p>
-      </article>
-      {{ end }}
-    </div>
-    <div class="toolbox">
-      {{ range $p.toolbox }}
-      <div class="tool-group">
-        <h4>{{ .group }}</h4>
-        <ul class="chips">{{ range .items }}<li>{{ . }}</li>{{ end }}</ul>
-      </div>
-      {{ end }}
+    <div>
+      <ol class="rows">
+        {{ range $p.focus }}
+        <li>
+          <h3>{{ .title }}</h3>
+          <p>{{ .body }}</p>
+        </li>
+        {{ end }}
+      </ol>
+      <dl class="toolbox">
+        {{ range $p.toolbox }}
+        <div><dt class="mono muted">{{ .group }}</dt><dd class="mono">{{ delimit .items " · " }}</dd></div>
+        {{ end }}
+      </dl>
     </div>
   </div>
 </section>
 
-<section class="section alt" id="experience">
-  <div class="wrap">
+<section class="section deep" id="experience">
+  <div class="wrap split">
     <h2 class="section-title">Experience</h2>
-    <ol class="timeline">
-      {{ range $p.experience }}
-      <li>
-        <div class="tl-head">
-          <h3>{{ .title }} <span class="at">· {{ .company }}</span></h3>
-          <span class="dates">{{ .dates }}</span>
-        </div>
-        <p class="muted">{{ .blurb }}</p>
-        <ul class="points">{{ range .points }}<li>{{ . }}</li>{{ end }}</ul>
-        <ul class="chips">{{ range .tags }}<li>{{ . }}</li>{{ end }}</ul>
-      </li>
-      {{ end }}
-    </ol>
-    <p class="muted earlier">{{ $p.earlier }}</p>
-    <h3 class="sub-title">Certifications</h3>
-    <ul class="certs">{{ range $p.certifications }}<li>{{ . }}</li>{{ end }}</ul>
-    <p><a class="link-arrow" href="{{ $p.resume }}">Full résumé (PDF) {{ partial "icon.html" "arrow" }}</a></p>
+    <div>
+      <ol class="jobs">
+        {{ range $p.experience }}
+        <li>
+          <p class="dates mono muted">{{ .dates }}</p>
+          <div>
+            <h3>{{ .title }}, {{ .company }}</h3>
+            <p class="muted">{{ .blurb }}</p>
+            <ul class="points">{{ range .points }}<li>{{ . }}</li>{{ end }}</ul>
+            <p class="stack mono muted">{{ delimit .tags " · " }}</p>
+          </div>
+        </li>
+        {{ end }}
+      </ol>
+      <p class="earlier muted">{{ $p.earlier }}</p>
+      <h3 class="sub-title">Certifications</h3>
+      <ul class="certs">{{ range $p.certifications }}<li>{{ . }}</li>{{ end }}</ul>
+      <p><a class="link" href="{{ $p.resume }}">Full résumé (PDF)</a></p>
+    </div>
   </div>
 </section>
 
 <section class="section" id="writing">
-  <div class="wrap">
-    <div class="section-head">
-      <h2 class="section-title">Selected writing</h2>
-      <a class="link-arrow" href="/posts/">All posts {{ partial "icon.html" "arrow" }}</a>
-    </div>
-    <div class="grid grid-3">
-      {{ range first 3 (where (where site.RegularPages "Section" "posts") "Params.featured" true) }}
-        {{ partial "post-card.html" . }}
-      {{ end }}
+  <div class="wrap split">
+    <h2 class="section-title">Selected writing</h2>
+    <div>
+      <ul class="post-list">
+        {{ range first 3 (where (where site.RegularPages "Section" "posts") "Params.featured" true) }}
+        <li>
+          <time class="mono muted" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        </li>
+        {{ end }}
+      </ul>
+      <p><a class="link" href="/posts/">All posts</a></p>
     </div>
   </div>
 </section>
 
-<section class="section contact" id="contact">
-  <div class="wrap contact-card">
-    <h2>Let's talk</h2>
-    <p>Looking to scale your platform, adopt GitOps, or build a stronger delivery culture? I'd like to hear about it.</p>
-    <div class="cta">
-      <a class="btn" href="mailto:{{ $p.email }}">{{ partial "icon.html" "mail" }} {{ $p.email }}</a>
-      <a class="btn btn-ghost" href="{{ $p.linkedin }}" rel="me noopener">{{ partial "icon.html" "linkedin" }} LinkedIn</a>
-      <a class="btn btn-ghost" href="{{ $p.github }}" rel="me noopener">{{ partial "icon.html" "github" }} GitHub</a>
+<section class="section deep contact" id="contact">
+  <div class="wrap split">
+    <h2 class="section-title">Contact</h2>
+    <div>
+      <p class="lead">Scaling a platform, adopting GitOps or tightening delivery? Send me the problem and I'll tell you what I'd look at first.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="mailto:{{ $p.email }}">{{ $p.email }}</a>
+        <a class="btn btn-secondary" href="{{ $p.linkedin }}" rel="me noopener">LinkedIn</a>
+        <a class="btn btn-secondary" href="{{ $p.github }}" rel="me noopener">GitHub</a>
+      </div>
     </div>
   </div>
 </section>

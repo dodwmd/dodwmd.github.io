@@ -1,16 +1,12 @@
 {{- $p := hugo.Data.profile -}}
 <header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href="/" aria-label="{{ site.Title }} home">
-      <span class="brand-mark" aria-hidden="true">md</span>
-      <span class="brand-name">{{ site.Title }}</span>
-    </a>
+    <a class="brand" href="/">{{ site.Title }}</a>
     <nav class="nav" aria-label="Primary">
-      <a href="/#focus" class="nav-opt">Focus</a>
       <a href="/#experience" class="nav-opt">Experience</a>
       <a href="/posts/"{{ if or (eq .Section "posts") (eq .Kind "taxonomy") (eq .Kind "term") }} aria-current="page"{{ end }}>Blog</a>
       <a href="{{ $p.resume }}" class="nav-opt">Résumé</a>
-      <a href="/#contact" class="btn btn-sm">Contact</a>
+      <a href="/#contact" class="btn btn-secondary btn-sm">Contact</a>
       <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle light and dark theme">
         <span class="show-dark">{{ partial "icon.html" "sun" }}</span>
         <span class="show-light">{{ partial "icon.html" "moon" }}</span>

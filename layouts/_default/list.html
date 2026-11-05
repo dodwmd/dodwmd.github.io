@@ -1,23 +1,23 @@
 {{ define "main" }}
 <section class="page-head">
   <div class="wrap narrow">
-    <p class="eyebrow">{{ if eq .Kind "term" }}Tag{{ else }}Blog{{ end }}</p>
-    <h1>{{ if eq .Kind "term" }}{{ .Title }}{{ else }}Notes on infrastructure &amp; operations{{ end }}</h1>
     {{ if eq .Kind "term" }}
-      <p class="lead"><a class="link-arrow" href="/posts/">All posts {{ partial "icon.html" "arrow" }}</a> · <a class="link-arrow" href="/tags/">All tags {{ partial "icon.html" "arrow" }}</a></p>
+      <p class="crumb mono"><a href="/tags/">All tags</a></p>
+      <h1>{{ .Title }}</h1>
     {{ else }}
-      <p class="lead">Writing from over two decades of running production systems. <a href="/tags/">Browse by tag</a>.</p>
+      <h1>Notes on infrastructure and operations</h1>
+      <p class="lead">Writing from two decades of running production systems. <a class="link" href="/tags/">Browse by tag</a></p>
     {{ end }}
   </div>
 </section>
 <section class="section tight">
   <div class="wrap narrow">
     {{ range (.Pages.GroupByDate "2006") }}
-    <h2 class="year">{{ .Key }}</h2>
+    <h2 class="year mono">{{ .Key }}</h2>
     <ul class="post-list">
       {{ range .Pages }}
       <li>
-        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan" }}</time>
+        <time class="mono muted" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01-02" }}</time>
         <a href="{{ .RelPermalink }}">{{ .Title }}</a>
       </li>
       {{ end }}

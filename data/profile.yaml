@@ -5,43 +5,36 @@ github: https://github.com/dodwmd
 linkedin: https://www.linkedin.com/in/michaeldodwell/
 resume: /assets/pdf/resume.pdf
 
-headline: Reliable platforms. Faster delivery. Teams that ship with confidence.
+headline: I keep platforms standing when the traffic spikes
 intro: >-
-  Twenty-five years across systems, cloud and DevOps, from Solaris data centres
-  to GitOps on Kubernetes. I help organisations automate their infrastructure,
-  scale for unpredictable load, and turn operations into a competitive advantage.
+  Senior DevOps and platform leader. At Maestro I run GKE, Terraform and
+  ArgoCD for live video events, where the whole audience arrives at once.
 
 stats:
   - value: "25+"
-    label: years in infrastructure & operations
+    label: years in infrastructure and operations
   - value: "1,000+"
-    label: pods scaled during live-event traffic spikes
-  - value: "Up to 10"
-    label: engineers led, across countries and time zones
-  - value: "Daily"
-    label: releases enabled through CI/CD automation
+    label: pods at peak during live events
+  - value: "10"
+    label: engineers in the largest team I have led
 
 focus:
   - title: Platform engineering
-    icon: layers
     body: >-
       Kubernetes on GKE and EKS, and container platforms on AWS ECS. Built for
       spiky, event-driven load, not just the average day.
   - title: Infrastructure as code & GitOps
-    icon: git
     body: >-
       Terraform, ArgoCD, Helm and YTT. Environments and configuration released
       through git, so every change is reviewed, repeatable and reversible.
   - title: Delivery & reliability
-    icon: gauge
     body: >-
       CI/CD pipelines, SLAs, outage procedures and on-call practices that let
-      teams release many times a day without losing sleep.
+      teams release many times a day without losing sleep
   - title: Technical leadership
-    icon: users
     body: >-
       Leading and mentoring distributed engineering teams, introducing Agile
-      and SCRUM, and translating between technical and business stakeholders.
+      and SCRUM, and translating between technical and business stakeholders
 
 toolbox:
   - group: Cloud
@@ -60,46 +53,46 @@ toolbox:
 experience:
   - company: Maestro
     title: Director of Operations
-    dates: 2020 – Present
-    blurb: Interactive video platform for creators.
+    dates: 2020 → now
+    blurb: Interactive video platform for creators
     points:
-      - Rebuilt GKE infrastructure side-by-side with Terraform, using GitOps in every repo so whole environments release through git.
-      - Tuned autoscaling to survive live-event spikes of over a thousand pods from an unknown starting audience.
-      - Set up ArgoCD with YTT and Helm templating to hide deployment complexity from application teams.
-      - Simplified CDN (Fastly) and certificate management, giving customers self-service.
+      - Rebuilt GKE infrastructure side-by-side with Terraform, using GitOps in every repo so whole environments release through git
+      - Tuned autoscaling to survive live-event spikes of over a thousand pods from an unknown starting audience
+      - Set up ArgoCD with YTT and Helm templating to hide deployment complexity from application teams
+      - Simplified CDN (Fastly) and certificate management, giving customers self-service
     tags: [GCP, GKE, Terraform, ArgoCD, Fastly]
   - company: Console Group
     title: Senior DevOps Engineer
-    dates: 2018 – 2020
-    blurb: Property management software.
+    dates: 2018 → 2020
+    blurb: Property management software
     points:
-      - Led a small team that enabled multiple releases a day and automated dev and pre-production environments.
-      - Moved workloads from dedicated instances to ASG-backed ECS clusters on a unified base image.
-      - Added multi-region deployment and on-demand named environments with cost-tracking tags.
+      - Led a small team that enabled multiple releases a day and automated dev and pre-production environments
+      - Moved workloads from dedicated instances to ASG-backed ECS clusters on a unified base image
+      - Added multi-region deployment and on-demand named environments with cost-tracking tags
     tags: [AWS, ECS, Terraform, Ansible, Jenkins]
   - company: Red Hat
     title: Senior Systems Administrator
-    dates: 2017 – 2018
-    blurb: Cross-architecture build and CI/CD infrastructure.
+    dates: 2017 → 2018
+    blurb: Cross-architecture build and CI/CD infrastructure
     points:
-      - Owned the multi-architecture RPM build system (PPC, ARM64, S390, x86_64) and the OpenStack-based CI environment.
-      - Led a cross-geography team of 7 engineers and introduced SCRUM to SysOps.
-      - Key technical lead through the OpenStack 12 to 13 upgrade and migration to Upshift.
+      - Owned the multi-architecture RPM build system (PPC, ARM64, S390, x86_64) and the OpenStack-based CI environment
+      - Led a cross-geography team of 7 engineers and introduced SCRUM to SysOps
+      - Key technical lead through the OpenStack 12 to 13 upgrade and migration to Upshift
     tags: [OpenStack, Ansible, Jenkins, RHEL]
   - company: Accenture
     title: DevOps & Capability Manager
-    dates: 2015 – 2017
-    blurb: DevOps practice lead for the APAC region.
+    dates: 2015 → 2017
+    blurb: DevOps practice lead for the APAC region
     points:
-      - Built an automation framework for a major telco, cutting customer acquisition time from days to minutes.
-      - Architected environment automation for core banking and improved deployment efficiency tenfold.
-      - Led a 10-engineer government cloud migration to Azure.
+      - Built an automation framework for a major telco, cutting customer acquisition time from days to minutes
+      - Architected environment automation for core banking and improved deployment efficiency tenfold
+      - Led a 10-engineer government cloud migration to Azure
     tags: [Python, Fabric, OpenStack, Azure]
 
 earlier: >-
   Before that, fifteen years of senior Unix and systems engineering at Geoplex,
   UXC Connect, Australia Post, Hyperlink, E-kit, Sensis and others, across
-  Solaris, RHEL, AIX, VMware and early AWS.
+  Solaris, RHEL, AIX, VMware and early AWS
 
 certifications:
   - Red Hat Certified System Administrator (RHCSA)
