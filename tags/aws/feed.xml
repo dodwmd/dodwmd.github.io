@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://gohugo.io/" version="0.169.0">Hugo</generator><title>Aws on DODWELL.US</title><subtitle>DevOPS - For fun and profit</subtitle><link href="https://dodwell.us/tags/aws/" rel="alternate" type="text/html" title="html"/><link href="https://dodwell.us/tags/aws/feed.xml" rel="self" type="application/atom+xml" title="atom"/><link href="https://dodwell.us/tags/aws/feed.json" rel="alternate" type="application/json" title="Json"/><updated>2026-11-05T19:09:01+10:00</updated><id>https://dodwell.us/tags/aws/</id><entry><title>elastic search abuse on aws</title><link href="https://dodwell.us/2014/07/29/elastic-search-abuse-aws/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/07/29/elastic-search-abuse-aws/</id><published>2014-07-29T00:00:00+00:00</published><updated>2014-07-29T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;&lt;a href="https://dodwell.us/insecure-default-in-elasticsearch-enables-remote-code-execution/" title="Insecure default in Elasticsearch enables remote code execution" target="_blank"&gt;Previously&lt;/a&gt; I highlighted the release of an exploit to elastic search that results in the ability to execute unauthorized code on a server running elasticsearch 1.1.x. It has just been reported that this same exploit is now being used to install DDOS (distributed denial of service) bots on vulnerable machines hosted within AWS. Elasticsearch instances should always be treated like a database and not be directly exposed to the internet. As a minimum you should be using plugins to nginx to get JSON functionality direct from the web server and have it act as a proxy to back end processes like elastic search. This will help you filter requests so only the requests you authorize are able to be executed.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h2 id="further-reading"
+&gt;
+further reading
+&lt;/h2&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/29/elastic-search-abuse-aws/#further-reading" class="gblog-post__anchor clip flex align-center" aria-label="Anchor further reading" href="#further-reading"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="https://securelist.com/blog/virus-watch/65192/elasticsearch-vuln-abuse-on-amazon-cloud-and-more-for-ddos-and-profit/" target="_blank" title="elasticsearch Vuln Abuse on Amazon Cloud and More for DDoS and Profit"&gt;&lt;a
+class="gblog-markdown__link"
+href="https://securelist.com/blog/virus-watch/65192/elasticsearch-vuln-abuse-on-amazon-cloud-and-more-for-ddos-and-profit/"
+&gt;https://securelist.com/blog/virus-watch/65192/elasticsearch-vuln-abuse-on-amazon-cloud-and-more-for-ddos-and-profit/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/aws" term="aws" label="aws"/><category scheme="https://dodwell.us/tags/security" term="security" label="security"/></entry><entry><title>using nginx to proxy private amazon s3 web services</title><link href="https://dodwell.us/2014/06/06/using-nginx-to-proxy-private-amazon-s3-web-services/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/06/06/using-nginx-to-proxy-private-amazon-s3-web-services/</id><published>2014-06-06T00:00:00+00:00</published><updated>2014-06-06T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;I thought I&amp;rsquo;d share how I set up Nginx to proxy a private S3 bucket.&lt;/p&gt;
+&lt;p&gt;I wanted to be able to password protect the contents of a bucket and without allowing any owner information of the bucket from leaking to the web user.&lt;/p&gt;
+&lt;p&gt;A simple configuration can be used if you want to serve objects that are public:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;location ~* ^/s3/&lt;span class="o"&gt;(&lt;/span&gt;.*&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; resolver 172.31.0.2 &lt;span class="nv"&gt;valid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;300s&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; resolver_timeout 10s&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;$s3_bucket&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;your_bucket.s3.amazonaws.com&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;$url_full&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;$1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_http_version 1.1&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_set_header Host &lt;span class="nv"&gt;$s3_bucket&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_set_header Authorization &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_hide_header x-amz-id-2&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_hide_header x-amz-request-id&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_hide_header Set-Cookie&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_ignore_headers &lt;span class="s2"&gt;&amp;#34;Set-Cookie&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_buffering off&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_intercept_errors on&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_pass http://&lt;span class="nv"&gt;$s3_bucket&lt;/span&gt;/&lt;span class="nv"&gt;$url_full&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To setup nginx to use a private bucket is a little more work.&lt;/p&gt;
+&lt;p&gt;First we need to add in a few extra modules to the standard Nginx. Most of these modules have already been included in the nginx-extras package, however I&amp;rsquo;ll need to grab a copy of the latest source Ubuntu package, modify the rules file and repackage it so I can deploy it using my own apt repository.&lt;/p&gt;
+&lt;p&gt;We need the following modules:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;set-misc-nginx-module&lt;/li&gt;
+&lt;li&gt;ngx_devel_kit&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ngx_devel_kit is a dependency for set-misc-nginx-module.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add-apt-repository ppa:nginx/unstable
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /usr/src
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt-get build-dep nginx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt-get &lt;span class="nb"&gt;source&lt;/span&gt; nginx&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We should now have a copy of the latest Nginx source package unpacked into /usr/src. Lets grab the module we want to install.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone https://github.com/openresty/set-misc-nginx-module.git debian/modules/set-misc-nginx-module&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The debian package already includes the nginx-development-kit. Lets modify the debian/rules file.
+Under the &amp;rsquo;extras_configure_flags&amp;rsquo; lets ensure &amp;lsquo;&amp;ndash;add-module=$(MODULESDIR)/nginx-development-kit&amp;rsquo; already exists and add &amp;lsquo;&amp;ndash;add-module=$(MODULESDIR)/set-misc-nginx-module&amp;rsquo;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;....
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;extras_configure_flags :&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;$(&lt;/span&gt;common_configure_flags&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_addition_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_dav_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_flv_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_geoip_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_gzip_static_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_image_filter_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_mp4_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_perl_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_random_index_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_secure_link_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_spdy_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_sub_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-http_xslt_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-mail &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --with-mail_ssl_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/nginx-auth-pam &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/nginx-cache-purge &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/nginx-dav-ext-module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/nginx-echo &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/ngx-fancyindex &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/nginx-http-push &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/nginx-lua &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/nginx-upload-progress &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/nginx-upstream-fair &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/ngx_http_substitutions_filter_module &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/nginx-development-kit &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --add-module&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;MODULESDIR&lt;span class="k"&gt;)&lt;/span&gt;/set-misc-nginx-module
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;....&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now lets save this and update the changelog making a local package.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;dch --local dodwmd&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Edit the changelog in vi and include what has been changed and by whom.
+Now lets repackage.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;dpkg-buildpackage -us -uc&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We now have .deb packages we can place on our apt repo for our webservers to use.
+Once you&amp;rsquo;ve copied the packages to your repo and installed the &amp;rsquo;nginx-extras&amp;rsquo; package on the webservers you can use the following configuration code snippet in nginx:
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; location ~* ^/s3/&lt;span class="o"&gt;(&lt;/span&gt;.*&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;$bucket&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;lt;REPLACE WITH YOUR S3 BUCKET NAME&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;$aws_access&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;lt;REPLACE WITH YOUR AWS ACCESS KEY&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;$aws_secret&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;lt;REPLACE WITH YOUR AWS SECRET KEY&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;$url_full&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; set_by_lua &lt;span class="nv"&gt;$now&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;return ngx.cookie_time(ngx.time())&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;$string_to_sign&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$request_method&lt;/span&gt;&lt;span class="s2"&gt;\n\n\n\nx-amz-date:&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;now&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;\n/&lt;/span&gt;&lt;span class="nv"&gt;$bucket&lt;/span&gt;&lt;span class="s2"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;$url_full&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; set_hmac_sha1 &lt;span class="nv"&gt;$aws_signature&lt;/span&gt; &lt;span class="nv"&gt;$aws_secret&lt;/span&gt; &lt;span class="nv"&gt;$string_to_sign&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; set_encode_base64 &lt;span class="nv"&gt;$aws_signature&lt;/span&gt; &lt;span class="nv"&gt;$aws_signature&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; resolver 172.31.0.2 &lt;span class="nv"&gt;valid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;300s&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; resolver_timeout 10s&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_http_version 1.1&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_set_header Host &lt;span class="nv"&gt;$bucket&lt;/span&gt;.s3.amazonaws.com&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_set_header x-amz-date &lt;span class="nv"&gt;$now&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_set_header Authorization &lt;span class="s2"&gt;&amp;#34;AWS &lt;/span&gt;&lt;span class="nv"&gt;$aws_access&lt;/span&gt;&lt;span class="s2"&gt;:&lt;/span&gt;&lt;span class="nv"&gt;$aws_signature&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_buffering off&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_intercept_errors on&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; rewrite .* /&lt;span class="nv"&gt;$url_full&lt;/span&gt; break&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; proxy_pass http://s3.amazonaws.com&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h2 id="further-reading"
+&gt;
+further reading
+&lt;/h2&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/06/06/using-nginx-to-proxy-private-amazon-s3-web-services/#further-reading" class="gblog-post__anchor clip flex align-center" aria-label="Anchor further reading" href="#further-reading"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="http://s3.amazonaws.com/doc/s3-developer-guide/RESTAuthentication.html" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://s3.amazonaws.com/doc/s3-developer-guide/RESTAuthentication.html"
+&gt;http://s3.amazonaws.com/doc/s3-developer-guide/RESTAuthentication.html&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/aws" term="aws" label="aws"/></entry><entry><title>aws management portal for vcenter</title><link href="https://dodwell.us/2014/06/03/aws-management-portal-for-vcenter/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/06/03/aws-management-portal-for-vcenter/</id><published>2014-06-03T00:00:00+00:00</published><updated>2014-06-03T00:00:00+00:00</updated><content type="html">
+&lt;blockquote&gt;
+&lt;p&gt;AWS Management Portal for vCenter enables you to manage your AWS resources using VMware vCenter. The portal installs as a vCenter plug-in within your existing vCenter environment. Once installed, it enables you to migrate VMware VMs to Amazon EC2 and manage AWS resources from within vCenter. The AWS resources that you create using the portal will be located in your AWS account, even though they have been created using vCenter. For experienced VMware administrators, AWS Management Portal for vCenter provides a familiar look-and-feel that will make it easy to start using AWS. For enterprises with existing VMware-based environments, the portal makes it easy to begin moving computing resources to the cloud, while continuing to leverage existing tools and training materials while beginning their transition. Service providers that offer VMware-based services can also use the portal to offer their end customers self-service access to AWS.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h2 id="further-reading"
+&gt;
+further reading
+&lt;/h2&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/06/03/aws-management-portal-for-vcenter/#further-reading" class="gblog-post__anchor clip flex align-center" aria-label="Anchor further reading" href="#further-reading"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="http://aws.amazon.com/ec2/vcenter-portal/" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://aws.amazon.com/ec2/vcenter-portal/"
+&gt;http://aws.amazon.com/ec2/vcenter-portal/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/aws" term="aws" label="aws"/></entry><entry><title>testing puppet</title><link href="https://dodwell.us/2014/05/14/testing-puppet/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/05/14/testing-puppet/</id><published>2014-05-14T00:00:00+00:00</published><updated>2014-05-14T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;I&amp;rsquo;d like to cover some information about how you can test puppet modules. I&amp;rsquo;ve seen a lot of companies creating puppet modules and testing them via direct deployments onto machines. Or worst yet making changes to manifests without any testing at all. The world of puppet testing can seem quite daunting but with the following paragraphs I hope to show you that you can make some very small changes to how you develop puppet modules that will hopefully save you from some very bad situations.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="syntax-checking"
+&gt;
+syntax checking
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/14/testing-puppet/#syntax-checking" class="gblog-post__anchor clip flex align-center" aria-label="Anchor syntax checking" href="#syntax-checking"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;At the minimum on the checking list, you can use the puppet client to check the syntax of your modules. It&amp;rsquo;s very easy for simple typos to break a puppet run. When editing a manifest file simply type the following (using init.pp as an example):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;dodwmd@puppet:~/puppet/modules/postgresql/manifests$ puppet parser validate init.pp
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Error: Could not parse &lt;span class="k"&gt;for&lt;/span&gt; environment production: Syntax error at end of file&lt;span class="p"&gt;;&lt;/span&gt; expected &lt;span class="s1"&gt;&amp;#39;}&amp;#39;&lt;/span&gt; at /etc/puppet/modules/postgresql/manifests/init.pp:631
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;dodwmd@puppet:~/puppet/modules/postgresql/manifests$&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;As you can see I&amp;rsquo;ve left out the &amp;lsquo;}&amp;rsquo; somewhere around line 631.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="lint"
+&gt;
+lint
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/14/testing-puppet/#lint" class="gblog-post__anchor clip flex align-center" aria-label="Anchor lint" href="#lint"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Once we&amp;rsquo;re happy that the syntax is correct in our file we may want to work on how we&amp;rsquo;ve written the file so other developers are able to understand it. We can do this with a tool called &amp;lsquo;&lt;a href="http://puppet-lint.com/" title="puppet-lint" target="_blank"&gt;puppet-lint&lt;/a&gt;&amp;rsquo;. Once it&amp;rsquo;s installed we can once again run a test against our init.pp file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;dodwmd@puppet:~/puppet/modules/postgresql/manifests$ puppet-lint init.pp
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;20&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;36&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;37&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;55&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;59&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;125&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;147&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;158&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;423&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;431&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;462&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;463&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;487&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;WARNING: line has more than &lt;span class="m"&gt;80&lt;/span&gt; characters on line &lt;span class="m"&gt;622&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;dodwmd@puppet:~/puppet/modules/postgresql/manifests$&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="jenkins-and-puppet-lint"
+&gt;
+jenkins and puppet-lint
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/14/testing-puppet/#jenkins-and-puppet-lint" class="gblog-post__anchor clip flex align-center" aria-label="Anchor jenkins and puppet-lint" href="#jenkins-and-puppet-lint"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;A fun way to encourage a team to work on lint warnings is to create a Jenkins job that will graph the warnings over time to encourage members to get rid of them. Here is a quick run down that will help you do some CI testing on your puppet modules tree.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Install the &amp;ldquo;Warnings&amp;rdquo; plugin from the Jenkins &amp;ldquo;Manage Jenkins-&amp;gt;Manage Plugins&amp;rdquo; page&lt;/li&gt;
+&lt;li&gt;Update the Rakefile in the root directory of puppet module/tree to contain the following to invoke puppet-lint with a specific log format&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-ruby" data-lang="ruby"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# /etc/puppet/Rakefile&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="no"&gt;LINT_IGNORES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;rvm&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:lint&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Check puppet module code style.&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:ci&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;begin&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;puppet-lint&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;rescue&lt;/span&gt; &lt;span class="no"&gt;LoadError&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;fail&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Cannot load puppet-lint, did you install it?&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;success&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;linter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;PuppetLint&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;linter&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;configuration&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log_format&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;%{path}:%{linenumber}:%{check}:%{KIND}:%{message}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;lintrc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;.puppet-lintrc&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="no"&gt;File&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;file?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lintrc&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="no"&gt;File&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lintrc&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;each_line&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;check&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/--no-([a-zA-Z0-9_]*)-check/&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;\1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;chomp&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;linter&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;configuration&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;disable_&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;check&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="no"&gt;FileList&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;**/*.pp&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;].&lt;/span&gt;&lt;span class="n"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;puppet_file&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;puppet_file&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start_with?&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;modules&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;parts&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;puppet_file&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;module_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;parts&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;next&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="no"&gt;LINT_IGNORES&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;include?&lt;/span&gt; &lt;span class="n"&gt;module_name&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Evaluating code style for &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;puppet_file&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;linter&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;puppet_file&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;linter&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;success&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;false&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;linter&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;errors?&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;abort&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Checking puppet module code style FAILED&amp;#34;&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;success&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;is_a?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;FalseClass&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a new Jenkins Project and have Jenkins pull a copy of your modules out of your source repository&lt;/li&gt;
+&lt;li&gt;Configure the project to execute a new Rake task as part of the build (rake lint:ci)&lt;/li&gt;
+&lt;li&gt;Add a &amp;lsquo;Post-build Action&amp;rsquo; to &amp;lsquo;Scan console log&amp;rsquo; using the &amp;lsquo;Puppet-lint&amp;rsquo; parser&lt;/li&gt;
+&lt;li&gt;Then just run a build&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Once the build finishes successfully you should get some interesting statistics on the Jenkins Project&amp;rsquo;s homepage. Fix some of the errors and it&amp;rsquo;ll be graphed over time. You might also want to install some git hooks that will automatically kick off this job on a commit.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="rspec"
+&gt;
+rspec
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/14/testing-puppet/#rspec" class="gblog-post__anchor clip flex align-center" aria-label="Anchor rspec" href="#rspec"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;I don&amp;rsquo;t want to cover that much of rspec because the tutorial at &lt;a href="http://rspec-puppet.com/tutorial/" title="rspec tutorial" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://rspec-puppet.com/tutorial/"
+&gt;http://rspec-puppet.com/tutorial/&lt;/a&gt;&lt;/a&gt; covers anything that I&amp;rsquo;d touch on. But it has to be mentioned, as catalog testing is a must for puppet module developers. If you want to go even further with your testing maybe beaker is for you!&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="beaker"
+&gt;
+beaker
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/14/testing-puppet/#beaker" class="gblog-post__anchor clip flex align-center" aria-label="Anchor beaker" href="#beaker"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Each of the methods described above push modules further to ensure you&amp;rsquo;re delivering the highest quality code to customers. beaker is a framework by puppetlabs to spin up dedicated test instances and actually attempt to apply the manifest and rspec tests to the instances. This is a method to fully test puppet manifests without applying the changes to live production servers. The following hyper visor methods are supported:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.vmware.com/au/products/vsphere-hypervisor" target="_blank"&gt;VMWare vSphere&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.vmware.com/products/fusion" target="_blank"&gt;VMWare Fusion&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://aws.amazon.com/ec2/" target="_blank"&gt;EC2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Solaris_Containers" target="_blank"&gt;Solaris via Zones/Containers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.vagrantup.com/" target="_blank"&gt;Vagrant&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://cloud.google.com/products/compute-engine/" target="_blank"&gt;Google Compute Engine&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://docker.io/" target="_blank"&gt;Docker&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The following walk through is going to focus on using EC2 to spin up instances for testing puppet manifests. Let&amp;rsquo;s get started!
+We need to install puppetlabs_spec_helper via:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ git clone git://github.com/puppetlabs/puppetlabs_spec_helper.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; puppetlabs_spec_helper
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ rake package:gem
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ gem install pkg/puppetlabs_spec_helper-*.gem&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Lets grab an example puppet module that already has most of the required files needed for our testing.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ git clone https://github.com/puppetlabs/puppetlabs-mysql.git mysql
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; mysql&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Take a look in spec/acceptance and you can find pre-written acceptance tests.&lt;/p&gt;
+&lt;p&gt;Now we need to describe the nodes that are going to be used to test the mysql module. You need to describe the node(s) in the nodesets directory under the acceptance sub-directory.&lt;/p&gt;
+&lt;p&gt;Lets change the default mysql/spec/nodesets/default.yml which describes the instances to startup for our module testing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# cat mysql/spec/nodesets/default.yml&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;HOSTS:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ubuntu-1204-64-1:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; roles:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; - master
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; - database
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; - dashboard
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; - agent
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; vmname: ubuntu-dodwell
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; platform: ubuntu-12.04-amd64
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; amisize: c1.medium
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; hypervisor: ec2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; snapshot: foss
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ubuntu-1204-64-2:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; roles:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; - agent
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; vmname: ubuntu-dodwell
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; platform: ubuntu-12.04-amd64
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; amisize: c1.medium
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; hypervisor: ec2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; snapshot: foss
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;CONFIG:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; nfs_server: none
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; consoleport: &lt;span class="m"&gt;443&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This is the file that describes where we want to run our test instances. Documentation has been created &lt;a href="https://github.com/puppetlabs/beaker/wiki/Creating-A-Test-Environment"&gt;here&lt;/a&gt; that describes how to support different hypervisors.&lt;/p&gt;
+&lt;p&gt;We will also need a file in config/images_templates called ec2.yaml that describes how the &amp;lsquo;vmname&amp;rsquo; (Host/SUT) is tied to a AMI.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# mysql/config/images_templates/ec2.yaml&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;AMI:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ubuntu-ap:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; :image:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; :foss: ami-4d51ca77
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; :region: ap-southeast-2&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hosts, or SUTs (Systems Under Test), must meet the following requirements:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The SUT will need a properly configured network, hosts will need to be able to reach each other by hostname.&lt;/li&gt;
+&lt;li&gt;On the SUT, you must configure passwordless SSH authentication for the root user.&lt;/li&gt;
+&lt;li&gt;The SUT must have the ntpdate binary installed&lt;/li&gt;
+&lt;li&gt;The SUT must have the curl binary installed&lt;/li&gt;
+&lt;li&gt;On Windows, Cygwin must be installed (with curl, sshd, bash) and the necessary windows gems (sys-admin, win32-dir, etc).&lt;/li&gt;
+&lt;li&gt;FOSS install: you must have git, ruby, and rdoc installed on your SUT.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Take a read of &lt;a href="http://dodwell.us/packer-io/"&gt;this blog post&lt;/a&gt; on how to use packer.io to create custom AMI&amp;rsquo;s.&lt;/p&gt;
+&lt;p&gt;The last step of config will be to ensure fog.io is set up. Create a file in your home directory called ~/.fog and put your EC2 credentials inside it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# ~/.fog&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;:default:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; :aws_access_key_id: XXXXXXXXXXXXXXXXX
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; :aws_secret_access_key: XXXXXXXXXXXXXXXXXXXXXXXXXXX&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Let&amp;rsquo;s give it a spin.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;~/mysql$ bundle &lt;span class="nb"&gt;exec&lt;/span&gt; beaker --log-level debug --hosts spec/acceptance/nodesets/default.yml --tests spec/acceptance
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Hypervisor &lt;span class="k"&gt;for&lt;/span&gt; ubuntu-1204-64-1 is ec2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Hypervisor &lt;span class="k"&gt;for&lt;/span&gt; ubuntu-1204-64-2 is ec2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Beaker::Hypervisor, found some ec2 boxes to create
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;aws-sdk: Iterate across all hosts in configuration and launch them
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;aws-sdk: Checking image ami-4d51ca77 exists and getting its root device
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt;AWS EC2 &lt;span class="m"&gt;200&lt;/span&gt; 0.313706 &lt;span class="m"&gt;0&lt;/span&gt; retries&lt;span class="o"&gt;]&lt;/span&gt; describe_images&lt;span class="o"&gt;(&lt;/span&gt;:image_ids&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;ami-4d51ca77&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;aws-sdk: Image block_device_mappings: &lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;/dev/sda1&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="o"&gt;{&lt;/span&gt;:snapshot_id&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="s2"&gt;&amp;#34;snap-4a216d7e&amp;#34;&lt;/span&gt;, :volume_size&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;8, :delete_on_termination&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;true, :volume_type&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="s2"&gt;&amp;#34;standard&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;}}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;aws-sdk: Launch instance
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;aws-sdk: Ensure key pair exists, create &lt;span class="k"&gt;if&lt;/span&gt; not
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt;AWS EC2 &lt;span class="m"&gt;200&lt;/span&gt; 0.076698 &lt;span class="m"&gt;0&lt;/span&gt; retries&lt;span class="o"&gt;]&lt;/span&gt; describe_key_pairs&lt;span class="o"&gt;(&lt;/span&gt;:filters&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="o"&gt;[{&lt;/span&gt;:name&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="s2"&gt;&amp;#34;key-name&amp;#34;&lt;/span&gt;,:values&lt;span class="o"&gt;=&lt;/span&gt;&amp;gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Beaker-root-puppet-dodwell-us&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;]}])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;....
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;....
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;....&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="conclusion"
+&gt;
+conclusion
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/14/testing-puppet/#conclusion" class="gblog-post__anchor clip flex align-center" aria-label="Anchor conclusion" href="#conclusion"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;With each method of testing you can quickly see that more and more effort needs to go into ensuring quality puppet manifests are created. How far down the testing rabbit hole you choose to go will be something you should decide on a project by project basis. Thanks for reading!&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h2 id="further-reading"
+&gt;
+further reading
+&lt;/h2&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/14/testing-puppet/#further-reading" class="gblog-post__anchor clip flex align-center" aria-label="Anchor further reading" href="#further-reading"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="http://rspec-puppet.com/" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://rspec-puppet.com/"
+&gt;http://rspec-puppet.com/&lt;/a&gt;&lt;/a&gt;
+&lt;a href="http://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/"
+&gt;http://hackers.lookout.com/2012/07/puppet-lint-with-jenkins/&lt;/a&gt;&lt;/a&gt;
+&lt;a href="http://bombasticmonkey.com/2012/03/02/automatically-test-your-puppet-modules-with-travis-ci/" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://bombasticmonkey.com/2012/03/02/automatically-test-your-puppet-modules-with-travis-ci/"
+&gt;http://bombasticmonkey.com/2012/03/02/automatically-test-your-puppet-modules-with-travis-ci/&lt;/a&gt;&lt;/a&gt;
+&lt;a href="https://wiki.jenkins-ci.org/display/JENKINS/Warnings+Plugin"&gt;&lt;a
+class="gblog-markdown__link"
+href="https://wiki.jenkins-ci.org/display/JENKINS/Warnings&amp;#43;Plugin"
+&gt;https://wiki.jenkins-ci.org/display/JENKINS/Warnings+Plugin&lt;/a&gt;&lt;/a&gt;
+&lt;a href="https://github.com/puppetlabs/beaker/wiki" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="https://github.com/puppetlabs/beaker/wiki"
+&gt;https://github.com/puppetlabs/beaker/wiki&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/aws" term="aws" label="aws"/><category scheme="https://dodwell.us/tags/configuration" term="configuration" label="configuration"/><category scheme="https://dodwell.us/tags/management" term="management" label="management"/><category scheme="https://dodwell.us/tags/puppet" term="puppet" label="puppet"/></entry><entry><title>packer.io</title><link href="https://dodwell.us/2014/05/08/packer-io/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/05/08/packer-io/</id><published>2014-05-08T00:00:00+00:00</published><updated>2014-05-08T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;In a previous post I wrote about how we can use Auto-Scaling Groups (ASG&amp;rsquo;s) to &lt;a href="http://dodwell.us/use-asg/" title="How to use ASG"&gt;quickly adapt to user load&lt;/a&gt;. In this post I intend to explain a method to create custom Amazon Machine Image&amp;rsquo;s (AMI&amp;rsquo;s) using a project called &lt;a href="http://www.packer.io/" title="packer.io" target="_blank"&gt;packer.io&lt;/a&gt;&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="what-is-packer"
+&gt;
+what is packer?
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/08/packer-io/#what-is-packer" class="gblog-post__anchor clip flex align-center" aria-label="Anchor what is packer?" href="#what-is-packer"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Packer is an open source tool for creating identical machine images for multiple platforms from a single source configuration. Packer is lightweight, runs on every major operating system and is able to create machine images for multiple platforms in parallel. Packer does not replace configuration management like Chef or Puppet. In fact, when building images, Packer is able to use tools like Chef or Puppet to install software.&lt;/p&gt;
+&lt;p&gt;A machine image is a single static unit that contains a pre-configured operating system and installed software which is used to quickly create new running machines. Machine image formats change for each platform. Some examples include AMIs for EC2, VMDK/VMX files for VMware, OVF exports for VirtualBox, etc.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h4 id="installation"
+&gt;
+installation
+&lt;/h4&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/08/packer-io/#installation" class="gblog-post__anchor clip flex align-center" aria-label="Anchor installation" href="#installation"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Packer is distributed as a binary package for different OS&amp;rsquo;s. Our OS is Linux based with a 64-bit CPU.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir ~/bin/packer
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;wget https://dl.bintray.com/mitchellh/packer/0.6.0_linux_amd64.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;unzip -d ~/bin/packer 0.6.0_linux_amd64.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;:~/bin/packer&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h4 id="using"
+&gt;
+using
+&lt;/h4&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/08/packer-io/#using" class="gblog-post__anchor clip flex align-center" aria-label="Anchor using" href="#using"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Now that packer is installed lets create a json file to build an Amazon EC2 AMI.&lt;/p&gt;
+&lt;p&gt;example.json:
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;{&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;variables&amp;#34;: &lt;/span&gt;{&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;aws_access_key&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;aws_secret_key&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;}&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;builders&amp;#34;: &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;{&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;type&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;amazon-ebs&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;access_key&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;{{user `aws_access_key`}}&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;secret_key&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;{{user `aws_secret_key`}}&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;region&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;ap-southeast-2&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;source_ami&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;ami-09f26b33&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;instance_type&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;t1.micro&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;ssh_username&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;ubuntu&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;ami_name&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;example-ami {{timestamp}}&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;}&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;provisioners&amp;#34;: &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;{&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;type&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;shell&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;script&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;build_example.sh&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;#34;execute_command&amp;#34;: &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;chmod +x {{ .Path }}; {{ .Vars }} sudo {{ .Path }}&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;}&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;And let&amp;rsquo;s make a shell script that will be executed to customize the AMI:&lt;/p&gt;
+&lt;p&gt;build_example.sh:
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;DEBIAN_FRONTEND&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;noninteractive
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Package: *
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;Pin: origin &amp;#34;packages.dodwell.us&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;Pin-Priority: 1001&amp;#39;&lt;/span&gt; &amp;gt; /etc/apt/preferences.d/dodwell-precise-pin-1001
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;deb http://apt.puppetlabs.com precise main&amp;#39;&lt;/span&gt; &amp;gt; /etc/apt/sources.list.d/puppetlabs.list
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;deb http://apt.puppetlabs.com precise dependencies&amp;#39;&lt;/span&gt; &amp;gt; /etc/apt/sources.list.d/puppetlabs-dependencies.list
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main&amp;#39;&lt;/span&gt; &amp;gt; /etc/apt/sources.list.d/pgdg.list
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;deb http://apt.dodwell.us precise main&amp;#39;&lt;/span&gt; &amp;gt; /etc/apt/sources.list.d/dodwell.list
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# puppetlabs&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt-key adv --keyserver keyserver.ubuntu.com --recv 4BD6EC30
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# pgdg&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl https://www.postgresql.org/media/keys/ACCC4CF8.asc &lt;span class="p"&gt;|&lt;/span&gt; apt-key add -
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# dodwell repo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl https://packages.dodwell.us/keys/keyfile.asc &lt;span class="p"&gt;|&lt;/span&gt; apt-key add -
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Lets not allow services to be started on install&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir /tmp/fake
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;for&lt;/span&gt; COMMANDS in initctl invoke-rc.d restart start stop start-stop-daemon service
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ln -s /bin/true /tmp/fake/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;COMMANDS&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/tmp/fake:&lt;span class="nv"&gt;$PATH&lt;/span&gt; aptitude -y update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/tmp/fake:&lt;span class="nv"&gt;$PATH&lt;/span&gt; aptitude -y upgrade
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/tmp/fake:&lt;span class="nv"&gt;$PATH&lt;/span&gt; aptitude -y install puppet lsb-release ruby ruby1.9.1 ruby1.9.1-dev ri1.9.1 build-essential libssl-dev zlib1g-dev rubygems fail2ban openjdk-7-jre-headless postgresql-client-9.3 proftpd-basic unzip nginx php5-fpm php5-suhosin
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;[agent]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;server=puppet.ec2-int.dodwell.us
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; /etc/puppet/puppet.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/usr/bin/puppet agent -o&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; /etc/rc.local
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;/usr/sbin/update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby1.9.1 &lt;span class="m"&gt;400&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --slave /usr/share/man/man1/ruby.1.gz ruby.1.gz /usr/share/man/man1/ruby1.9.1.1.gz &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --slave /usr/bin/ri ri /usr/bin/ri1.9.1 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --slave /usr/bin/irb irb /usr/bin/irb1.9.1 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --slave /usr/bin/rdoc rdoc /usr/bin/rdoc1.9.1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;/usr/sbin/update-alternatives --set gem /usr/bin/gem1.9.1&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;Now that we have these 2 files in our current directory lets build the AMI:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;root@earth:~# packer build &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -var &lt;span class="s1"&gt;&amp;#39;aws_access_key=YOUR ACCESS KEY&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -var &lt;span class="s1"&gt;&amp;#39;aws_secret_key=YOUR SECRET KEY&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; web.json
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;amazon-ebs output will be in this color.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Creating temporary keypair: packer 536acd17-6080-23b8-5a0e-884d4a05035d
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Creating temporary security group &lt;span class="k"&gt;for&lt;/span&gt; this instance...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Authorizing SSH access on the temporary security group...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Launching a &lt;span class="nb"&gt;source&lt;/span&gt; AWS instance...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;amazon-ebs: Instance ID: i-ffffffff
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Waiting &lt;span class="k"&gt;for&lt;/span&gt; instance &lt;span class="o"&gt;(&lt;/span&gt;i-ffffffff&lt;span class="o"&gt;)&lt;/span&gt; to become ready...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Waiting &lt;span class="k"&gt;for&lt;/span&gt; SSH to become available...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Connected to SSH!
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Provisioning with shell script: build_web.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;amazon-ebs: Executing: gpg --ignore-time-conflict --no-options --no-default-keyring --secret-keyring /tmp/tmp.4SGucrYWX8 --trustdb-name /etc/apt/trustdb.gpg --keyring /etc/apt/trusted.gpg --primary-keyring /etc/apt/trusted.gpg --keyserver keyserver.ubuntu.com --recv 4BD6EC30
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;amazon-ebs: update-alternatives: using /usr/bin/gem1.9.1 to provide /usr/bin/gem &lt;span class="o"&gt;(&lt;/span&gt;gem&lt;span class="o"&gt;)&lt;/span&gt; in manual mode.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Stopping the &lt;span class="nb"&gt;source&lt;/span&gt; instance...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Waiting &lt;span class="k"&gt;for&lt;/span&gt; the instance to stop...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Creating the AMI: web-ami &lt;span class="m"&gt;1399508247&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;amazon-ebs: AMI: ami-XXXXXXXX
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Waiting &lt;span class="k"&gt;for&lt;/span&gt; AMI to become ready...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Terminating the &lt;span class="nb"&gt;source&lt;/span&gt; AWS instance...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Deleting temporary security group...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; amazon-ebs: Deleting temporary keypair...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Build &lt;span class="s1"&gt;&amp;#39;amazon-ebs&amp;#39;&lt;/span&gt; finished.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt;&amp;gt; Builds finished. The artifacts of successful builds are:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;--&amp;gt; amazon-ebs: AMIs were created:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ap-southeast-2: ami-XXXXXXXX
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;root@earth:~#&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="conclusion"
+&gt;
+conclusion
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/08/packer-io/#conclusion" class="gblog-post__anchor clip flex align-center" aria-label="Anchor conclusion" href="#conclusion"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Packer gives us a method to consistently create base AMI&amp;rsquo;s that can be further configured with tools like Puppet. Packer ensures that these AMI&amp;rsquo;s are documented with code so that at later dates we can upgrade instances and know exactly how they were created. By using custom-built AMI&amp;rsquo;s you&amp;rsquo;re able to speed up the time it takes ASG to boot new instances.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h2 id="further-reading"
+&gt;
+further reading
+&lt;/h2&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/08/packer-io/#further-reading" class="gblog-post__anchor clip flex align-center" aria-label="Anchor further reading" href="#further-reading"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="http://www.packer.io/docs" title="packer.io docs" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://www.packer.io/docs"
+&gt;http://www.packer.io/docs&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/aws" term="aws" label="aws"/><category scheme="https://dodwell.us/tags/configuration" term="configuration" label="configuration"/><category scheme="https://dodwell.us/tags/management" term="management" label="management"/></entry><entry><title>how to use asg</title><link href="https://dodwell.us/2014/05/07/use-asg/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/05/07/use-asg/</id><published>2014-05-07T00:00:00+00:00</published><updated>2014-05-07T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;The following explains how I utilize Auto Scaling Group&amp;rsquo;s (ASG&amp;rsquo;s) and puppet to automatically expand clusters during high load.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="asg"
+&gt;
+asg
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/07/use-asg/#asg" class="gblog-post__anchor clip flex align-center" aria-label="Anchor asg" href="#asg"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Auto Scaling allows you to scale your Amazon EC2 capacity up or down automatically according to conditions you define. With Auto Scaling, you can ensure that the number of Amazon EC2 instances you’re using increases seamlessly during demand spikes to maintain performance, and decreases automatically during demand lulls to minimize costs. Auto Scaling is particularly well suited for applications that experience hourly, daily, or weekly variability in usage. Auto Scaling is enabled by Amazon CloudWatch and available at no additional charge beyond Amazon CloudWatch fees.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="creation-of-asg"
+&gt;
+creation of asg
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/07/use-asg/#creation-of-asg" class="gblog-post__anchor clip flex align-center" aria-label="Anchor creation of asg" href="#creation-of-asg"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;The following script was used to create the RabbitMQ ASG:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;web-asg&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;LAUNCH_GROUP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;web-l&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;EC2_AMI&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;ami-09f26b33&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;EC2_USERDATA&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;user-data-file.txt&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;EC2_SECURITYGROUPS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;sg-ffffffff,sg-fffffffe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;EC2_LB&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;web&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;EC2_MIN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;EC2_MAX&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;10&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;EC2_TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;t1.micro&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; -n &lt;span class="s2"&gt;&amp;#34;Checking if group already exists..&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;`as-describe-auto-scaling-groups | grep &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;`&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;exists&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; as-delete-auto-scaling-group --force-delete --auto-scaling-group &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;printf&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Waiting until Amazon actually removes group |&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;rotate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;|/-\&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;`as-describe-auto-scaling-groups | grep &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;`&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;rotate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;rotate&lt;/span&gt;&lt;span class="p"&gt;#?&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;rotate&lt;/span&gt;&lt;span class="p"&gt;%???&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;printf&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;\b%.1s&amp;#39;&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$rotate&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;echo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;else&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;none&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; -n &lt;span class="s2"&gt;&amp;#34;Checking if launch config already exists..&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;`as-describe-launch-configs | grep &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;LAUNCH_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;`&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;yes&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; as-delete-launch-config --force --launch-config &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;LAUNCH_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;printf&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Waiting until Amazon actually removes config |&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;rotate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;|/-\&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;`as-describe-launch-configs | grep &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;LAUNCH_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;`&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;rotate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;rotate&lt;/span&gt;&lt;span class="p"&gt;#?&lt;/span&gt;&lt;span class="si"&gt;}${&lt;/span&gt;&lt;span class="nv"&gt;rotate&lt;/span&gt;&lt;span class="p"&gt;%???&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;printf&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;\b%.1s&amp;#39;&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$rotate&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;echo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;else&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;nope&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;as-create-launch-config &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;LAUNCH_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --image-id &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_AMI&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --instance-type &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_TYPE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --monitoring-enabled --key root --group &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_SECURITYGROUPS&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --user-data-file &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_USERDATA&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;as-create-auto-scaling-group &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --launch-configuration &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;LAUNCH_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --min-size &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_MIN&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --max-size &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_MAX&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --load-balancers &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_LB&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --desired-capacity &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_MIN&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mon-put-metric-alarm &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;-add &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --alarm-actions &lt;span class="s2"&gt;&amp;#34;`as-put-scaling-policy &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;-add --type ChangeInCapacity --adjustment 1 --auto-scaling-group &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;`&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --comparison-operator GreaterThanThreshold &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --dimensions &lt;span class="s2"&gt;&amp;#34;AutoScalingGroupName=&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --evaluation-periods &lt;span class="m"&gt;3&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --metric-name CPUUtilization &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --namespace &lt;span class="s2"&gt;&amp;#34;AWS/EC2&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --period &lt;span class="m"&gt;60&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --statistic Average &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --threshold &lt;span class="m"&gt;90&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --unit Percent
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mon-put-metric-alarm &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;-del &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --alarm-actions &lt;span class="s2"&gt;&amp;#34;`as-put-scaling-policy &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;-del --type ChangeInCapacity --adjustment=&amp;#39;-1&amp;#39; --auto-scaling-group &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;`&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --comparison-operator LessThanThreshold &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --dimensions &lt;span class="s2"&gt;&amp;#34;AutoScalingGroupName=&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --evaluation-periods &lt;span class="m"&gt;10&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --metric-name CPUUtilization &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --namespace &lt;span class="s2"&gt;&amp;#34;AWS/EC2&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --period &lt;span class="m"&gt;60&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --statistic Average &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --threshold &lt;span class="m"&gt;30&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --unit Percent &lt;span class="err"&gt;\&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;A copy of the user-data-file.txt file is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;INSTANCE_TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;something
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;DOMAIN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;dodwell.us
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;INSTANCE_ID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id &lt;span class="p"&gt;|&lt;/span&gt; cut -d- -f2&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;HOSTNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$INSTANCE_TYPE&lt;/span&gt;-&lt;span class="nv"&gt;$INSTANCE_ID&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#set also the hostname to the running instance&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;hostname &lt;span class="nv"&gt;$HOSTNAME&lt;/span&gt;.ec2-int.&lt;span class="nv"&gt;$DOMAIN&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;DEBIAN_FRONTEND&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;noninteractive
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Set APT to fetch packages from a apt-cacher-np install&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Acquire::http::Proxy &amp;#34;http://puppet.ec2-int.dodwell.us:3142&amp;#34;;&amp;#39;&lt;/span&gt; &amp;gt; /etc/apt/apt.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;aptitude -y install puppet
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;[agent]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;server = puppet.dodwell.us
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;certname = puppet.ec2-int.dodwell.us
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; /etc/puppet/puppet.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;/usr/bin/puppet agent -t --pluginsync &lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sleep &lt;span class="m"&gt;10&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;/usr/bin/puppet agent -t --pluginsync &lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sleep &lt;span class="m"&gt;10&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;/usr/bin/puppet agent -t --pluginsync &lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sleep &lt;span class="m"&gt;10&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;reboot&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h4 id="overview"
+&gt;
+overview
+&lt;/h4&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/07/use-asg/#overview" class="gblog-post__anchor clip flex align-center" aria-label="Anchor overview" href="#overview"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;In the first part of the script we define bash variables that we can use later. This is done so we can easily use this script for the Web and Elastic Search ASG&amp;rsquo;s. After we&amp;rsquo;ve defined the variables we check if the ASG&amp;rsquo;s have already been created and delete them. This will cause instances to also be Terminated. Once the groups have been Terminated the script will then create a Launch configuration. Once the launch configuration has been created we create the auto scaling group. Then we need to create scaling policies and then link CloudWatch events to these polices to create and destroy instances.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h4 id="launch-configs"
+&gt;
+launch configs
+&lt;/h4&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/07/use-asg/#launch-configs" class="gblog-post__anchor clip flex align-center" aria-label="Anchor launch configs" href="#launch-configs"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;The first command to setting up autoscale is as-create-launch-config. Using this command, you tell AWS:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;a unique name for the configuration&lt;/li&gt;
+&lt;li&gt;which AMI ID you want to use as your template for creating more EC2 instances&lt;/li&gt;
+&lt;li&gt;the EC2 instance type (the size and power of the server) to launch using your AMI&lt;/li&gt;
+&lt;li&gt;your access key&lt;/li&gt;
+&lt;li&gt;a security group to deploy the instances into&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ as-create-launch-config &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;LAUNCH_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --image-id &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_AMI&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --instance-type &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_TYPE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --monitoring-enabled --key root --group &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_SECURITYGROUPS&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --user-data-file &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_USERDATA&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;OK-Created launch config.&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The API replies with: “OK-Created launch config.” Please refer to the below &amp;lsquo;Puppet&amp;rsquo; section for more detail on the user-data-file.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="auto-scaling-group"
+&gt;
+auto scaling group
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/07/use-asg/#auto-scaling-group" class="gblog-post__anchor clip flex align-center" aria-label="Anchor auto scaling group" href="#auto-scaling-group"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Use the as-create-auto-scaling-group command to define the properties for your group of servers. Auto scaling groups are the core component of an auto-scaling configuration. This command takes the launch_config_name you defined from the step before as a parameter, the name of the ELB you want to use, and most importantly, lets you define the minimum and maximum number of servers you want to have in your cluster. In the example below, we define a group with a minimum of 2 servers and a maximum of 10.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ as-create-auto-scaling-group &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --availability-zones &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;REGION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;b,&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;REGION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;a --launch-configuration &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;LAUNCH_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;--min-size &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_MIN&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --max-size &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_MAX&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --load-balancers &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_LB&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; --desired-capacity &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;EC2_MIN&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;OK-Created ASG.&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="auto-scaling-policies"
+&gt;
+auto scaling policies
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/07/use-asg/#auto-scaling-policies" class="gblog-post__anchor clip flex align-center" aria-label="Anchor auto scaling policies" href="#auto-scaling-policies"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Once we have our EC2 AMI, an AS launch config, and an AS group defined to deploy our instances into, we’re ready to define the auto scaling policies that will actually cause more (or fewer) EC2 instances to be launched and attached behind the ELB.&lt;/p&gt;
+&lt;p&gt;The command used to change the number of servers in the group is the as-put-scaling-policy command. With auto scaling, you use EC2 monitoring within CloudWatch to trigger a certain policy, but before we can do that, we need to define the actual policies that will be triggered. You can use this command to manually trigger scaling events as well, for testing before your traffic burst arrives, and in doing so, you can not only see the effect of scaling up and down, but you can watch AWS work its magic by refreshing your Instances view—new server instances appear in the AWS Management Console as your traffic increases beyond the thresholds you set.&lt;/p&gt;
+&lt;p&gt;The as-put-scaling-policy command takes the auto scaling group name we defined in step 1, a name for the policy, such a “scale-up” or “scale-down,” the type of scaling change the policy defines, and a cool down period. Again, the cool down period is used to prevent AWS from executing multiple policies within a very short time.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ as-put-scaling-policy &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;-add --type ChangeInCapacity --adjustment &lt;span class="m"&gt;1&lt;/span&gt; --auto-scaling-group &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-add&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Above you can see the basic upscale policy we defined, named “rabbitmq-asg-add,” a ChangeInCapacity policy to add 1 server and wait 3 minutes before another policy can be triggered. Below is the reverse operation, or a “rabbitmq-asg-del” policy to remove 1 server from our group.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ as-put-scaling-policy &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;-del --type ChangeInCapacity --adjustment&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;-1&amp;#39;&lt;/span&gt; --auto-scaling-group &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-del&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In both cases, AWS replies with a return message including the unique auto-generated name of our two new auto scaling policies. We’ll use those unique policy identifiers to connect to our CloudWatch events in the final step.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="link-a-cloudwatch-event-to-an-auto-scaling-policy"
+&gt;
+link a cloudwatch event to an auto scaling policy
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/07/use-asg/#link-a-cloudwatch-event-to-an-auto-scaling-policy" class="gblog-post__anchor clip flex align-center" aria-label="Anchor link a cloudwatch event to an auto scaling policy" href="#link-a-cloudwatch-event-to-an-auto-scaling-policy"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;At the moment we have everything we need for an intelligent auto-scaling configuration except one thing—the intelligence! The smarts come from choosing a CloudWatch event, such as 80% CPU utilization of an EC2 instance in our group, and wiring up that condition to automatically trigger the scale-up policy we defined. We’re also going to want to do the same in reverse for scaling back down at 20% CPU utilization.&lt;/p&gt;
+&lt;p&gt;The command to do this comes from the CloudWatch command line tools, and is called mon-put-metric-alarm. This command takes several parameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;a name for the alarm that you choose&lt;/li&gt;
+&lt;li&gt;a description for what the alarm is monitoring,&lt;/li&gt;
+&lt;li&gt;the namespace for the alarm (in this case, AWS/EC2)&lt;/li&gt;
+&lt;li&gt;the name of the [namespace] metric that you want to monitor&lt;/li&gt;
+&lt;li&gt;the statistic type of the monitoring metric, such as Average or Percent,&lt;/li&gt;
+&lt;li&gt;a period or time interval,&lt;/li&gt;
+&lt;li&gt;a threshold for the statistic you choose,&lt;/li&gt;
+&lt;li&gt;a comparison operator, such as greater than or lesser than&lt;/li&gt;
+&lt;li&gt;a dimension, which is the ID of an EC2 instance to monitor&lt;/li&gt;
+&lt;li&gt;and the number of evaluation periods during which the metric you choose has to consistently return over or under the average or percent unit you define&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As you can see, there’s a lot to this command, but once we look at every parameter, you can see that without each of them, you wouldn&amp;rsquo;t have the ability to control auto scaling changes with enough granularity. The name and description are shown back to you later when using the mon-describe-alarmscommand. The statistics you’re watching, and the thresholds and time intervals, are important to test for your particular application. For example, we chose to monitor average CPU utilization for a period of 60 seconds, and an evaluation period of 3 intervals (or 3 minutes), for an event of 80% or greater level. Here’s the command to achieve this.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ mon-put-metric-alarm &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;-add &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --alarm-actions &lt;span class="s2"&gt;&amp;#34;arn:aws:autoscaling:ap-southeast-2:000000000048:scalingPolicy:ffffffff-ffff-ffff-ffff-9030fffffffff:autoScalingGroupName/web-asg:policyName/rabbitmq-asg-add&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --comparison-operator GreaterThanThreshold &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --dimensions &lt;span class="s2"&gt;&amp;#34;AutoScalingGroupName=&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --evaluation-periods &lt;span class="m"&gt;3&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --metric-name CPUUtilization &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --namespace &lt;span class="s2"&gt;&amp;#34;AWS/EC2&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --period &lt;span class="m"&gt;60&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --statistic Average &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --threshold &lt;span class="m"&gt;90&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --unit Percent &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;OK-Created Alarm&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In English, the above command says, “If the average CPU utilization of instances in the ASG group &amp;lsquo;rabbitmq-asg&amp;rsquo; is measured at 80% or greater 3 times over 3 minutes, then trigger our scale-up policy.&lt;/p&gt;
+&lt;p&gt;Here is the reverse mon-put-metric-alarm command we used to terminate one of the servers if the CPU utilization drops below an average of 20% over 3 minutes.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ mon-put-metric-alarm &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;-del &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --alarm-actions &lt;span class="s2"&gt;&amp;#34;arn:aws:autoscaling:ap-southeast-2:947682202348:scalingPolicy:1a31d3d1-b180-4fcb-b288-bb43e651056d:autoScalingGroupName/rabbitmq-asg:policyName/rabbitmq-asg-del&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --comparison-operator LessThanThreshold &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --dimensions &lt;span class="s2"&gt;&amp;#34;AutoScalingGroupName=&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ASG_GROUP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --evaluation-periods &lt;span class="m"&gt;3&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --metric-name CPUUtilization &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --namespace &lt;span class="s2"&gt;&amp;#34;AWS/EC2&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --period &lt;span class="m"&gt;60&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --statistic Average &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --threshold &lt;span class="m"&gt;30&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --unit Percent
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;OK-Created Alarm&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In the above script example we nest the &amp;lsquo;mon-put-metric-alarm&amp;rsquo; and &amp;lsquo;as-put-scaling-policy&amp;rsquo; commands to simplify running the scripts. However this is pulled apart in this documentation to explain better.&lt;/p&gt;
+&lt;p&gt;For more information and examples, refer to the Auto Scaling section on the Amazon developer documentation.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="instance-creation-via-cloud-init"
+&gt;
+instance creation via cloud-init
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/07/use-asg/#instance-creation-via-cloud-init" class="gblog-post__anchor clip flex align-center" aria-label="Anchor instance creation via cloud-init" href="#instance-creation-via-cloud-init"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;cloud-init is the Ubuntu package that handles early initialization of a cloud instance. It is installed in the Ubuntu Cloud Images and also in the official Ubuntu images available on EC2.&lt;/p&gt;
+&lt;p&gt;cloud-init&amp;rsquo;s behavior can be configured via user-data. User-data can be given by the user at instance launch time.&lt;/p&gt;
+&lt;p&gt;Using the user-data script functionality we can bootstrap puppet into action.&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/aws" term="aws" label="aws"/><category scheme="https://dodwell.us/tags/configuration" term="configuration" label="configuration"/><category scheme="https://dodwell.us/tags/management" term="management" label="management"/></entry></feed>

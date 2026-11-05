@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://gohugo.io/" version="0.169.0">Hugo</generator><title>Jenkins on DODWELL.US</title><subtitle>DevOPS - For fun and profit</subtitle><link href="https://dodwell.us/tags/jenkins/" rel="alternate" type="text/html" title="html"/><link href="https://dodwell.us/tags/jenkins/feed.xml" rel="self" type="application/atom+xml" title="atom"/><link href="https://dodwell.us/tags/jenkins/feed.json" rel="alternate" type="application/json" title="Json"/><updated>2026-11-05T19:09:01+10:00</updated><id>https://dodwell.us/tags/jenkins/</id><entry><title>integrating bitbucket and jenkins</title><link href="https://dodwell.us/2014/05/21/integrating-bitbucket-and-jenkins/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/05/21/integrating-bitbucket-and-jenkins/</id><published>2014-05-21T00:00:00+00:00</published><updated>2014-05-21T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;I just had a little gotcha using Jenkins and trying to integrate it so that bitbucket can use git hooks to kick off builds on commits. So I thought I&amp;rsquo;d share how I managed to get it all working as to me it wasn&amp;rsquo;t that clear.&lt;/p&gt;
+&lt;p&gt;Firstly I&amp;rsquo;ll assume you have a secured Jenkins instance setup and a repository on bitbucket.&lt;/p&gt;
+&lt;p&gt;Once it&amp;rsquo;s working login to your jenkins instance as the user you wish to use to kick off builds and manually build a job you&amp;rsquo;ve configured. I&amp;rsquo;d suggest creating a user for functions like this. Lets call him &amp;lsquo;dodwmd_jenkins&amp;rsquo;&lt;/p&gt;
+&lt;p&gt;You then need to grab the &amp;lsquo;API token&amp;rsquo; for this user. To do that, from the Jenkins home page, click on People, click on the desired user, click configure on the left, then, finally, click on the API Token button. Lets say it&amp;rsquo;s &amp;lsquo;ji0foi6jeseGhi4f&amp;rsquo;&lt;/p&gt;
+&lt;p&gt;Now in another browser tab open bitbucket and browse to your repository. Click settings and select &amp;lsquo;Hooks&amp;rsquo;. From the dropdown, select &amp;lsquo;Jenkins&amp;rsquo;, click &amp;lsquo;Add Hook&amp;rsquo;, then click on the edit link next to the newly created hook and fill in the form:&lt;/p&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;endpoint&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;The endpoint needs to be the publicly accessible URL to your jenkinsinstance. But it needs to include the username we used before and the 'API token' in our other tab. So an example would be http://dodwmd_jenkins:ji0foi6jeseGhi4f@jenkins.dodwell.us/&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;module name&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;leave this blank&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;project name&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Set this to be the name of the job you setup in jenkins. Don't worry about encoding the name bitbucket will do this for us.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;token&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;set this to be the token you setup in your job when you ticked the 'Trigger builds remotely (e.g., from scripts)' box&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Click save&lt;/p&gt;
+&lt;p&gt;Push a change to your bitbucket repo and you should see a build running on your jenkins install!&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="troubleshooting"
+&gt;
+troubleshooting
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/21/integrating-bitbucket-and-jenkins/#troubleshooting" class="gblog-post__anchor clip flex align-center" aria-label="Anchor troubleshooting" href="#troubleshooting"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;You can check if your hook endpoint is working correctly:
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ curl -XPOST &lt;span class="s1"&gt;&amp;#39;http://dodwmd_jenkins:ji0foi6jeseGhi4f@jenkins.dodwell.us/job/buildstuff/build?token=thoucaephuHe2lai&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h2 id="further-reading"
+&gt;
+further reading
+&lt;/h2&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/21/integrating-bitbucket-and-jenkins/#further-reading" class="gblog-post__anchor clip flex align-center" aria-label="Anchor further reading" href="#further-reading"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="https://wiki.jenkins-ci.org/display/JENKINS/Bitbucket+OAuth+Plugin"&gt;&lt;a
+class="gblog-markdown__link"
+href="https://wiki.jenkins-ci.org/display/JENKINS/Bitbucket&amp;#43;OAuth&amp;#43;Plugin"
+&gt;https://wiki.jenkins-ci.org/display/JENKINS/Bitbucket+OAuth+Plugin&lt;/a&gt;&lt;/a&gt;
+&lt;a href="https://confluence.atlassian.com/display/BITBUCKET/Jenkins+hook+management"&gt;&lt;a
+class="gblog-markdown__link"
+href="https://confluence.atlassian.com/display/BITBUCKET/Jenkins&amp;#43;hook&amp;#43;management"
+&gt;https://confluence.atlassian.com/display/BITBUCKET/Jenkins+hook+management&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/devops" term="devops" label="devops"/><category scheme="https://dodwell.us/tags/jenkins" term="jenkins" label="jenkins"/></entry></feed>

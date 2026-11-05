@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://gohugo.io/" version="0.169.0">Hugo</generator><title>Website on DODWELL.US</title><subtitle>DevOPS - For fun and profit</subtitle><link href="https://dodwell.us/tags/website/" rel="alternate" type="text/html" title="html"/><link href="https://dodwell.us/tags/website/feed.xml" rel="self" type="application/atom+xml" title="atom"/><link href="https://dodwell.us/tags/website/feed.json" rel="alternate" type="application/json" title="Json"/><updated>2026-11-05T19:09:01+10:00</updated><id>https://dodwell.us/tags/website/</id><entry><title>free html webhosting</title><link href="https://dodwell.us/2015/04/16/html-hosting/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2015/04/16/html-hosting/</id><published>2015-04-16T00:00:00+00:00</published><updated>2015-04-16T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;I wanted to cover off how I currently host this blog for free using a number of services being offered by different companies.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="what-do-you-need-this-days"
+&gt;
+what do you need this days?
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/04/16/html-hosting/#what-do-you-need-this-days" class="gblog-post__anchor clip flex align-center" aria-label="Anchor what do you need this days?" href="#what-do-you-need-this-days"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;This website has a few moving parts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Blog software&lt;/li&gt;
+&lt;li&gt;Webhosting&lt;/li&gt;
+&lt;li&gt;SSL Certificates&lt;/li&gt;
+&lt;li&gt;SSL Forwarding&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The following post describes how I managed to get all of the above setup for free.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="blog-software"
+&gt;
+Blog Software
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/04/16/html-hosting/#blog-software" class="gblog-post__anchor clip flex align-center" aria-label="Anchor Blog Software" href="#blog-software"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;I&amp;rsquo;m currently using &lt;a
+class="gblog-markdown__link"
+href="http://jekyllrb.com/"
+&gt;jekyll&lt;/a&gt; to for my blogging software. This allows me to create a bunch of files and using some Ruby markup the files into a HTML blog. This means that when I need to add a new post all I have to do is add a single text file with human readable text in it and then using some markup convert it into HTML pages for your viewing.&lt;/p&gt;
+&lt;p&gt;The &lt;a
+class="gblog-markdown__link"
+href="http://jekyllrb.com/docs/usage/"
+&gt;jekyll docs&lt;/a&gt; has some really good information on how to get started. I had a look at &lt;a
+class="gblog-markdown__link"
+href="http://octopress.org/"
+&gt;octopress&lt;/a&gt; but preferred to stick with native jekyll. If your a little on the unsure side of things I&amp;rsquo;d suggest using octopress.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="webhosting"
+&gt;
+Webhosting
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/04/16/html-hosting/#webhosting" class="gblog-post__anchor clip flex align-center" aria-label="Anchor Webhosting" href="#webhosting"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a
+class="gblog-markdown__link"
+href="http://github.com/"
+&gt;Github&lt;/a&gt; which I already used to host &lt;a
+class="gblog-markdown__link"
+href="https://github.com/dodwmd/"
+&gt;code&lt;/a&gt; also allows for &lt;a
+class="gblog-markdown__link"
+href="https://pages.github.com/"
+&gt;Github Pages&lt;/a&gt;. This is a web hosting service that takes a special branch from your repository &amp;lsquo;gh-pages&amp;rsquo; and allows you to host a some documentation for your project. You can also setup personal sites naming them in a certain way (username.github.io) and github will checkout the master and automatically setup a subdomain with the contents of &amp;lsquo;master&amp;rsquo; being the webroot. This method also allows you to setup a &amp;lsquo;CNAME&amp;rsquo; file in that branch file that can use used to host custom domains/hostnames. Take a look at &lt;a
+class="gblog-markdown__link"
+href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages/"
+&gt;this documentation&lt;/a&gt; for more information. Unfortunately Github Pages doesn&amp;rsquo;t allow for SSL termination.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="ssl-certificates"
+&gt;
+SSL Certificates
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/04/16/html-hosting/#ssl-certificates" class="gblog-post__anchor clip flex align-center" aria-label="Anchor SSL Certificates" href="#ssl-certificates"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a
+class="gblog-markdown__link"
+href="https://www.startssl.com/"
+&gt;StartSSL&lt;/a&gt; offers free SSL certificate signing. The website is a little clunky and is prone to outages but if you persist you can get a SSL signed certificate from them.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="ssl-forwarding"
+&gt;
+SSL Forwarding
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/04/16/html-hosting/#ssl-forwarding" class="gblog-post__anchor clip flex align-center" aria-label="Anchor SSL Forwarding" href="#ssl-forwarding"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Now that you have a SSL certificate you can simply go and signup for a free account over at &lt;a
+class="gblog-markdown__link"
+href="https://www.cloudflare.com/"
+&gt;CloudFlare&lt;/a&gt;. Upload your signed certificate and turn on &amp;lsquo;Flexible SSL&amp;rsquo;. This means the traffic between cloudflare and github is unencrypted but means that the user (and google!) will be viewing the site via a SSL certificate. This will help you in ranking and enables a caching service so if github should have an issue you have some redundancy. Win, Win!&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/website" term="website" label="website"/></entry><entry><title>bandwidth theft</title><link href="https://dodwell.us/2014/08/27/bandwidth-theft/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/08/27/bandwidth-theft/</id><published>2014-08-27T00:00:00+00:00</published><updated>2014-08-27T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;Bandwidth theft or &amp;ldquo;hotlinking&amp;rdquo; is direct linking to a web site&amp;rsquo;s files (images, video, etc.). An example would be using an &lt;img&gt; tag to display a JPEG image you found on someone else&amp;rsquo;s web page so it will appear on your own site, eBay auction listing, weblog, forum message post, etc.&lt;/p&gt;
+&lt;p&gt;Bandwidth refers to the amount of data transferred from a web site to a user&amp;rsquo;s computer. When you view a web page, you are using that site&amp;rsquo;s bandwidth to display the files. Since web hosts charge based on the amount of data transferred, bandwidth is an issue. If a site is over its monthly bandwidth, it&amp;rsquo;s billed for the extra data or taken offline.&lt;/p&gt;
+&lt;p&gt;A simple analogy for bandwidth theft: Imagine a random stranger plugging into your electrical outlets, using your electricity without your consent, and you paying for it.&lt;/p&gt;
+&lt;p&gt;A few years ago hotlinking was usually only carried out by people on forums and blogs. These days companies like bing and yahoo have forgotten to be good netizens and are also hotlinking directly to content.&lt;/p&gt;
+&lt;p&gt;The problem with most methods of hotlink prevention is that they generally will ban links to your content that didn&amp;rsquo;t originate from a list of allowed hosts. Although this is effective it also means that indexes will simply drop your site from search indexes and people will be unable to locate your site.&lt;/p&gt;
+&lt;p&gt;The method I wanted to share with you today overlays a large watermark on all your images so that when people do hotlink to your content they will be shown the original image but will be prompted to view the image from the original site.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="php-wimagick"
+&gt;
+php w/imagick
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/08/27/bandwidth-theft/#php-wimagick" class="gblog-post__anchor clip flex align-center" aria-label="Anchor php w/imagick" href="#php-wimagick"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;I have a preference to use Imagick. I&amp;rsquo;ve found it&amp;rsquo;s less prone to causing PHP to core than GD. I also think it&amp;rsquo;s easier to work with. YMMV.&lt;/p&gt;
+&lt;p&gt;First we need some code that will overlay our &amp;lsquo;watermark&amp;rsquo; to the image and output the result. Lets create a &amp;lsquo;hotlink.php&amp;rsquo; file in the root directory of our site.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-php" data-lang="php"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;&amp;lt;?&lt;/span&gt;&lt;span class="nx"&gt;php&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;isset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$_GET&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;filename&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="cm"&gt;/* Create Imagick object */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$image&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Imagick&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$_GET&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;filename&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="cm"&gt;/* pull in overlay image */&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$watermark&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Imagick&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;misc/hotlink-overlay.png&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Check if the watermark is bigger than the image
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$image_width&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$image&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="na"&gt;getImageWidth&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$image_height&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$image&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="na"&gt;getImageHeight&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$watermark_width&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$watermark&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="na"&gt;getImageWidth&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$watermark_height&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$watermark&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="na"&gt;getImageHeight&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$padding&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$image_width&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nv"&gt;$watermark_width&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nv"&gt;$padding&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="nv"&gt;$image_height&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nv"&gt;$watermark_height&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nv"&gt;$padding&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;//small image just output image
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$output&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$image&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="na"&gt;getImageBlob&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;header&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Content-Type: &amp;#34;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;$image&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="na"&gt;getFormat&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$output&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// center the overlay on the orignal image
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$dest_x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$image_width&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nv"&gt;$watermark_width&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$dest_y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$image_height&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nv"&gt;$watermark_height&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Draw the watermark
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$image&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="na"&gt;compositeImage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$watermark&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;Imagick&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="na"&gt;COMPOSITE_OVER&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nv"&gt;$dest_x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nv"&gt;$dest_y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$output&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;$image&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="na"&gt;getImageBlob&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;header&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Content-Type: &amp;#34;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;$image&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="na"&gt;getFormat&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$output&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;header&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Location: /&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;?&amp;gt;&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You will also need a image to overlay.&lt;/p&gt;
+&lt;p&gt;Create a transparent image in your graphics program of choice and enter the text that you wish (I made mine 300x300). For our purposes I added some white text with the following: &amp;lsquo;HOTLINKED IMAGE: View the original at dodwell.us&amp;rsquo; I then stroked the text to give it a nice solid black border.&lt;/p&gt;
+&lt;p&gt;You now need nginx to redirect hot linked images to the PHP script:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; location ~ ^/images/ &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; valid_referers none blocked dodwell.us www.dodwell.us&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$invalid_referer&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; rewrite ^/images/&lt;span class="o"&gt;(&lt;/span&gt;.*&lt;span class="o"&gt;)&lt;/span&gt;$ http://dodwell.us/hotlink.php?filename&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt; last&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Enjoy!&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h2 id="further-reading"
+&gt;
+further reading
+&lt;/h2&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/08/27/bandwidth-theft/#further-reading" class="gblog-post__anchor clip flex align-center" aria-label="Anchor further reading" href="#further-reading"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="http://php.net/manual/en/book.imagick.php" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://php.net/manual/en/book.imagick.php"
+&gt;http://php.net/manual/en/book.imagick.php&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/website" term="website" label="website"/></entry><entry><title>website minification</title><link href="https://dodwell.us/2014/08/18/website-minification/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/08/18/website-minification/</id><published>2014-08-18T00:00:00+00:00</published><updated>2014-08-18T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;&lt;a href="/images/growth-average-web-page2014.png"&gt;&lt;img src="/images/growth-average-web-page2014.png" alt="growth average web page 2014" width="300" height="235" style="float:left;" /&gt;&lt;/a&gt; I wanted to cover off some interesting work I&amp;rsquo;ve been doing with website minification that I wanted to share. The size of the average web page (top 300,000 websites) passed 1600K for the first time in July. We&amp;rsquo;re cramming more images and html into our websites and with all this information we need to ensure a responsive experience for the users of our sites. It&amp;rsquo;s useful to regularly check the size of pages and take actions to try and minimize website sizes. This improves the rendering of the site for the user and lowers costs of hosting for the administrator.&lt;/p&gt;
+&lt;p&gt;A website can be broken into 3 main parts HTML, CSS/JS and Media. This post hopes to give you some insight into where you can spend some time on the 3 main parts to ensure you aren&amp;rsquo;t wasting resources and are proving the best experience for users.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="phphtml"
+&gt;
+php/html
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/08/18/website-minification/#phphtml" class="gblog-post__anchor clip flex align-center" aria-label="Anchor php/html" href="#phphtml"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;The first section I wanted to cover is HTML minification. As a developer it&amp;rsquo;s important to set out code in a readable way. This means adding indentation and new lines to making reading and editing your code much easier. However, all this setting out uses valuable space. Most of the sites I administrate currently are written in PHP. I use templating engines to seperate the PHP code from the HTML code. However I don&amp;rsquo;t want to maintain multiple copies of templates (minified and non-minified). Using a bunch of code from &lt;a href="http://code.google.com/p/minify/"&gt;here&lt;/a&gt;. You can include the following at the start of your PHP script to minify the HTML that&amp;rsquo;s being sent to users.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;function&lt;/span&gt; sanitize_output&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$buffer&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; require_once&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;min/lib/Minify/HTML.php&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; require_once&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;min/lib/Minify/CSS.php&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; require_once&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;min/lib/JSMin.php&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;$buffer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; Minify_HTML::minify&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$buffer&lt;/span&gt;, array&lt;span class="o"&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;cssMinifier&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&amp;gt; array&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Minify_CSS&amp;#39;&lt;/span&gt;, &lt;span class="s1"&gt;&amp;#39;minify&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;jsMinifier&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&amp;gt; array&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;JSMin&amp;#39;&lt;/span&gt;, &lt;span class="s1"&gt;&amp;#39;minify&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;))&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nv"&gt;$buffer&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ob_start&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;sanitize_output&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="cssjs"
+&gt;
+css/js
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/08/18/website-minification/#cssjs" class="gblog-post__anchor clip flex align-center" aria-label="Anchor css/js" href="#cssjs"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;For CSS/JS you can use an application called &amp;lsquo;&lt;a href="http://yui.github.io/yuicompressor/"&gt;yui-compressor&lt;/a&gt;&amp;rsquo; to convert all your CSS/JS files to minified versions.&lt;/p&gt;
+&lt;p&gt;Simply run the tool on your CSS/JS files and then output them into new files adding something like &amp;lsquo;min&amp;rsquo; to the filename.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ yui-compressor --type css file.css &amp;gt; file.min.css&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then just include the minified version in your templates.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="images"
+&gt;
+images
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/08/18/website-minification/#images" class="gblog-post__anchor clip flex align-center" aria-label="Anchor images" href="#images"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;As most of the size of webpages are images I wanted to focus this post on the different steps that you should take.&lt;/p&gt;
+&lt;p&gt;The first is to optimize your images. For various reasons images are saved in un-optimized formats. A few different tools exist that will take existing images and resave them in a more optimized format method. This can mean a 10-50% saving in the size of your sites images without losing any of the quality of the images. Depending on the type of image (JPEG/PNG) you&amp;rsquo;ll need different applications to do the optimization.&lt;/p&gt;
+&lt;p&gt;The first is jpegoptim. jpegoptim is a utility for optimizing JPEG files. It provides lossless optimization (based on optimizing the Huffman tables) and “lossy” optimization based on setting a maximum quality factor.&lt;/p&gt;
+&lt;p&gt;jpegoptim is included with most linux distros these days but it can be a little old (the Ubuntu version for example has a bug that changes the file permissions on the images it converts). So I&amp;rsquo;d suggest jumping over to the authors github and downloading the latest copy &lt;a href="https://github.com/tjko/jpegoptim"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Once it&amp;rsquo;s installed:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ git clone https://github.com/tjko/jpegoptim
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; jpegoptim
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ ./configure
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ make
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ make strip
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ make install&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can let it run rampant on your source images to ensure they are optimized:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ find ./ -name *jpg &lt;span class="p"&gt;|&lt;/span&gt; xargs jpegoptim
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./images/ck1.jpg 768x433 24bit P JFIF &lt;span class="o"&gt;[&lt;/span&gt;OK&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;32411&lt;/span&gt; --&amp;gt; &lt;span class="m"&gt;32411&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;0.00%&lt;span class="o"&gt;)&lt;/span&gt;, skipped.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./images/ZZ379.jpg 768x461 24bit P JFIF &lt;span class="o"&gt;[&lt;/span&gt;OK&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;55101&lt;/span&gt; --&amp;gt; &lt;span class="m"&gt;55101&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;0.00%&lt;span class="o"&gt;)&lt;/span&gt;, skipped.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./images/RZdaU99.jpg 768x649 24bit P JFIF &lt;span class="o"&gt;[&lt;/span&gt;OK&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;71753&lt;/span&gt; --&amp;gt; &lt;span class="m"&gt;71753&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;0.00%&lt;span class="o"&gt;)&lt;/span&gt;, skipped.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./images/tmpUltimateselfie.jpg 768x511 24bit P JFIF &lt;span class="o"&gt;[&lt;/span&gt;OK&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;66329&lt;/span&gt; --&amp;gt; &lt;span class="m"&gt;66329&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;0.00%&lt;span class="o"&gt;)&lt;/span&gt;, skipped.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./images/Robinwilliams46602a.jpg 768x933 24bit P JFIF &lt;span class="o"&gt;[&lt;/span&gt;OK&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;72161&lt;/span&gt; --&amp;gt; &lt;span class="m"&gt;72161&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;0.00%&lt;span class="o"&gt;)&lt;/span&gt;, skipped.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./images/Elephantsarehuge.jpg 768x615 24bit P JFIF &lt;span class="o"&gt;[&lt;/span&gt;OK&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;36062&lt;/span&gt; --&amp;gt; &lt;span class="m"&gt;36062&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;0.00%&lt;span class="o"&gt;)&lt;/span&gt;, skipped.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./images/1408196499535.jpg 768x1152 24bit P JFIF &lt;span class="o"&gt;[&lt;/span&gt;OK&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;135273&lt;/span&gt; --&amp;gt; &lt;span class="m"&gt;135273&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;0.00%&lt;span class="o"&gt;)&lt;/span&gt;, skipped.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./images/TexasGovRickPerryindictedforabuseofpower.jpg 768x512 24bit P JFIF &lt;span class="o"&gt;[&lt;/span&gt;OK&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;31000&lt;/span&gt; --&amp;gt; &lt;span class="m"&gt;31000&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;0.00%&lt;span class="o"&gt;)&lt;/span&gt;, skipped.&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can also optimize your PNG files with OptiPNG. &lt;a href="http://optipng.sourceforge.net/"&gt;OptiPNG&lt;/a&gt; is a PNG optimizer that re-compresses image files to a smaller size, without losing any information. This program also converts external formats (BMP, GIF, PNM and TIFF) to optimized PNG, and performs PNG integrity checks and corrections. If you wish to learn how PNG optimization works, or to know about other similar tools, see the PNG-Tech article &lt;a href="http://optipng.sourceforge.net/pngtech/optipng.html"&gt;A guide to PNG optimization&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Again this is included in most distributions but again is a little old. So lets grab a copy and compile it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ hg clone http://optipng.hg.sourceforge.net/hgweb/optipng/optipngreal
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; optipng
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ ./configure
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ make
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ make install&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Lets let it fix up our PNG files now.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ find ./ -name *png &lt;span class="p"&gt;|&lt;/span&gt; xargs optipng
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;OptiPNG 0.6.4: Advanced PNG optimizer.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Copyright &lt;span class="o"&gt;(&lt;/span&gt;C&lt;span class="o"&gt;)&lt;/span&gt; 2001-2010 Cosmin Truta.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;** Processing: ./images/logo_large.png
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;768x288 pixels, 4x8 bits/pixel, RGB+alpha
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Input IDAT &lt;span class="nv"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;77472&lt;/span&gt; bytes
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Input file &lt;span class="nv"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;77658&lt;/span&gt; bytes
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Trying:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;zc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;9&lt;/span&gt; &lt;span class="nv"&gt;zm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;8&lt;/span&gt; &lt;span class="nv"&gt;zs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="nv"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; IDAT &lt;span class="nv"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;70170&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Selecting parameters:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;zc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;9&lt;/span&gt; &lt;span class="nv"&gt;zm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;8&lt;/span&gt; &lt;span class="nv"&gt;zs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="nv"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; IDAT &lt;span class="nv"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;70170&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Output IDAT &lt;span class="nv"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;70170&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;7302&lt;/span&gt; bytes decrease&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Output file &lt;span class="nv"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;70248&lt;/span&gt; bytes &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;7410&lt;/span&gt; &lt;span class="nv"&gt;bytes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 9.54% decrease&lt;span class="o"&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now that we have our source images all optimized it&amp;rsquo;s time to focus on ensuring that we&amp;rsquo;re not sending users of small screens large images. To do this we use a very nice little PHP app called &lt;a href="http://adaptive-images.com/"&gt;Adaptive Images&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="adaptive-images"
+&gt;
+adaptive images
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/08/18/website-minification/#adaptive-images" class="gblog-post__anchor clip flex align-center" aria-label="Anchor adaptive images" href="#adaptive-images"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Adaptive Images detects your visitor&amp;rsquo;s screen size and automatically creates, caches, and delivers device appropriate re-scaled versions of your web page&amp;rsquo;s embeded HTML images. No mark-up changes needed. It is intended for use with Responsive Designs and to be combined with Fluid Image techniques.
+Why? Because your site is being increasingly viewed on smaller, slower, low bandwidth devices. On those devices your desktop-centric images load slowly, cause UI lag, and cost you and your visitors un-necessary bandwidth and money. Adaptive Images fixes that.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;All we have to do is install the adaptive images php code to our root and then add a rewrite to redirect all image fetches to the php file. Via:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ git clone https://github.com/MattWilcox/Adaptive-Images&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then edit your nginx config file and add the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;location assets &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;location ai-cache &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;location ~ ^/images/ &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; rewrite &lt;span class="se"&gt;\.&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;?:jpe?g&lt;span class="p"&gt;|&lt;/span&gt;gif&lt;span class="p"&gt;|&lt;/span&gt;png&lt;span class="o"&gt;)&lt;/span&gt;$ /Adaptive-Images/adaptive-images.php&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We also have to ensure that a cookie is set in the users browser that specifies what resolution they are viewing the site with. I modified the authors javascript cookie code to allow for a domain wide cookie (allowing me to separate where I serve images from vs where the rest of the site is generated from).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="na"&gt;cookie&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;resolution&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="na"&gt;max&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;screen&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="na"&gt;width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;screen&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="na"&gt;height&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="n"&gt;domain&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="na"&gt;dodwell&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="na"&gt;us&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;=/&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Make sure the webserver is able to write to the ai-cache and assets directories before testing.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h2 id="further-reading"
+&gt;
+further reading
+&lt;/h2&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/08/18/website-minification/#further-reading" class="gblog-post__anchor clip flex align-center" aria-label="Anchor further reading" href="#further-reading"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="http://yui.github.io/yuicompressor/"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://yui.github.io/yuicompressor/"
+&gt;http://yui.github.io/yuicompressor/&lt;/a&gt;&lt;/a&gt;
+&lt;a href="http://optipng.sourceforge.net/"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://optipng.sourceforge.net/"
+&gt;http://optipng.sourceforge.net/&lt;/a&gt;&lt;/a&gt;
+&lt;a href="https://github.com/tjko/jpegoptim"&gt;&lt;a
+class="gblog-markdown__link"
+href="https://github.com/tjko/jpegoptim"
+&gt;https://github.com/tjko/jpegoptim&lt;/a&gt;&lt;/a&gt;
+&lt;a href="http://adaptive-images.com/"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://adaptive-images.com/"
+&gt;http://adaptive-images.com/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/website" term="website" label="website"/></entry></feed>

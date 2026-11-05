@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://gohugo.io/" version="0.169.0">Hugo</generator><title>Security on DODWELL.US</title><subtitle>DevOPS - For fun and profit</subtitle><link href="https://dodwell.us/tags/security/" rel="alternate" type="text/html" title="html"/><link href="https://dodwell.us/tags/security/feed.xml" rel="self" type="application/atom+xml" title="atom"/><link href="https://dodwell.us/tags/security/feed.json" rel="alternate" type="application/json" title="Json"/><updated>2026-11-05T19:09:01+10:00</updated><id>https://dodwell.us/tags/security/</id><entry><title>setting up systemd to spawn ssh-agent and adding your keys</title><link href="https://dodwell.us/2016/12/18/ssh-agent-systemd/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2016/12/18/ssh-agent-systemd/</id><published>2016-12-18T00:00:00+00:00</published><updated>2016-12-18T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;I&amp;rsquo;m using bastion hosts for my cloud infra and found this little hack to systemd to setup ssh-agent for my auth forwarding.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="what-is-it"
+&gt;
+what is it?
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2016/12/18/ssh-agent-systemd/#what-is-it" class="gblog-post__anchor clip flex align-center" aria-label="Anchor what is it?" href="#what-is-it"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;systemd&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a
+class="gblog-markdown__link"
+href="https://en.wikipedia.org/wiki/Systemd"
+&gt;systemd&lt;/a&gt; is an init system used in Linux distributions to bootstrap the user space and manage all processes subsequently, instead of the UNIX System V or Berkeley Software Distribution (BSD) init systems. The name systemd adheres to the Unix convention of naming daemons by appending the letter d.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;ssh-agent&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;SSH is a protocol allowing secure remote login to a computer on a network using public-key cryptography. &amp;hellip; Therefore, users run a program called ssh-agent that runs the duration of a local login session, stores unencrypted keys in memory, and communicates with SSH clients using a Unix domain socket.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="where-to-start"
+&gt;
+where to start
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2016/12/18/ssh-agent-systemd/#where-to-start" class="gblog-post__anchor clip flex align-center" aria-label="Anchor where to start" href="#where-to-start"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Create a systemd user service, by putting the following to ~/.config/systemd/user/ssh-agent.service:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt;Unit&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;SSH key agent
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt;Service&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;forking
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;Environment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;SSH_AUTH_SOCK&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;%t/ssh-agent.socket
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/bin/ssh-agent -a &lt;span class="nv"&gt;$SSH_AUTH_SOCK&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt;Install&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;default.target&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Setup shell to have an environment variable for the socket (.bash_profile, .zshrc, &amp;hellip;):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;export SSH_AUTH_SOCK=&amp;#34;$XDG_RUNTIME_DIR/ssh-agent.socket&amp;#34;&amp;#39;&lt;/span&gt; &amp;gt;&amp;gt; ~/.bash_profile&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Enable the service, so it&amp;rsquo;ll be started automatically on login, and start it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;systemctl --user &lt;span class="nb"&gt;enable&lt;/span&gt; ssh-agent
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;systemctl --user start ssh-agent&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Add the following configuration setting to your ssh config file ~/.ssh/config (this works since SSH 7.2):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;AddKeysToAgent yes&amp;#39;&lt;/span&gt; &amp;gt;&amp;gt; ~/.ssh/config&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This will instruct the ssh client to always add the key to a running agent, so there&amp;rsquo;s no need to ssh-add it beforehand.&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/security" term="security" label="security"/></entry><entry><title>ufw, fail2ban and blocking portscans oh my!</title><link href="https://dodwell.us/2015/05/28/ufw-fail2ban-portscan/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2015/05/28/ufw-fail2ban-portscan/</id><published>2015-05-28T00:00:00+00:00</published><updated>2015-05-28T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;I just wanted to write down some issues I had as a reminder to myself and some notes that other people might find useful. I want to be able to setup some automatic host based firewall rules for some servers I look after so help mitigate any possible brute force attacks and general nastiness that you get on the internet. To do this I&amp;rsquo;m going to install UFW, fail2ban and setup some filters and actions in fail2ban to use information from UFW on Ubuntu 14.04.2.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="what-is-it"
+&gt;
+what is it?
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/05/28/ufw-fail2ban-portscan/#what-is-it" class="gblog-post__anchor clip flex align-center" aria-label="Anchor what is it?" href="#what-is-it"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;fail2ban&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve used &lt;a
+class="gblog-markdown__link"
+href="http://www.fail2ban.org/"
+&gt;fail2ban&lt;/a&gt; as a minimal method to stop brute force attacks. Basically it will read config files for different services and if someone enters in the wrong password too many times will firewall them from the server for a period of time. This wont stop someone from &amp;rsquo;eventually&amp;rsquo; brute forcing poor passwords but it increases the time taken exponentially and hopefully they get bored and move onto softer targets.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;UFW&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve started using &lt;a
+class="gblog-markdown__link"
+href="https://help.ubuntu.com/community/UFW"
+&gt;UFW&lt;/a&gt; a little while ago. Normally I prefer to use &lt;a
+class="gblog-markdown__link"
+href="http://shorewall.net/"
+&gt;shorewall&lt;/a&gt; but it can be a little complex to setup at times so for this post I&amp;rsquo;m going to focus just on UFW.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="where-to-start"
+&gt;
+where to start
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/05/28/ufw-fail2ban-portscan/#where-to-start" class="gblog-post__anchor clip flex align-center" aria-label="Anchor where to start" href="#where-to-start"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;First you need to get UFW all installed and ready to go.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-get -y install ufw fail2ban
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo sed -i &lt;span class="s1"&gt;&amp;#39;s/IPV6=no/IPV6=yes/g&amp;#39;&lt;/span&gt; /etc/default/ufw
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ufw allow ssh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ufw default deny incoming
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ufw default allow outgoing
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ufw logging low
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ufw disable
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo ufw enable&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The above should install UFW &amp;amp; fail2ban. In UFW it should enable IPv6 support, allow ssh and setup some default firewall direction rules. We also want to only log denined packets to the kernel logger. The last step gives it a restart (disable/enable).&lt;/p&gt;
+&lt;p&gt;Now if we generate some port open requests from another server to a port other than ssh we should see this:
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo dmesg
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;[&lt;/span&gt;3071864.995451&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;UFW BLOCK&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="nv"&gt;IN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;venet0 &lt;span class="nv"&gt;OUT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;MAC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;SRC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;192.168.0.1 &lt;span class="nv"&gt;DST&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;192.168.0.2 &lt;span class="nv"&gt;LEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;48&lt;/span&gt; &lt;span class="nv"&gt;TOS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0x00 &lt;span class="nv"&gt;PREC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0x00 &lt;span class="nv"&gt;TTL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;46&lt;/span&gt; &lt;span class="nv"&gt;ID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;12308&lt;/span&gt; &lt;span class="nv"&gt;PROTO&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;UDP &lt;span class="nv"&gt;SPT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;40393&lt;/span&gt; &lt;span class="nv"&gt;DPT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;40104&lt;/span&gt; &lt;span class="nv"&gt;LEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;28&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;Great! But you need this in a log file so fail2ban can use it. Lets take a look at our rsyslogd config:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;root@vps:/etc/rsyslog.d# ls -la *ufw*
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;-rw-r--r-- &lt;span class="m"&gt;1&lt;/span&gt; root root &lt;span class="m"&gt;94&lt;/span&gt; May &lt;span class="m"&gt;28&lt;/span&gt; 01:31 20-ufw.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;root@vps:/etc/rsyslog.d# cat 20-ufw.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Log kernel generated UFW log messages to file&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;:msg,contains,&lt;span class="s2"&gt;&amp;#34;[UFW &amp;#34;&lt;/span&gt; /var/log/ufw.log
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;root@vps:/etc/rsyslog.d#&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Great UFW has already setup a method to log UFW messages. But when I checked /var/log/ufw.log it didn&amp;rsquo;t exist. Restarting rsyslog didn&amp;rsquo;t seem to help. But then I noticed /etc/rsyslogd.conf:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# /etc/rsyslog.conf Configuration file for rsyslog.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# For more information see&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# /usr/share/doc/rsyslog-doc/html/rsyslog_conf.html&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Default logging rules can be found in /etc/rsyslog.d/50-default.conf&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#################&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#### MODULES ####&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#################&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;$ModLoad&lt;/span&gt; imuxsock &lt;span class="c1"&gt;# provides support for local system logging&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#$ModLoad imklog # provides kernel logging support&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;#$ModLoad immark # provides --MARK-- message capability&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;After enabling &amp;lsquo;$ModLoad imklog&amp;rsquo; I get the following in /var/log/kern.log:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;May &lt;span class="m"&gt;28&lt;/span&gt; 01:38:00 vps rsyslogd: imklog: cannot open kernel log &lt;span class="o"&gt;(&lt;/span&gt;/proc/kmsg&lt;span class="o"&gt;)&lt;/span&gt;: Operation not permitted.&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This appears due to rsyslog not opening /proc/kmsg before it drops it&amp;rsquo;s privs! This is now where we get into hacky area. Some people suggest using dd to mirror /proc/kmsg and getting rsyslogd to open that. Personally I just stopped rsyslog from dropping it&amp;rsquo;s privs all together.&lt;/p&gt;
+&lt;p&gt;Edit /etc/rsyslogd.conf and comment out the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;$PrivDropToUser&lt;/span&gt; syslog
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;$PrivDropToGroup&lt;/span&gt; syslog&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now restart rsyslogd with &amp;lsquo;service rsyslog restart&amp;rsquo;.&lt;/p&gt;
+&lt;p&gt;Checking /var/log/ufw.log it now exists and it has some data in it for us to play with! Great! Lets move onto fail2ban.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="fail2ban"
+&gt;
+fail2ban
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/05/28/ufw-fail2ban-portscan/#fail2ban" class="gblog-post__anchor clip flex align-center" aria-label="Anchor fail2ban" href="#fail2ban"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;fail2ban will insert iptables rules when it chooses to ban hosts. This can cause a problem with UFW so lets make fail2ban play nicely with UFW.&lt;/p&gt;
+&lt;p&gt;First lets setup a action rule that we can use to deny/allow users from being able to connect in:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;[Definition]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;actionstart =
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;actionstop =
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;actioncheck =
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;actionban = ufw deny in from &amp;lt;ip&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;actionunban = ufw delete deny in from &amp;lt;ip&amp;gt;&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; sudo tee /etc/fail2ban/action.d/ufw.conf&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;While here you might want to edit your jail.conf file and update where required the actions of other services you want to monitor.&lt;/p&gt;
+&lt;p&gt;Now lets setup a filter for our log file to know when to ban a user:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;[Definition]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;failregex = UFW BLOCK.* SRC=&amp;lt;HOST&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;ignoreregex =&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; sudo tee /etc/fail2ban/filter.d/portscan.conf&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now the clever amoung you will realise that UFW will block port ATTEMPTS which means that some nice fellow could craft some packets so that the connection attempt comes from hosts that should be allowed to connect.&lt;/p&gt;
+&lt;p&gt;Lets setup some whitelist rules to make sure our networks and hosts that should never be firewalled aren&amp;rsquo;t. In jail.conf you will find a &amp;lsquo;whitelist&amp;rsquo; varible. Lets update this with all our friendly networks.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;whilelist&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 10.0.0.0/8&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Ok now we just need to add a rule to tie it all together in our jail.conf file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;[portscan]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;enabled = true
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;filter = portscan
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;logpath = /var/log/ufw.log
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;action = ufw
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;maxretry = 5
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tee -a /etc/fail2ban/jail.conf&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And lastly don&amp;rsquo;t forget to reload fail2ban:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo service fail2ban restart&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category scheme="https://dodwell.us/tags/security" term="security" label="security"/></entry><entry><title>google authenticator for ssh</title><link href="https://dodwell.us/2015/05/04/google-authenticator/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2015/05/04/google-authenticator/</id><published>2015-05-04T00:00:00+00:00</published><updated>2015-05-04T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;&lt;a
+class="gblog-markdown__link"
+href="http://dodwell.us/security/ssh-setup/"
+&gt;Previously&lt;/a&gt; I posted on how to make some changes to SSH to improve it&amp;rsquo;s security. One of the configuration options I said to change was to disable password authentication. I want to cover how you can keep password authentication enable by using 2-factor authentication powered by Google Authenticator.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="what-is-it"
+&gt;
+what is it?
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/05/04/google-authenticator/#what-is-it" class="gblog-post__anchor clip flex align-center" aria-label="Anchor what is it?" href="#what-is-it"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Two-factor authentication (also known as 2FA) provides unambiguous identification of users by means of the combination of two different components. These components may be something that the user knows, something that the user possesses or something that is inseparable from the user. A good example from everyday life is the withdrawing of money from a cash machine. Only the correct combination of a bank card (something that the user possesses) and a PIN (personal identification number, i.e. something that the user knows) allows the transaction to be carried out. Two-factor authentication is a type of multi-factor authentication.&lt;/p&gt;
+&lt;p&gt;&amp;ndash; &lt;a href="http://en.wikipedia.org/wiki/Two_factor_authentication"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://en.wikipedia.org/wiki/Two_factor_authentication"
+&gt;http://en.wikipedia.org/wiki/Two_factor_authentication&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="why-would-i-give-my-keys-to-google"
+&gt;
+why would i give my keys to google?
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/05/04/google-authenticator/#why-would-i-give-my-keys-to-google" class="gblog-post__anchor clip flex align-center" aria-label="Anchor why would i give my keys to google?" href="#why-would-i-give-my-keys-to-google"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Google Authenticator&amp;rsquo;s time-based one-time password (TOTP) system doesn&amp;rsquo;t &amp;ldquo;phone home&amp;rdquo; to Google all the work happens on your server. By enabling TOTP your account information isn&amp;rsquo;t actually shared with Google nor do you require a Google account. The key exchange is done via a pre-shared key that&amp;rsquo;s used with the current UTC timestamp to generate a one time password that you use to authenticate to the server.&lt;/p&gt;
+&lt;p&gt;The project is also open source and you can review the code &lt;a
+class="gblog-markdown__link"
+href="http://code.google.com/p/google-authenticator/"
+&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="install-google-authenticator"
+&gt;
+install google authenticator
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/05/04/google-authenticator/#install-google-authenticator" class="gblog-post__anchor clip flex align-center" aria-label="Anchor install google authenticator" href="#install-google-authenticator"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;To implement multifactor authentication with Google Authenticator, you&amp;rsquo;ll need the open-source Google Authenticator PAM module. PAM stands for &amp;lsquo;pluggable authentication module&amp;rsquo; it&amp;rsquo;s a way to easily plug different forms of authentication into a Linux system.&lt;/p&gt;
+&lt;p&gt;Ubuntu&amp;rsquo;s software repositories contain an easy-to-install package for the Google Authenticator PAM module. If your Linux distribution doesn&amp;rsquo;t contain a package for this, you&amp;rsquo;ll have to download it from the Google Authenticator downloads page on Google Code and compile it yourself.&lt;/p&gt;
+&lt;p&gt;To install the package on Ubuntu, run the following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo apt-get install libpam-google-authenticator&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;(This will only install the PAM module on your system you will have to activate it for SSH logins manually.)&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="create-an-authentication-key"
+&gt;
+create an authentication key
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/05/04/google-authenticator/#create-an-authentication-key" class="gblog-post__anchor clip flex align-center" aria-label="Anchor create an authentication key" href="#create-an-authentication-key"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Now that the PAM module has been installed you will need to generate a authentication key. This is the pre-shared key that&amp;rsquo;s used as part of the seed to the TOTP.&lt;/p&gt;
+&lt;p&gt;Login as the user you wish to use 2FA and type:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ google-authenticator&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;After answering &amp;lsquo;yes&amp;rsquo; to the question if you want authentication tokens to be time-based, it should produce some output that looks like the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Do you want authentication tokens to be time-based &lt;span class="o"&gt;(&lt;/span&gt;y/n&lt;span class="o"&gt;)&lt;/span&gt; y
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Your new secret key is: S5JUU47ZVAE2IX4R
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Your verification code is &lt;span class="m"&gt;983290&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Your emergency scratch codes are:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="m"&gt;97505839&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="m"&gt;65363572&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="m"&gt;25577686&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="m"&gt;65028652&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="m"&gt;13575975&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Do you want me to update your &lt;span class="s2"&gt;&amp;#34;/home/USERNAME/.google_authenticator&amp;#34;&lt;/span&gt; file &lt;span class="o"&gt;(&lt;/span&gt;y/n&lt;span class="o"&gt;)&lt;/span&gt; y&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Google Authenticator will present you with a secret key and several &amp;rsquo;emergency scratch codes&amp;rsquo;. Write down the emergency scratch codes somewhere safe they can only be used one time each, and they&amp;rsquo;re intended for use if you lose your phone.&lt;/p&gt;
+&lt;p&gt;You will also need to add the &amp;lsquo;secret key&amp;rsquo; to your phone&amp;rsquo;s Google Authenticator app.&lt;/p&gt;
+&lt;p&gt;Once you&amp;rsquo;ve added the &amp;lsquo;secret key&amp;rsquo; to your phones Google Authenticator app, Answer &amp;lsquo;yes&amp;rsquo; to updating your .google_authenticator file and then answer the following questions:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Do you want to disallow multiple uses of the same authentication
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;token? This restricts you to one login about every 30s, but it increases
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;your chances to notice or even prevent man-in-the-middle attacks &lt;span class="o"&gt;(&lt;/span&gt;y/n&lt;span class="o"&gt;)&lt;/span&gt; y
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;By default, tokens are good &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="m"&gt;30&lt;/span&gt; seconds and in order to compensate &lt;span class="k"&gt;for&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;possible time-skew between the client and the server, we allow an extra
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;token before and after the current time. If you experience problems with poor
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;time&lt;/span&gt; synchronization, you can increase the window from its default
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;size of 1:30min to about 4min. Do you want to &lt;span class="k"&gt;do&lt;/span&gt; so &lt;span class="o"&gt;(&lt;/span&gt;y/n&lt;span class="o"&gt;)&lt;/span&gt; n
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;If the computer that you are logging into isn&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;t hardened against brute-force
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;login attempts, you can &lt;span class="nb"&gt;enable&lt;/span&gt; rate-limiting &lt;span class="k"&gt;for&lt;/span&gt; the authentication module.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;By default, this limits attackers to no more than &lt;span class="m"&gt;3&lt;/span&gt; login attempts every 30s.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Do you want to &lt;span class="nb"&gt;enable&lt;/span&gt; rate-limiting &lt;span class="o"&gt;(&lt;/span&gt;y/n&lt;span class="o"&gt;)&lt;/span&gt; y&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="enable-google-authenticator"
+&gt;
+enable Google Authenticator
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/05/04/google-authenticator/#enable-google-authenticator" class="gblog-post__anchor clip flex align-center" aria-label="Anchor enable Google Authenticator" href="#enable-google-authenticator"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Now that you&amp;rsquo;ve setup everything it&amp;rsquo;s time to actually enable the PAM module. You can do this with the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;auth required pam_google_authenticator.so&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; sudo tee -a /etc/pam.d/sshd&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You will also need to edit /etc/ssh/sshd_config. Look for the &amp;lsquo;ChallengeResponseAuthentication&amp;rsquo; line and enable it.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ChallengeResponseAuthentication yes&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If you followed my &lt;a
+class="gblog-markdown__link"
+href="https://dodwell.us/security/ssh-setup/"
+&gt;previous post&lt;/a&gt;, you will also need to update &amp;lsquo;PasswordAuthentication&amp;rsquo; from &amp;rsquo;no&amp;rsquo; to &amp;lsquo;yes&amp;rsquo;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;PasswordAuthentication yes&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Finally, restart the SSH server so your changes will take effect:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ sudo service ssh restart&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="testing"
+&gt;
+testing
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/05/04/google-authenticator/#testing" class="gblog-post__anchor clip flex align-center" aria-label="Anchor testing" href="#testing"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;You can now simply ssh to localhost and see if you get the 2FA.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ ssh localhost
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Password:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Verification code:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category scheme="https://dodwell.us/tags/security" term="security" label="security"/></entry><entry><title>secure ssh setup</title><link href="https://dodwell.us/2015/01/21/ssh-setup/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2015/01/21/ssh-setup/</id><published>2015-01-21T00:00:00+00:00</published><updated>2015-01-21T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;Previously I posted on how to make some changes to SSL to improve it&amp;rsquo;s security for your users. This post I want to cover off some information on how to setup SSH to secure your server for yourself.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="what-is-it"
+&gt;
+what is it?
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/01/21/ssh-setup/#what-is-it" class="gblog-post__anchor clip flex align-center" aria-label="Anchor what is it?" href="#what-is-it"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Secure Shell (SSH) is a cryptographic network protocol for secure data communication, remote command-line login, remote command execution, and other secure network services between two networked computers. It connects, via a secure channel over an insecure network, a server and a client running SSH server and SSH client programs, respectively. The protocol specification distinguishes between two major versions that are referred to as SSH-1 and SSH-2.
+The best-known application of the protocol is for access to shell accounts on Unix-like operating systems, but it can also be used in a similar fashion for accounts on Windows. It was designed as a replacement for Telnet and other insecure remote shell protocols such as the Berkeley rsh and rexec protocols, which send information, notably passwords, in plaintext, rendering them susceptible to interception and disclosure using packet analysis.&lt;/p&gt;
+&lt;p&gt;&amp;ndash; &lt;a href="http://en.wikipedia.org/wiki/Secure_Shell"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://en.wikipedia.org/wiki/Secure_Shell"
+&gt;http://en.wikipedia.org/wiki/Secure_Shell&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="what-to-protect"
+&gt;
+what to protect
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/01/21/ssh-setup/#what-to-protect" class="gblog-post__anchor clip flex align-center" aria-label="Anchor what to protect" href="#what-to-protect"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;SSH contains a number of attack vectors that we need to cover. It should be noted that to properly protect your access to servers you should protect your client and the server. Below I&amp;rsquo;ll give options that should be set on the computer doing the access and should be set on the remote server recieving the access request. By disallowing bad security within your SSH client you are able to defeat rogue servers from exposing key information that you should protect.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="key-exchange"
+&gt;
+key exchange
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/01/21/ssh-setup/#key-exchange" class="gblog-post__anchor clip flex align-center" aria-label="Anchor key exchange" href="#key-exchange"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;When a ssh session is opened to a remote server the SSH session begins by agreeing on a shared key. This exchange happens via Diffie-Hellman and Elliptic Curve Diffie-Hellman. Both methods provide forward secrecy. Which as previously covered in my SSL post is required to ensure that the session can&amp;rsquo;t be passively recorded and later decrypted once servers private key has been collected.&lt;/p&gt;
+&lt;p&gt;OpenSSH supports 8 key exchange protocols:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ecdh-sha2-nistp256: ECDH over NIST P-256 with SHA2&lt;/li&gt;
+&lt;li&gt;ecdh-sha2-nistp384: ECDH over NIST P-384 with SHA2&lt;/li&gt;
+&lt;li&gt;ecdh-sha2-nistp521: ECDH over NIST P-521 with SHA2&lt;/li&gt;
+&lt;li&gt;diffie-hellman-group1-sha1: 1024 bit DH with SHA1&lt;/li&gt;
+&lt;li&gt;diffie-hellman-group14-sha1: 2048 bit DH with SHA1&lt;/li&gt;
+&lt;li&gt;diffie-hellman-group-exchange-sha1: Custom DH with SHA1&lt;/li&gt;
+&lt;li&gt;diffie-hellman-group-exchange-sha256: Custom DH with SHA2&lt;/li&gt;
+&lt;li&gt;curve25519-sha256: ECDH over Curve25519 with SHA2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The first 3 options are out due to failures with NIST curves. They leak secrets through timing side channels and off-curve inputs.&lt;/p&gt;
+&lt;p&gt;We should also elimate anything that uses SHA1.&lt;/p&gt;
+&lt;p&gt;This leaves us with diffie-hellman-group-exchange-sha256 and curve25519-sha256.&lt;/p&gt;
+&lt;p&gt;Recommended /etc/ssh/sshd_config snippet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Recommended /etc/ssh/ssh_config snippet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Host *
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We should also regenerate our moduli file via:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh-keygen -G &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;HOME&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/moduli&amp;#34;&lt;/span&gt; -b &lt;span class="m"&gt;4096&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh-keygen -T /etc/ssh/moduli -f &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;HOME&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/moduli&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="authentication"
+&gt;
+authentication
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2015/01/21/ssh-setup/#authentication" class="gblog-post__anchor clip flex align-center" aria-label="Anchor authentication" href="#authentication"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Now that we have a secure channel we need a way to authenticate. Firstly the server must prove it&amp;rsquo;s who it says it is. It does this by signing the key resulting from the key exchange. It has 4 different methods for this signing to occur.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DSA with SHA1&lt;/li&gt;
+&lt;li&gt;ECDSA with SHA256, SHA384 or SHA512 depending on key size&lt;/li&gt;
+&lt;li&gt;Ed25519 with SHA512&lt;/li&gt;
+&lt;li&gt;RSA with SHA1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We want to disable DSA (due to a limitation of keys needing to be 1024) and ECDSA due to them needing randomness for signatures. If our random function is poor it can lead to our keys being recoverable. We can however either use RSA or Ed25519.&lt;/p&gt;
+&lt;p&gt;Recommended /etc/ssh/sshd_config snippet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Protocol &lt;span class="m"&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;HostKey /etc/ssh/ssh_host_ed25519_key
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;HostKey /etc/ssh/ssh_host_rsa_key&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You should also now take this oppitunity to regenerate your SSH server keys.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/ssh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rm ssh_host_*key*
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh-keygen -t ed25519 -f ssh_host_ed25519_key &amp;lt; /dev/null
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh-keygen -t rsa -b &lt;span class="m"&gt;4096&lt;/span&gt; -f ssh_host_rsa_key &amp;lt; /dev/null&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The client must prove its identity to the server as well. There are various methods to do that.&lt;/p&gt;
+&lt;p&gt;The simplest is password authentication. This should be disabled immediately after setting up a more secure method because it allows compromised servers to steal passwords. Password authentication is also more vulnerable to online bruteforce attacks.&lt;/p&gt;
+&lt;p&gt;Recommended /etc/ssh/sshd_config snippet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;PasswordAuthentication no
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ChallengeResponseAuthentication no&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Recommended /etc/ssh/ssh_config snippet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Host *
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; PasswordAuthentication no
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ChallengeResponseAuthentication no&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The most common and secure method is public key authentication, basically the same process as the server authentication.&lt;/p&gt;
+&lt;p&gt;Recommended /etc/ssh/sshd_config snippet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;PubkeyAuthentication yes&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Recommended /etc/ssh/ssh_config snippet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Host *
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; PubkeyAuthentication yes
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-rsa-cert-v00@openssh.com,ssh-ed25519,ssh-rsa&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Generate client keys using the following commands:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh-keygen -t ed25519 -o -a &lt;span class="m"&gt;100&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh-keygen -t rsa -b &lt;span class="m"&gt;4096&lt;/span&gt; -o -a &lt;span class="m"&gt;100&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category scheme="https://dodwell.us/tags/security" term="security" label="security"/></entry><entry><title>hosting osx on esxi</title><link href="https://dodwell.us/2014/12/08/osx-esxi/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/12/08/osx-esxi/</id><published>2014-12-08T00:00:00+00:00</published><updated>2014-12-08T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;It&amp;rsquo;s been awhile since I&amp;rsquo;ve posted.&lt;/p&gt;
+&lt;p&gt;Recently I&amp;rsquo;ve been doing some Ops work for a company building iOS apps for different companies.&lt;/p&gt;
+&lt;p&gt;While here I&amp;rsquo;ve been making a change to host OSX instances on Mac Mini&amp;rsquo;s (due to licence restrictions). These server where previously hosted under OSX running inside VMWare Fusion VM&amp;rsquo;s.&lt;/p&gt;
+&lt;p&gt;OSX is a very poor candidate for Virtualization. The Operating System is very bloated and runs alot of services that allow for a very pretty interface for users. When virtualizing these services just chew alot of resources.&lt;/p&gt;
+&lt;p&gt;In a future post I&amp;rsquo;ll list how I try and tune down these services so that we don&amp;rsquo;t waste resources with functions that we don&amp;rsquo;t use.&lt;/p&gt;
+&lt;p&gt;In this post I want to cover off how I managed to get OSX to work under ESXi.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="packer"
+&gt;
+packer
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/12/08/osx-esxi/#packer" class="gblog-post__anchor clip flex align-center" aria-label="Anchor packer" href="#packer"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;I&amp;rsquo;ve previously written about packer and saw virtualization of OSX to be something that would suit it. &lt;a href="http://macops.ca"&gt;Tim Sutton&lt;/a&gt; is already maintaining some really nice Packer scripts over at &lt;a href="https://github.com/timsutton/osx-vm-templates"&gt;github&lt;/a&gt;. So i grabbed a copy of these and built the Guest OS in Fusion.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="fusion"
+&gt;
+fusion
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/12/08/osx-esxi/#fusion" class="gblog-post__anchor clip flex align-center" aria-label="Anchor fusion" href="#fusion"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;There are a few things to know about if you want to upload an OS X VM to an ESXi server running 5.5, so I’ve put together a procedure for those who want to leverage Fusion 7 Pro to upload OS X VMs. See below the jump for the details.&lt;/p&gt;
+&lt;p&gt;There’s three issues to be aware of when uploading OS X VMs to ESXi 5.5:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ESXi 5.5 supports up to VMware’s Hardware Version 10.&lt;/li&gt;
+&lt;li&gt;VMware Fusion 7 Pro will build VMs by default using VMware’s Hardware Version 11.&lt;/li&gt;
+&lt;li&gt;The upload process to ESXi 5.5 will not tranfer the necessary smc.present = “TRUE” attribute from the Fusion VM’s .vmx configuration file. This attribute allows the VM to check and detect that it’s running on Apple hardware. Without this check succeeding, the VM assumes it’s running on non-Apple hardware and will then hang during the boot process (which is why I was seeing the hang in my previous upload attempts.)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h4 id="pre-requisites"
+&gt;
+pre-requisites:
+&lt;/h4&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/12/08/osx-esxi/#pre-requisites" class="gblog-post__anchor clip flex align-center" aria-label="Anchor pre-requisites:" href="#pre-requisites"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;VMware Fusion 7 Professional&lt;/li&gt;
+&lt;li&gt;A fully-updated ESXi 5.5 server running on Apple hardware. As of October 31, 2014, the latest version should be ESXi 5.5 Patch03 (ESXi550-201410001).
+Setting Fusion-built VMs to use Hardware Version 10&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a new VM and choose an appropriate OS.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Note: If you’re planning to upload a 10.10 VM, choose OS X 10.9 in this window. VMware Fusion’s setup process will not allow a 10.10 VM to use Hardware Version 10. In my testing, 10.10 runs fine even when the VM’s selected OS is 10.9.&lt;/p&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;
+&lt;p&gt;Once the VM is created and you’ve set your preferred memory, processor and memory settings, shut down the VM and then go into the VM settings.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In the VM settings, go into USB &amp;amp; Bluetooth&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In the USB &amp;amp; Bluetooth settings, set it to use USB 2.0 instead of USB 3.0. USB 3.0 is a new feature with VMware’s Hardware Version 11 and not supported on Hardware Version 10.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Go back out to the VM settings, then select Camera.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In the Camera settings, click the Remove Camera button.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;When prompted, confirm that you want to remove the camera by clicking the Remove button. The camera is a new feature with VMware’s Hardware Version 11 and not supported on Hardware Version 10.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Go back out to the VM settings, then select Compatibility.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Change the Use Hardware Version: setting to 10 and click the Apply button.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;At this point, your OS X VM should be set to use Hardware Version 10 and ready for uploading to ESXi 5.5.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h4 id="connecting-to-esxi-55-from-vmware-fusion-7-professional"
+&gt;
+Connecting to ESXi 5.5 from VMware Fusion 7 Professional
+&lt;/h4&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/12/08/osx-esxi/#connecting-to-esxi-55-from-vmware-fusion-7-professional" class="gblog-post__anchor clip flex align-center" aria-label="Anchor Connecting to ESXi 5.5 from VMware Fusion 7 Professional" href="#connecting-to-esxi-55-from-vmware-fusion-7-professional"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Launch VMware Fusion 7 Professional if needed.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Under the File menu, select Connect to Server…&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In the login window that appears, enter the server address of your ESXi server, username and password as appropriate.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h4 id="exporting-vms-from-vmware-fusion-7-professional-to-esxi"
+&gt;
+Exporting VMs from VMware Fusion 7 Professional to ESXi
+&lt;/h4&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/12/08/osx-esxi/#exporting-vms-from-vmware-fusion-7-professional-to-esxi" class="gblog-post__anchor clip flex align-center" aria-label="Anchor Exporting VMs from VMware Fusion 7 Professional to ESXi" href="#exporting-vms-from-vmware-fusion-7-professional-to-esxi"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Shut down the Fusion VM that you want to copy to your ESXi server.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Connect to your ESXi server if you hadn’t previously.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Right-click on the shutdown VM and select Upload to Server…&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If prompted, select your destination server and click the Continue button.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A new Upload Virtual Machine window will appear.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Select the ESXi datastore that you want to upload your Fusion-built VM into and click the Upload button.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The selected VM will upload to the ESXi server.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Once the upload is completed, the newly-uploaded VM will appear in your ESXi server’s list of VMs as a powered-off VM.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h4 id="editing-the-os-x-vms-vmx-file"
+&gt;
+Editing the OS X VM’s .vmx file
+&lt;/h4&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/12/08/osx-esxi/#editing-the-os-x-vms-vmx-file" class="gblog-post__anchor clip flex align-center" aria-label="Anchor Editing the OS X VM’s .vmx file" href="#editing-the-os-x-vms-vmx-file"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Before booting your VM, you will need to edit the uploaded VM’s .vmx configuration file to add the smc.present = “TRUE” attribute back to the .vmx file. Make sure you enable SSH on the ESXi host.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;SSH to the ESXi server&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Navigate to /vmfs/volumes/datastore_name_here/uploaded_vm_name_here/&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Run &amp;rsquo;echo &amp;lsquo;smc.present = &amp;ldquo;TRUE&amp;rdquo; &amp;raquo; uploaded_vm_name_here.vmx&amp;rsquo;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Disconnect&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Once the VM has been uploaded and the VM’s uploaded_vm_name_here.vmx configuration file has been edited, your ESXi-hosted OS X VM should now be ready to go.&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/security" term="security" label="security"/></entry><entry><title>elastic search abuse on aws</title><link href="https://dodwell.us/2014/07/29/elastic-search-abuse-aws/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/07/29/elastic-search-abuse-aws/</id><published>2014-07-29T00:00:00+00:00</published><updated>2014-07-29T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;&lt;a href="https://dodwell.us/insecure-default-in-elasticsearch-enables-remote-code-execution/" title="Insecure default in Elasticsearch enables remote code execution" target="_blank"&gt;Previously&lt;/a&gt; I highlighted the release of an exploit to elastic search that results in the ability to execute unauthorized code on a server running elasticsearch 1.1.x. It has just been reported that this same exploit is now being used to install DDOS (distributed denial of service) bots on vulnerable machines hosted within AWS. Elasticsearch instances should always be treated like a database and not be directly exposed to the internet. As a minimum you should be using plugins to nginx to get JSON functionality direct from the web server and have it act as a proxy to back end processes like elastic search. This will help you filter requests so only the requests you authorize are able to be executed.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h2 id="further-reading"
+&gt;
+further reading
+&lt;/h2&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/29/elastic-search-abuse-aws/#further-reading" class="gblog-post__anchor clip flex align-center" aria-label="Anchor further reading" href="#further-reading"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="https://securelist.com/blog/virus-watch/65192/elasticsearch-vuln-abuse-on-amazon-cloud-and-more-for-ddos-and-profit/" target="_blank" title="elasticsearch Vuln Abuse on Amazon Cloud and More for DDoS and Profit"&gt;&lt;a
+class="gblog-markdown__link"
+href="https://securelist.com/blog/virus-watch/65192/elasticsearch-vuln-abuse-on-amazon-cloud-and-more-for-ddos-and-profit/"
+&gt;https://securelist.com/blog/virus-watch/65192/elasticsearch-vuln-abuse-on-amazon-cloud-and-more-for-ddos-and-profit/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/aws" term="aws" label="aws"/><category scheme="https://dodwell.us/tags/security" term="security" label="security"/></entry><entry><title>ssl setup</title><link href="https://dodwell.us/2014/07/08/ssl-setup/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/07/08/ssl-setup/</id><published>2014-07-08T00:00:00+00:00</published><updated>2014-07-08T00:00:00+00:00</updated><content type="html">
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="forward-secrecy"
+&gt;
+forward secrecy
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/08/ssl-setup/#forward-secrecy" class="gblog-post__anchor clip flex align-center" aria-label="Anchor forward secrecy" href="#forward-secrecy"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;In cryptography, forward secrecy (abbreviation: FS, also known as perfect forward secrecy or PFS) is a property of key-agreement protocols ensuring that a session key derived from a set of long-term keys cannot be compromised if one of the long-term keys is compromised in the future. The key used to protect transmission of data must not be used to derive any additional keys, and if the key used to protect transmission of data is derived from some other keying material, then that material must not be used to derive any more keys. In this way, compromise of a single key permits access only to data protected by that single key.&lt;/p&gt;
+&lt;p&gt;&amp;ndash; &lt;a href="http://en.wikipedia.org/wiki/Forward_secrecy" title="Wikipedia" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://en.wikipedia.org/wiki/Forward_secrecy"
+&gt;http://en.wikipedia.org/wiki/Forward_secrecy&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="beast-attack-vs-poor-rc4-encryption"
+&gt;
+beast attack vs poor rc4 encryption
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/08/ssl-setup/#beast-attack-vs-poor-rc4-encryption" class="gblog-post__anchor clip flex align-center" aria-label="Anchor beast attack vs poor rc4 encryption" href="#beast-attack-vs-poor-rc4-encryption"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;BEAST, aka Browser Exploit Against SSL/TLS exploits a long-known cipher block chaining (CBC) vulnerability in TLS 1.0. This vulnerability has been known about since 2002 but wasn&amp;rsquo;t properly exploited until 2011. Newer browsers already have enabled client side mitigation for the BEAST attack. As the solution to disable sessions from the BEAST attack is to disable TLS 1.0 entirely and only offer RC4 it leaves us with a little bit of a problem. RC4 encryption has been brought into &lt;a href="http://www.isg.rhul.ac.uk/tls/" target="_blank"&gt;question&lt;/a&gt; since the NSA has announced a &amp;ldquo;&lt;a href="http://www.economist.com/blogs/babbage/2013/09/breaking-cryptography" target="_blank"&gt;big breakthrough&lt;/a&gt;&amp;rdquo; when dealing with it&amp;rsquo;s encryption. Also if we disable RC4 older browsers will fall back to 3DES which is more expensive on server resources. However, 3DES does offer superior protection for users sessions.&lt;/p&gt;
+&lt;p&gt;With better client-side mitigation being implemented it&amp;rsquo;s believed that BEAST is a non-issue and by disabling TLS 1.0 we could be opening ourselves up to larger problems in the future.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="crime-and-breach-attacks"
+&gt;
+crime and breach attacks
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/08/ssl-setup/#crime-and-breach-attacks" class="gblog-post__anchor clip flex align-center" aria-label="Anchor crime and breach attacks" href="#crime-and-breach-attacks"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;The authors of the BEAST attack are also the creators of the later CRIME attack, which can allow an attacker to recover the content of web cookies when data compression is used along with TLS. When used to recover the content of secret authentication cookies, it allows an attacker to perform session hijacking on an authenticated web session.&lt;/p&gt;
+&lt;p&gt;It is suggested to disable SSL compression.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="sslv2-and-sslv3"
+&gt;
+sslv2 and sslv3
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/08/ssl-setup/#sslv2-and-sslv3" class="gblog-post__anchor clip flex align-center" aria-label="Anchor sslv2 and sslv3" href="#sslv2-and-sslv3"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;SSLv2 &amp;amp; SSLv3 are insecure. With SSLv3 support enabled a user can exploit a TLS 1.0 downgrade attack, which would allow an attacker to force a connection to use SSLv3 and therefore disable perfect forward secrecy (PFS).&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="the-cipher-suite"
+&gt;
+the cipher suite
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/08/ssl-setup/#the-cipher-suite" class="gblog-post__anchor clip flex align-center" aria-label="Anchor the cipher suite" href="#the-cipher-suite"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;Forward Secrecy ensures the integrity of a session key in the event that a long-term key is compromised. PFS accomplishes this by enforcing the derivation of a new key for each and every session.&lt;/p&gt;
+&lt;p&gt;This means that when the private key gets compromised it cannot be used to decrypt recorded SSL traffic.&lt;/p&gt;
+&lt;p&gt;The cipher suites that provide Perfect Forward Secrecy are those that use an ephemeral form of the Diffie-Hellman key exchange. Their disadvantage is their overhead, which can be improved by using the elliptic curve variants.&lt;/p&gt;
+&lt;p&gt;This is a recommended cipher suite if you need to support older software like IE 6, 7 or 8:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssl.cipher-list &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In short, the above cipher suite:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Provides forward secrecy to most reasonably modern clients&lt;/li&gt;
+&lt;li&gt;Provides improved security as more clients enable TLS 1.2&lt;/li&gt;
+&lt;li&gt;Provides some security for people stuck on Windows XP or IE 6, 7 and 8 (which is still a large percentage of traffic)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="config-examples"
+&gt;
+config examples
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/08/ssl-setup/#config-examples" class="gblog-post__anchor clip flex align-center" aria-label="Anchor config examples" href="#config-examples"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h4 id="lighttpd"
+&gt;
+lighttpd
+&lt;/h4&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/08/ssl-setup/#lighttpd" class="gblog-post__anchor clip flex align-center" aria-label="Anchor lighttpd" href="#lighttpd"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;var.confdir &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/etc/ssl/certs&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;$SERVER&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;socket&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;:443&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl.engine &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;enable&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl.pemfile &lt;span class="o"&gt;=&lt;/span&gt; var.confdir + &lt;span class="s2"&gt;&amp;#34;/example.org.pem&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl.ca-file &lt;span class="o"&gt;=&lt;/span&gt; var.confdir + &lt;span class="s2"&gt;&amp;#34;/example.org.bundle.crt&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; server.name &lt;span class="o"&gt;=&lt;/span&gt; var.confdir + &lt;span class="s2"&gt;&amp;#34;/example.org&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; server.document-root &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/srv/html&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl.use-sslv2 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;disable&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl.use-sslv3 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;disable&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl.use-compression &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;disable&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl.honor-cipher-order &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;enable&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl.cipher-list &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h4 id="nginx"
+&gt;
+nginx
+&lt;/h4&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/08/ssl-setup/#nginx" class="gblog-post__anchor clip flex align-center" aria-label="Anchor nginx" href="#nginx"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;server &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; listen &lt;span class="o"&gt;[&lt;/span&gt;::&lt;span class="o"&gt;]&lt;/span&gt;:443 default_server&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl on&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl_certificate_key /etc/ssl/cert/dodwell.us.pem&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl_certificate /etc/ssl/cert/ca-bundle.pem&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl_ciphers &lt;span class="s1"&gt;&amp;#39;ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl_protocols TLSv1 TLSv1.1 TLSv1.2&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl_session_cache builtin:1000 shared:SSL:10m&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl_stapling on&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl_stapling_verify on&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; resolver 8.8.4.4 8.8.8.8 &lt;span class="nv"&gt;valid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;300s&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; resolver_timeout 10s&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl_prefer_server_ciphers on&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ssl_dhparam /etc/ssl/certs/dhparam.pem&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; add_header Strict-Transport-Security max-age&lt;span class="o"&gt;=&lt;/span&gt;63072000&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; add_header X-Frame-Options DENY&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; add_header X-Content-Type-Options nosniff&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; root /var/www/&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; index index.html index.htm&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; server_name dodwell.us&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h4 id="apache"
+&gt;
+apache
+&lt;/h4&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/08/ssl-setup/#apache" class="gblog-post__anchor clip flex align-center" aria-label="Anchor apache" href="#apache"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Ensure your running Apache v2.4.7+ as it has fixes to deal with Diffie-Hellman parameters.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;SSLProtocol -ALL +TLSv1 +TLSv1.1 +TLSv1.2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;SSLHonorCipherOrder on
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;SSLCipherSuite ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;SSLUseStapling on
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;SSLStaplingCache &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;ldquo&lt;span class="p"&gt;;&lt;/span&gt;shmcb:logs/stapling_cache&lt;span class="o"&gt;(&lt;/span&gt;128000&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;rdquo&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h3 id="testing"
+&gt;
+testing
+&lt;/h3&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/07/08/ssl-setup/#testing" class="gblog-post__anchor clip flex align-center" aria-label="Anchor testing" href="#testing"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="https://www.ssllabs.com/ssltest/"&gt;&lt;a
+class="gblog-markdown__link"
+href="https://www.ssllabs.com/ssltest/"
+&gt;https://www.ssllabs.com/ssltest/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/security" term="security" label="security"/></entry><entry><title>insecure default in elasticsearch enables remote code execution</title><link href="https://dodwell.us/2014/05/30/insecure-default-in-elasticsearch-enables-remote-code-execution/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/05/30/insecure-default-in-elasticsearch-enables-remote-code-execution/</id><published>2014-05-30T00:00:00+00:00</published><updated>2014-05-30T00:00:00+00:00</updated><content type="html">
+&lt;blockquote&gt;
+&lt;p&gt;Elasticsearch has a flaw in its default configuration which makes it possible for any webpage to execute arbitrary code on visitors with Elasticsearch installed. If you’re running Elasticsearch in development please read the instructions on how to secure your machine. Elasticsearch version 1.2 (which is unreleased as of writing) is not vulnerable to remote code execution, but still has some security concerns.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h2 id="further-reading"
+&gt;
+further reading
+&lt;/h2&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/30/insecure-default-in-elasticsearch-enables-remote-code-execution/#further-reading" class="gblog-post__anchor clip flex align-center" aria-label="Anchor further reading" href="#further-reading"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="http://bouk.co/blog/elasticsearch-rce/" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://bouk.co/blog/elasticsearch-rce/"
+&gt;http://bouk.co/blog/elasticsearch-rce/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/security" term="security" label="security"/></entry><entry><title>cve-2014-0196</title><link href="https://dodwell.us/2014/05/14/cve-2014-0196/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/05/14/cve-2014-0196/</id><published>2014-05-14T00:00:00+00:00</published><updated>2014-05-14T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;A new kernel bug has been discovered that allows local users to possibly corrupt memory causing a system crash or gain super user privileges by triggering a race condition with the tty driver involving read and write operations with long strings. Administrators of Linux are advised to upgrade any kernel from 2.6.31-rc3 to 3.14.3 as soon as possible.&lt;/p&gt;
+&lt;p&gt;Proof-of-concept code has already been made available &lt;a href="http://bugfuzz.com/stuff/cve-2014-0196-md.c" title="proof of concept code" target="_blank"&gt;here&lt;/a&gt; and &lt;a href="/assets/txt/cve-2014-0196-md.c.txt" target="_blank"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="flex align-center gblog-post__anchorwrap"&gt;
+&lt;h2 id="further-reading"
+&gt;
+further reading
+&lt;/h2&gt;
+&lt;a data-clipboard-text="https://dodwell.us/2014/05/14/cve-2014-0196/#further-reading" class="gblog-post__anchor clip flex align-center" aria-label="Anchor further reading" href="#further-reading"&gt;
+&lt;svg class="gblog-icon gblog_link"&gt;&lt;use xlink:href="#gblog_link"&gt;&lt;/use&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-0196" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-0196"
+&gt;http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-0196&lt;/a&gt;&lt;/a&gt;
+&lt;a href="http://arstechnica.com/security/2014/05/linux-gets-fix-for-code-execution-flaw-that-went-unpatched-since-2009/" target="_blank"&gt;&lt;a
+class="gblog-markdown__link"
+href="http://arstechnica.com/security/2014/05/linux-gets-fix-for-code-execution-flaw-that-went-unpatched-since-2009/"
+&gt;http://arstechnica.com/security/2014/05/linux-gets-fix-for-code-execution-flaw-that-went-unpatched-since-2009/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/security" term="security" label="security"/></entry><entry><title>encryption for cloud storage</title><link href="https://dodwell.us/2014/05/07/encryption-cloud-storage/" rel="alternate" type="text/html" hreflang="en"/><id>https://dodwell.us/2014/05/07/encryption-cloud-storage/</id><published>2014-05-07T00:00:00+00:00</published><updated>2014-05-07T00:00:00+00:00</updated><content type="html">
+&lt;p&gt;With all the recent talk about how NSA is reading archived email I thought it might be worthwhile to share how I secure my archived email with the wider audience.&lt;/p&gt;
+&lt;p&gt;Being the data pack rat I&amp;rsquo;ve managed to keep a copy of my Inbox for the last 5 years. As you can imagine this gives me quite a large piece of data. I wanted to keep a copy of this online at all times but ensure that I was the only one able to view it contents.&lt;/p&gt;
+&lt;p&gt;Taking a look around at ways to secure email I&amp;rsquo;m surprised to see that securing of email is focused on when both parties engage in 2 way crypto. No one seems to be interested in ways to secure email that was originally sent insecurely but hold enough value over time that you want to keep it a secret.&lt;/p&gt;
+&lt;p&gt;The thought was to use online file storage to keep a copy of my encrypted inbox. I took a look at the top 3 online file storage providers and was surprised to find only Dropbox met all the requirements:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Needs delta syncing support: How can google drive not support this? I&amp;rsquo;m going to end up with a large single file that will contain all my email encrypted. Having to sync this file in it&amp;rsquo;s entirety every time i make a change isn&amp;rsquo;t going to work&lt;/li&gt;
+&lt;li&gt;Needs large file support: 2G? Really Microsoft?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;However, I&amp;rsquo;m cheap and Dropbox is quite expensive. I would prefer to not spend money when I don&amp;rsquo;t have too (who doesn&amp;rsquo;t). So looking around further I found BitTorrent Sync!&lt;/p&gt;
+&lt;p&gt;Now I have my method for storage syncing.&lt;/p&gt;
+&lt;p&gt;BT Sync also comes with an Android client. This means I can install it on my desktop, phone and laptop and have my mail automatically synced between all my devices. It also means that if my laptop is off in my bag and I&amp;rsquo;m working on my desktop my phone acts as a carrier for my data (make sure you encrypt your phone!).&lt;/p&gt;
+&lt;p&gt;I then grabbed a copy of Thunderbird and downloaded all my email from my current providers.&lt;/p&gt;
+&lt;p&gt;Grabbing a copy of TrueCrypt I created an encrypted volume. I&amp;rsquo;ll let you choose how paranoid you want to be when setting up this volume. It has the ability to hide volumes etc. Once I&amp;rsquo;d  copied thunderbirds email tree into the volume I put the truecrypt volume into my BT Sync directory and I&amp;rsquo;m done!&lt;/p&gt;
+&lt;p&gt;I now have an encrypted archived email accessible from anywhere that only I can read.&lt;/p&gt;</content><category scheme="https://dodwell.us/tags/security" term="security" label="security"/></entry></feed>
