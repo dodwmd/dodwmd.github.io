@@ -1,22 +1,15 @@
 name: Michael Dodwell
-role: Senior DevOps & Platform Leader
+role: Director of Operations, Maestro
 email: michael@dodwell.us
 github: https://github.com/dodwmd
 linkedin: https://www.linkedin.com/in/michaeldodwell/
 resume: /assets/pdf/resume.pdf
 
-headline: I keep platforms standing when the traffic spikes
+headline: Sysadmin since 1999. Now called platform engineer. Still gets paged.
 intro: >-
-  Senior DevOps and platform leader. At Maestro I run GKE, Terraform and
-  ArgoCD for live video events, where the whole audience arrives at once.
-
-stats:
-  - value: "25+"
-    label: years in infrastructure and operations
-  - value: "1,000+"
-    label: pods at peak during live events
-  - value: "10"
-    label: engineers in the largest team I have led
+  I build and run infrastructure for a living. These days that means GKE,
+  Terraform and ArgoCD for live video at Maestro. Below is what I do, where
+  I've done it, and some notes on things I had to figure out the hard way.
 
 focus:
   - title: Platform engineering

@@ -2,52 +2,23 @@
 {{- $p := hugo.Data.profile -}}
 
 <section class="hero">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <h1 class="rise" style="--i:0">{{ $p.headline }}</h1>
-      <p class="lead rise" style="--i:1">{{ $p.intro }}</p>
-      <div class="cta rise" style="--i:2">
-        <a class="btn btn-primary" href="mailto:{{ $p.email }}">Get in touch</a>
-        <a class="btn btn-secondary" href="{{ $p.resume }}">Résumé</a>
-      </div>
-    </div>
-
-    <figure class="panel chart rise" style="--i:3">
-      <figcaption class="chart-head">
-        <span class="mono muted">Pods during a live event</span>
-        <span class="legend mono muted">
-          <span class="key key-pods">Pods</span>
-          <span class="key key-demand">Demand</span>
-        </span>
-      </figcaption>
-      <div class="plot">
-        <div class="yaxis mono muted" aria-hidden="true">
-          <span style="top:23.1%">1,000</span>
-          <span style="top:61.5%">500</span>
-          <span style="top:100%">0</span>
-        </div>
-        <div class="plot-area">
-          {{ partial "chart-pods.html" . }}
-          <span class="note mono" style="left:54.2%;top:13.8%">1,000+ pods</span>
-          <span class="note note-event mono muted" style="left:16.7%">Event starts</span>
-        </div>
-      </div>
-      <div class="xaxis mono muted" aria-hidden="true">
-        <span style="left:0">−20 min</span>
-        <span style="left:16.7%;transform:translateX(-50%)">0</span>
-        <span style="left:58.3%;transform:translateX(-50%)">+50</span>
-        <span style="right:0">+100</span>
-      </div>
-      <p class="chart-foot mono muted">Illustrative data, not production metrics</p>
-    </figure>
-  </div>
-
   <div class="wrap">
-    <dl class="facts">
-      {{ range $p.stats }}
-      <div><dt>{{ .value }}</dt><dd>{{ .label }}</dd></div>
-      {{ end }}
-    </dl>
+   <div class="hero-copy">
+    <a class="who rise" style="--i:0" href="/" aria-label="{{ $p.name }}">
+      <img src="/images/dodwmd.jpg" width="80" height="80" alt="Portrait of {{ $p.name }}">
+      <span>
+        <strong>{{ $p.name }}</strong>
+        <span class="mono muted">{{ $p.role }}</span>
+      </span>
+    </a>
+    <h1 class="rise" style="--i:1">{{ $p.headline }}</h1>
+    <p class="lead rise" style="--i:2">{{ $p.intro }}</p>
+    <div class="cta rise" style="--i:3">
+      <a class="btn btn-primary" href="mailto:{{ $p.email }}">Email me</a>
+      <a class="btn btn-secondary" href="{{ $p.resume }}">Résumé</a>
+      <a class="link" href="{{ $p.github }}" rel="me noopener">GitHub</a>
+    </div>
+   </div>
   </div>
 </section>
 
