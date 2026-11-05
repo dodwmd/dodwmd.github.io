@@ -10,7 +10,14 @@ cd "$(dirname "$0")"
 PUSH=1
 [[ "${1:-}" == "--no-push" ]] && PUSH=0
 
-command -v hugo >/dev/null || { echo "hugo not found - enter the nix shell first" >&2; exit 1; }
+# Re-run inside the nix shell if hugo isn't on PATH (e.g. direnv not loaded).
+if ! command -v hugo >/dev/null; then
+  if command -v nix-shell >/dev/null && [[ -z "${IN_DEPLOY_NIX_SHELL:-}" ]]; then
+    exec env IN_DEPLOY_NIX_SHELL=1 nix-shell --run "$(printf '%q ' "$0" "$@")"
+  fi
+  echo "hugo not found and nix-shell unavailable" >&2
+  exit 1
+fi
 
 if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
   echo "Tracked files have uncommitted changes; commit or stash them first so the" >&2
