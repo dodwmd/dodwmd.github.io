@@ -1,3 +1,3 @@
 public/
 resources/
-hugo_generator/
+.hugo_build.lock
