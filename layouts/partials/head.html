@@ -1,0 +1,44 @@
+{{- $p := hugo.Data.profile -}}
+{{- $title := cond .IsHome (printf "%s | %s" site.Title site.Params.tagline) (printf "%s | %s" .Title site.Title) -}}
+{{- $desc := or .Description (cond .IsPage (.Summary | plainify | truncate 160) "") site.Params.description -}}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $desc | plainify | htmlUnescape }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<meta name="theme-color" content="#0a0e14">
+<meta name="color-scheme" content="dark light">
+
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $desc | plainify | htmlUnescape }}">
+<meta property="og:type" content="{{ cond .IsPage "article" "website" }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta name="twitter:card" content="summary">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+{{ with .OutputFormats.Get "atom" }}<link rel="alternate" type="application/atom+xml" title="{{ site.Title }}" href="{{ .Permalink }}">{{ end }}
+{{ with site.Home.OutputFormats.Get "atom" }}<link rel="alternate" type="application/atom+xml" title="{{ site.Title }}" href="{{ .Permalink }}">{{ end }}
+
+{{- /* Set theme before first paint to avoid a flash */ -}}
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('theme'); } catch (e) {}
+    if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+
+{{- $css := slice (resources.Get "css/main.css") (resources.Get "css/chroma.css") | resources.Concat "css/site.css" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+{{ with site.Params.gaId }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ . }}');
+</script>
+{{ end }}

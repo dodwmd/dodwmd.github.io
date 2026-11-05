@@ -1,0 +1,15 @@
+{{- $p := hugo.Data.profile -}}
+<footer class="site-footer">
+  <div class="wrap foot">
+    <p class="muted">&copy; {{ now.Year }} {{ $p.name }}</p>
+    <ul class="social" aria-label="Links">
+      <li><a href="{{ $p.github }}" rel="me noopener" aria-label="GitHub">{{ partial "icon.html" "github" }}</a></li>
+      <li><a href="{{ $p.linkedin }}" rel="me noopener" aria-label="LinkedIn">{{ partial "icon.html" "linkedin" }}</a></li>
+      <li><a href="mailto:{{ $p.email }}" aria-label="Email">{{ partial "icon.html" "mail" }}</a></li>
+      <li><a href="{{ $p.resume }}" aria-label="Résumé (PDF)">{{ partial "icon.html" "file" }}</a></li>
+      {{ with site.Home.OutputFormats.Get "atom" }}<li><a href="{{ .RelPermalink }}" aria-label="Atom feed">{{ partial "icon.html" "rss" }}</a></li>{{ end }}
+    </ul>
+  </div>
+</footer>
+{{ $js := resources.Get "js/theme.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

@@ -1,0 +1,107 @@
+{{ define "main" }}
+{{- $p := hugo.Data.profile -}}
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">{{ $p.role }}</p>
+      <h1>{{ $p.headline }}</h1>
+      <p class="lead">{{ $p.intro }}</p>
+      <div class="cta">
+        <a class="btn" href="#contact">Get in touch {{ partial "icon.html" "arrow" }}</a>
+        <a class="btn btn-ghost" href="{{ $p.resume }}">{{ partial "icon.html" "file" }} Résumé</a>
+        <a class="icon-btn" href="{{ $p.github }}" rel="me noopener" aria-label="GitHub">{{ partial "icon.html" "github" }}</a>
+        <a class="icon-btn" href="{{ $p.linkedin }}" rel="me noopener" aria-label="LinkedIn">{{ partial "icon.html" "linkedin" }}</a>
+      </div>
+    </div>
+    <div class="terminal" aria-hidden="true">
+      <div class="terminal-bar"><i></i><i></i><i></i><span>~/platform</span></div>
+<pre><span class="t-dim">$</span> git commit -m "scale for the spike"
+<span class="t-dim">$</span> git push origin main
+<span class="t-ok">✓</span> terraform plan   <span class="t-dim">0 to destroy</span>
+<span class="t-ok">✓</span> argocd sync     <span class="t-dim">apps healthy</span>
+<span class="t-ok">✓</span> rollout         <span class="t-dim">no downtime</span>
+<span class="t-dim">$</span> <span class="cursor"></span></pre>
+    </div>
+  </div>
+  <div class="wrap">
+    <dl class="stats">
+      {{ range $p.stats }}
+      <div><dt>{{ .value }}</dt><dd>{{ .label }}</dd></div>
+      {{ end }}
+    </dl>
+  </div>
+</section>
+
+<section class="section" id="focus">
+  <div class="wrap">
+    <h2 class="section-title">What I do</h2>
+    <div class="grid grid-2">
+      {{ range $p.focus }}
+      <article class="card">
+        <span class="card-icon">{{ partial "icon.html" .icon }}</span>
+        <h3>{{ .title }}</h3>
+        <p>{{ .body }}</p>
+      </article>
+      {{ end }}
+    </div>
+    <div class="toolbox">
+      {{ range $p.toolbox }}
+      <div class="tool-group">
+        <h4>{{ .group }}</h4>
+        <ul class="chips">{{ range .items }}<li>{{ . }}</li>{{ end }}</ul>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="experience">
+  <div class="wrap">
+    <h2 class="section-title">Experience</h2>
+    <ol class="timeline">
+      {{ range $p.experience }}
+      <li>
+        <div class="tl-head">
+          <h3>{{ .title }} <span class="at">· {{ .company }}</span></h3>
+          <span class="dates">{{ .dates }}</span>
+        </div>
+        <p class="muted">{{ .blurb }}</p>
+        <ul class="points">{{ range .points }}<li>{{ . }}</li>{{ end }}</ul>
+        <ul class="chips">{{ range .tags }}<li>{{ . }}</li>{{ end }}</ul>
+      </li>
+      {{ end }}
+    </ol>
+    <p class="muted earlier">{{ $p.earlier }}</p>
+    <h3 class="sub-title">Certifications</h3>
+    <ul class="certs">{{ range $p.certifications }}<li>{{ . }}</li>{{ end }}</ul>
+    <p><a class="link-arrow" href="{{ $p.resume }}">Full résumé (PDF) {{ partial "icon.html" "arrow" }}</a></p>
+  </div>
+</section>
+
+<section class="section" id="writing">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="section-title">Recent writing</h2>
+      <a class="link-arrow" href="/posts/">All posts {{ partial "icon.html" "arrow" }}</a>
+    </div>
+    <div class="grid grid-3">
+      {{ range first 3 (where site.RegularPages "Section" "posts") }}
+        {{ partial "post-card.html" . }}
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<section class="section contact" id="contact">
+  <div class="wrap contact-card">
+    <h2>Let's talk</h2>
+    <p>Looking to scale your platform, adopt GitOps, or build a stronger delivery culture? I'd like to hear about it.</p>
+    <div class="cta">
+      <a class="btn" href="mailto:{{ $p.email }}">{{ partial "icon.html" "mail" }} {{ $p.email }}</a>
+      <a class="btn btn-ghost" href="{{ $p.linkedin }}" rel="me noopener">{{ partial "icon.html" "linkedin" }} LinkedIn</a>
+      <a class="btn btn-ghost" href="{{ $p.github }}" rel="me noopener">{{ partial "icon.html" "github" }} GitHub</a>
+    </div>
+  </div>
+</section>
+{{ end }}

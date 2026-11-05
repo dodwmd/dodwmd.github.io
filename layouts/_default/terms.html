@@ -1,0 +1,17 @@
+{{ define "main" }}
+<section class="page-head">
+  <div class="wrap narrow">
+    <p class="eyebrow"><a href="/posts/">← Blog</a></p>
+    <h1>Tags</h1>
+  </div>
+</section>
+<section class="section tight">
+  <div class="wrap narrow">
+    <ul class="chips big">
+      {{ range .Data.Terms.Alphabetical }}
+      <li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }} <span>{{ .Count }}</span></a></li>
+      {{ end }}
+    </ul>
+  </div>
+</section>
+{{ end }}

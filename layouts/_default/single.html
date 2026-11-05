@@ -1,0 +1,23 @@
+{{ define "main" }}
+<article>
+  <header class="page-head">
+    <div class="wrap narrow">
+      <p class="eyebrow"><a href="/posts/">← Blog</a></p>
+      <h1>{{ .Title }}</h1>
+      <p class="meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time> · {{ .ReadingTime }} min read
+      </p>
+      {{ with .Params.tags }}
+      <ul class="chips">{{ range . }}<li><a href="{{ printf "/tags/%s/" (. | urlize) }}">{{ . }}</a></li>{{ end }}</ul>
+      {{ end }}
+    </div>
+  </header>
+  <div class="wrap narrow">
+    <div class="prose">{{ .Content }}</div>
+    <nav class="pager" aria-label="Posts">
+      {{ with .PrevInSection }}<a href="{{ .RelPermalink }}"><span>Newer</span>{{ .Title }}</a>{{ end }}
+      {{ with .NextInSection }}<a class="next" href="{{ .RelPermalink }}"><span>Older</span>{{ .Title }}</a>{{ end }}
+    </nav>
+  </div>
+</article>
+{{ end }}

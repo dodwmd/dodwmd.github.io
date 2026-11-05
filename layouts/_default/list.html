@@ -1,50 +1,28 @@
 {{ define "main" }}
-  {{ $pages := where .RegularPages "Type" "in" .Site.Params.mainSections }}
-  {{ if (eq .Kind "home") }}
-    {{ $pages = where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
-  {{ end }}
-
-  <div id="main-content" tabindex="-1">
-  {{ $paginator := .Paginate $pages }}
-  {{ range $paginator.Pages }}
-    <article class="gblog-post">
-      <header class="gblog-post__header">
-        <h1 class="gblog-post__title">
-          <a href="{{ .RelPermalink }}">{{ partial "utils/title" . }}</a>
-        </h1>
-      </header>
-
-      {{ if .Params.featured_image }}
-      <div class="post-thumbnail">
-        <a href="{{ .Permalink }}">
-          <img class="post-thumbnail" src="{{ .Params.featured_image }}" alt="{{ .Title }}">
-        </a>
-      </div>
-      {{ end }}
-
-      <section class="gblog-markdown">
-        {{ .Summary }}
-      </section>
-      <div class="gblog-post__readmore">
-        {{ if .Truncated }}
-          <a
-            class="flex-inline align-center fake-link"
-            title="Read full post"
-            href="{{ .RelPermalink }}"
-          >
-            Read full post
-            <i class="gblog-icon">gblog_arrow_right</i>
-          </a>
-        {{ end }}
-      </div>
-
-      <footer class="gblog-post__footer">
-        <div class="flex flex-wrap align-center gblog-post__meta">
-          {{ partial "metadata.html" . }}
-        </div>
-      </footer>
-    </article>
-  {{ end }}
+<section class="page-head">
+  <div class="wrap narrow">
+    <p class="eyebrow">{{ if eq .Kind "term" }}Tag{{ else }}Blog{{ end }}</p>
+    <h1>{{ if eq .Kind "term" }}{{ .Title }}{{ else }}Notes on infrastructure &amp; operations{{ end }}</h1>
+    {{ if eq .Kind "term" }}
+      <p class="lead"><a class="link-arrow" href="/posts/">All posts {{ partial "icon.html" "arrow" }}</a> · <a class="link-arrow" href="/tags/">All tags {{ partial "icon.html" "arrow" }}</a></p>
+    {{ else }}
+      <p class="lead">Writing from over two decades of running production systems. <a href="/tags/">Browse by tag</a>.</p>
+    {{ end }}
   </div>
-  {{ partial "pagination.html" . }}
+</section>
+<section class="section tight">
+  <div class="wrap narrow">
+    {{ range (.Pages.GroupByDate "2006") }}
+    <h2 class="year">{{ .Key }}</h2>
+    <ul class="post-list">
+      {{ range .Pages }}
+      <li>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan" }}</time>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      </li>
+      {{ end }}
+    </ul>
+    {{ end }}
+  </div>
+</section>
 {{ end }}

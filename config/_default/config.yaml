@@ -1,23 +1,21 @@
 ---
 baseURL: https://dodwell.us/
-title: DODWELL.US
-theme: hugo-geekblog
-pygmentsUseClasses: true
-pygmentsCodeFences: true
+title: Michael Dodwell
 enableGitInfo: false
 timeout: 180000
 pluralizeListTitles: false
 
 params:
-  logo: /images/devops_logo.gif
-  subtitle: DevOPS - For fun and profit
-  keywords: "devops, linux, aws, gcp, security"
-  geekblogAuthor: "Michael Dodwell <michael@dodwell.us>"
-
-pagination:
-  pagerSize: 5
+  tagline: DevOps & Platform Engineering
+  description: >-
+    Michael Dodwell, senior DevOps and platform leader. Kubernetes, Terraform,
+    GitOps and reliable delivery. Writing and notes on infrastructure.
+  gaId: G-BZ03HXX3C5
 
 markup:
+  highlight:
+    noClasses: false
+    lineNos: false
   goldmark:
     renderer:
       unsafe: true
@@ -71,8 +69,6 @@ outputs:
     - HTML
   term:
     - HTML
-    - ATOM
-    - JSON
 
 enableRobotsTXT: true
 
