@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: insecure default in elasticsearch enables remote code execution
 date: 2014-05-30

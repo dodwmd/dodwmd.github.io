@@ -1,4 +1,5 @@
 {{ define "main" }}
+  <div id="main-content" tabindex="-1">
   {{ $paginator := .Paginate .Paginator.Pages }}
   {{ range $paginator.Pages.ByTitle }}
     <article class="gblog-post">
@@ -29,7 +30,7 @@
             {{ $ac := 0 }}
             {{ with $latet.Params.authors }}
               {{ range sort . }}
-                {{ $author := index $.Site.Data.authors . }}
+                {{ $author := index hugo.Data.authors . }}
                 {{ with $.Site.GetPage (printf "/authors/%s" . | urlize) }}
                   {{ if eq $ac 0 }}
                     {{ template "post-author" dict "name" $author.name "page" . }}
@@ -45,5 +46,6 @@
       </footer>
     </article>
   {{ end }}
+  </div>
   {{ partial "pagination.html" . }}
 {{ end }}

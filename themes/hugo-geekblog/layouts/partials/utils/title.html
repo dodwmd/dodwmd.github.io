@@ -3,13 +3,13 @@
 {{ if .Title }}
   {{ $title = .Title }}
 {{ else if and .IsSection .File }}
-  {{ $title = path.Base .File.Dir }}
+  {{ $title = path.Base .File.Dir | humanize | title }}
 {{ else if and .IsPage .File }}
-  {{ $title = .File.BaseFileName }}
+  {{ $title = .File.BaseFileName | humanize | title }}
 {{ end }}
 
 {{ if eq .Kind "term" }}
-  {{ $title = $title }}
+  {{ $title = $title | humanize | title }}
 {{ end }}
 
 {{ return $title }}

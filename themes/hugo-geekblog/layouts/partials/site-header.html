@@ -1,4 +1,4 @@
-<header class="blog-background overlay align-center align-middle animated from-bottom">
+<header class="gblog-header">
   <div class="container flex flex-wrap">
     <div class="gblog-header__col-1 flex justify-start hidden-mobile"></div>
     <div class="gblog-header__col-2 flex align-center justify-center ">
@@ -61,8 +61,8 @@
         {{ end }}
       {{ end }}
     {{ end }}
-    {{ if .Site.Data.menu.extra.header }}
-      {{ partial "menu-extra" (dict "current" . "source" .Site.Data.menu.extra.header "target" "header") }}
+    {{ if hugo.Data.menu.extra.header }}
+      {{ partial "menu-extra" (dict "current" . "source" hugo.Data.menu.extra.header "target" "header") }}
     {{ end }}
   </ul>
 </nav>

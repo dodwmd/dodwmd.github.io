@@ -2,7 +2,6 @@
 categories:
   - unix
 comments: false
-published: true
 status: publish
 description: How to pass variables from shell scripts to GNU make
 headline: Using shell variables from GNU make

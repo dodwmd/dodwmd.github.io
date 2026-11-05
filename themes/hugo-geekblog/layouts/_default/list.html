@@ -4,6 +4,7 @@
     {{ $pages = where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
   {{ end }}
 
+  <div id="main-content" tabindex="-1">
   {{ $paginator := .Paginate $pages }}
   {{ range $paginator.Pages }}
     <article class="gblog-post">
@@ -12,13 +13,7 @@
           <a href="{{ .RelPermalink }}">{{ partial "utils/title" . }}</a>
         </h1>
       </header>
-      {{ if .Params.featured_image }}
-      <div class="post-thumbnail">
-        <a href="{{ .Permalink }}">
-          <img class="post-thumbnail" src="{{ .Params.featured_image }}" alt="{{ .Title }}">
-        </a>
-      </div>
-      {{ end }}
+
       <section class="gblog-markdown">
         {{ .Summary }}
       </section>
@@ -42,5 +37,6 @@
       </footer>
     </article>
   {{ end }}
+  </div>
   {{ partial "pagination.html" . }}
 {{ end }}

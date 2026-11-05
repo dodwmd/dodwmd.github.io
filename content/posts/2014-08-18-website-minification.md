@@ -1,7 +1,6 @@
 ---
 categories:
   - website
-published: true
 status: publish
 date: 2014-08-18
 title: website minification

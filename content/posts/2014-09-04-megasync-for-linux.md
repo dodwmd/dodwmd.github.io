@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: megasync for linux
 date: 2014-09-04

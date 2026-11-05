@@ -2,7 +2,6 @@
 categories:
   - unix
 comments: false
-published: true
 status: publish
 description: How to setup putty and screen to look nice and function well
 headline: Setting up SSH & Byobu to give Windows users a nice shell prompt

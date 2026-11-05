@@ -2,7 +2,6 @@
 categories:
   - funny
 comments: false
-published: true
 status: publish
 description: How to rate limit FCC ips ranges
 headline: Rate limiting IP ranges that belong to the FCC

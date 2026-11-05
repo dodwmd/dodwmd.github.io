@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: linux memory
 date: 2014-06-13

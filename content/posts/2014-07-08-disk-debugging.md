@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: disk debugging
 date: 2014-07-08

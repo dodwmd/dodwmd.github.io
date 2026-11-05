@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: managing external puppet modules
 date: 2014-08-01

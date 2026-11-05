@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: rewrite uri to lowercase using nginx/perl, nginx/lua or apache
 date: 2014-06-20

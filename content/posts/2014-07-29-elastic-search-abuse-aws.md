@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: elastic search abuse on aws
 date: 2014-07-29

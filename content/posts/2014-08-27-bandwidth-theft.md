@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: bandwidth theft
 date: 2014-08-27

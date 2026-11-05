@@ -4,7 +4,6 @@ categories:
   - aws
   - management
 comments: false
-published: true
 status: publish
 description: How to test puppet manifests
 headline: Different ways of testing puppet

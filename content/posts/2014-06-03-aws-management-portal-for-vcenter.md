@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: aws management portal for vcenter
 date: 2014-06-03

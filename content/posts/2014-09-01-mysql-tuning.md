@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: mysql tuning
 date: 2014-09-01

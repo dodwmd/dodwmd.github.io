@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: using nginx to proxy private amazon s3 web services
 date: 2014-06-06

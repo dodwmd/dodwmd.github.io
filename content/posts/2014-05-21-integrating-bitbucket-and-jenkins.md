@@ -1,5 +1,4 @@
 ---
-published: true
 status: publish
 title: integrating bitbucket and jenkins
 date: 2014-05-21
