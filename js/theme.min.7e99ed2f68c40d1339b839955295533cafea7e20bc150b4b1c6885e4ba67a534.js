@@ -1,0 +1,1 @@
+(function(){var e=document.documentElement,t=document.getElementById("theme-toggle");if(!t)return;t.addEventListener("click",function(){var t=e.getAttribute("data-theme")==="light"?"dark":"light";e.setAttribute("data-theme",t);try{localStorage.setItem("theme",t)}catch{}})})()
